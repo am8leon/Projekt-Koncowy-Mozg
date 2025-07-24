@@ -4,12 +4,13 @@ Projekt klasyfikuje obrazy rezonansu magnetycznego (MRI) do jednej z trzech kate
 
 ---
 
-#Agenda  
-1. Cel analizy  
+# Agenda  
+1. Cel stworzenia modelu   
 2. Dane i wstępne przetwarzanie  
-3. Eksploracyjna analiza danych  
-4. Analiza ceny za m²  
-5. Kluczowe wnioski  
+3. Eksploracyjna analiza danych
+4. Wyniki modelu
+5. Wizualizacje  
+6. Kluczowe wnioski  
 7. Rekomendacje  
 
 ---
