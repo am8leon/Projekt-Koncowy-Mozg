@@ -1,12 +1,6 @@
-# Projekt-Koncowy-Mozg
-
-# Projekt-Koncowy-Analiza-danych
-Projekt Analiza Danych mieszkania 
-Analiza cen mieszkań — wynajem i zakup (2023–2024)
-
-
-# Slajd 1:Projekt Koncowy Analiza danych mieszkań 
-Analiza cen mieszkań — wynajem i zakup (2023–2024)
+# Projekt-Koncowy Mozg 🧠
+Wykrywanie Nowotworów Mózgu za pomocą CNN
+Projekt klasyfikuje obrazy rezonansu magnetycznego (MRI) do jednej z trzech kategorii nowotworu mózgu przy użyciu konwolucyjnych sieci neuronowych (CNN) i biblioteki TensorFlow/Keras.
 
 ---
 
