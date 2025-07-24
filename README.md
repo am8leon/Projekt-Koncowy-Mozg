@@ -85,7 +85,21 @@ Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały 
 - Raport klasyfikacji (precision, recall, f1-score)
 
 ---
-# 
+# Przykładowe wyniki
+- Najlepszy model: D_batchnorm
+- Skuteczność na zbiorze testowym: ~85% (symulowane)
+
+- Klasy:
+ - brain_glioma
+-  brain_menin
+-  brain_tumor
+
+---
+- **Wizualizacja:**
+![Braki w danych wynajmu](image/zd1.jpg)
+
+
+
 
 
 
