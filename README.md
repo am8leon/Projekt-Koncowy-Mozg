@@ -84,6 +84,7 @@ Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały 
 - Skuteczność na zbiorze testowym: ~85% (symulowane)
 
 - **Wizualizacja:**
+
 ![Braki w danych wynajmu](image/zd5.jpg)
 
 
