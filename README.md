@@ -4,7 +4,7 @@ Projekt klasyfikuje obrazy rezonansu magnetycznego (MRI) do jednej z trzech kate
 
 ---
 
-# Slajd 2: Agenda  
+#Agenda  
 1. Cel analizy  
 2. Dane i wstępne przetwarzanie  
 3. Eksploracyjna analiza danych  
@@ -13,30 +13,90 @@ Projekt klasyfikuje obrazy rezonansu magnetycznego (MRI) do jednej z trzech kate
 7. Rekomendacje  
 
 ---
+# Uruchomienie projektu
+1. Montowanie Dysku Google
+- Kod:  
+  ```python
+  from google.colab import drive
+  drive.mount('/content/drive')
+---
+# Przygotowanie danych
+Dane treningowe: z augmentacją
+Dane walidacyjne i testowe: tylko reskalowanie
+- Kod:  
+  ```python
+  ImageDataGenerator(rescale=1./255, ...)
 
-# Slajd 3: Cel analizy
-- Cel analizy 
-Celem projektu było zbadanie rynku mieszkaniowego w Polsce na podstawie danych o wynajmie oraz zakupie mieszkań w latach 2023–2024.
+---
+# Przygotowanie danych
+Dane treningowe: z augmentacją
+Dane walidacyjne i testowe: tylko reskalowanie
+- Kod:  
+  ```python
+  ImageDataGenerator(rescale=1./255, ...)
+  
+----
+# Budowa modelu CNN
+Model składa się z 3 warstw konwolucyjnych, poolingów, warstwy Dropout i gęstej warstwy wyjściowej:
+
+- Kod:  
+  ```python
+  model = Sequential([
+    Conv2D(32, (3, 3), activation='relu', input_shape=(128, 128, 3)),
+    MaxPooling2D(2, 2),
+    ...
+    Dense(3, activation='softmax')
+  ])
+
+---
+# Trening modelu
+Model trenuje przez 10 epok z wykorzystaniem funkcji strat categorical_crossentropy i optymalizatora Adam.
+
+- Kod:  
+  ```python
+  history = model.fit(train_data, validation_data=val_data, epochs=10)
+
+---
+# Wizualizacja wyników
+Wykres dokładności treningu i walidacji
+Histogramy skuteczności oraz cech nowotworu
+
+--- 
+#. Eksperymenty
+Przeprowadzono kilka wariantów eksperymentów z różnymi parametrami:
+
+| Nazwa eksperymentu | Augmentacja | Wariant modelu     | Learning Rate |
+| ------------------ | ----------- | ------------------ | ------------|
+| A_basic_aug      | TAK  ✅       | baseline            | 1e-3         |
+| B_no_aug         | TAK  ✅       | baseline            | 1e-3         |
+| C_dropout        | TAK  ✅       | dropout             | 1e-3         |
+| D_batchnorm      | TAK  ✅       | batch normalization | 1e-3         |
+| E_lr_low         | TAK  ✅       | baseline            | 1e-4         |
+
+
+---
+#  Porównanie modeli
+Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały zwizualizowane na wspólnym wykresie.
 
 ---
 
-# Slajd 4: Dane i preprocessing  
-- **Źródła**:  
-  - apartments_pl_2024_06.csv, apartments_pl_2023_12.csv (zakup)  
-  - apartments_rent_pl_2024_06.csv (wynajem)  
-- **Wczytywanie**: funkcja `read_csv_with_fallback()`  
-  - Automatyczne wykrywanie kodowania (chardet)  
-  - Separator `;` lub `,`  
-- **Czyszczenie**:  
-  - Standaryzacja nazw miast (`clean_city_column()`)
+# Ewaluacja najlepszego modelu
+- Macierz pomyłek (confusion matrix)
+- Raport klasyfikacji (precision, recall, f1-score)
 
-- **Wczytywanie:**
-- Kod:  
-  ```python
-  dfs[key] = read_csv_with_fallback(path)
-- **Czyszczenie miast:**
-- Kod:  
-  ```python
-  def clean_city_column(df):
-    df['city'] = df['city'].str.strip().str.title()
+---
+# 
+
+
+
+
+
+
+
+
+  
+
+  
+
+
 
