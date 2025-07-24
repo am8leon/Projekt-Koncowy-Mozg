@@ -69,30 +69,29 @@ Przeprowadzono kilka wariantów eksperymentów z różnymi parametrami:
 | E_lr_low         | TAK  ✅       | baseline            | 1e-4         |
 
 ---
-#  Porównanie modeli
+---
+# Porównanie modeli
 Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały zwizualizowane na wspólnym wykresie.
 
 ---
-
 # Ewaluacja najlepszego modelu
 - Macierz pomyłek (confusion matrix)
 - Raport klasyfikacji (precision, recall, f1-score)
 
 ---
-# Przykładowe wyniki
-- Najlepszy model: D_batchnorm
-- Skuteczność na zbiorze testowym: ~85% (symulowane)
+# Ewaluacja najlepszej wersji
+•	Wybór najlepszego wariantu – Na podstawie maksymalnej wartości val_accuracy.
+•	Testowanie na zbiorze testowym – Predykcje → macierz pomyłek (confusion_matrix) + raport klasyfikacji (precision, recall, f1-score). – Dlaczego: pozwala zobaczyć, które klasy są mylone i jak model radzi sobie z różnymi typami guzów.
 
-- **Wizualizacja:**
-
-![Braki w danych wynajmu](image/zd5.jpg)
-
+----
+# Dlaczego zastosowano te techniki?
+•	Convolutional Neural Network to sprawdzony standard w zadaniach analizy obrazów medycznych.
+•	Augmentacja i normalizacja poprawiają uogólnianie i stabilność uczenia.
+•	BatchNormalization i Adam przyspieszają zbieżność.
+•	Dropout to mocna regularyzacja przy ograniczonym zestawie obrazów.
+•	Porównanie wariantów pozwala dobrać najlepszą kombinację hiperparametrów i architektury.
 
 ---
-
-# Wizualizacja wyników
-Wykres dokładności treningu i walidacji
-Histogramy skuteczności oraz cech nowotworu
 
 - Opis Wizualizacji
 - Na obrazku widzisz pięć skanów rezonansem magnetycznym (MRI) mózgu, każdy z nich oznaczony etykietą „0” lub „1”:
@@ -112,9 +111,47 @@ Histogramy skuteczności oraz cech nowotworu
 ![Braki w danych wynajmu](image/zd1.jpg)
 
 
-----
+---
+# Podsumowanie modelu tabela  szczegółowy spis warstw sieci konwolucyjnej wraz z rozmiarami wyjść i liczbą parametrów każdej z nich:
+
+conv2d (Conv2D) • Wyjście: (None, 126, 126, 32) • Parametry: 896 Pierwsza warstwa konwolucyjna z 32 filtrami.
+max_pooling2d (MaxPooling2D) • Wyjście: (None, 63, 63, 32) • Parametry: 0 Redukuje wymiary połowę przez max‐pooling.
+conv2d_1 (Conv2D) • Wyjście: (None, 30, 30, 64) • Parametry: 18 496 Druga konwolucja z 64 filtrami.
+max_pooling2d_1 (MaxPooling2D) • Wyjście: (None, 30, 30, 64) • Parametry: 0 Pooling zachowujący kształt (np. ze względu na padding).
+conv2d_2 (Conv2D) • Wyjście: (None, 28, 28, 128) • Parametry: 73 856 Trzecia konwolucja z 128 filtrami.
+max_pooling2d_2 (MaxPooling2D) • Wyjście: (None, 14, 14, 128) • Parametry: 0 Kolejne zmniejszenie wymiarów.
+flatten (Flatten) • Wyjście: (None, 25 088) • Parametry: 0 Spłaszczenie wielowymiarowej kostki do wektora.
+dense (Dense) • Wyjście: (None, 128) • Parametry: 3 211 392 Pełne połączenie do 128 neuronów.
+dropout (Dropout) • Wyjście: (None, 128) • Parametry: 0 Losowe wyłączanie części neuronów w trakcie treningu.
+dense_1 (Dense) • Wyjście: (None, 3) • Parametry: 387 Warstwa wyjściowa z 3 neuronami (np. klasyfikacja na 3 klasy).
+Pod tabelą podano jeszcze sumaryczne dane: – Całkowita liczba parametrów: 3 305 027 – Parametry trenowalne: 3 305 027 – Parametry nietrenowalne: 0
 
 
+- **Wizualizacja:**
+
+![Braki w danych wynajmu](image/zd2.jpg)
+
+
+
+
+
+
+
+---
+
+# Przykładowe wyniki
+- Najlepszy model: D_batchnorm
+- Skuteczność na zbiorze testowym: ~85% (symulowane)
+
+- Wykres dokładności treningu i walidacji
+Histogramy skuteczności oraz cech nowotworu
+
+- **Wizualizacja:**
+
+![Braki w danych wynajmu](image/zd5.jpg)
+
+
+---
 
 
 
