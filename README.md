@@ -133,11 +133,6 @@ Pod tabelą podano jeszcze sumaryczne dane: – Całkowita liczba parametrów: 3
 ![Tabela podsumowane modelu](image/zd2.jpg)
 
 
-
-
-
-
-
 ---
 # Raport klasyfikacji 
 raport klasyfikacji (classification report) dla modelu rozróżniającego trzy typy zmian mózgowych:
@@ -192,6 +187,25 @@ Dzięki tej krzywej od razu widać ogólny trend rozkładu skuteczności: w któ
 - **Wizualizacja:**
 
 ![Skutecznosc wykrywania raka mózgu](image/zd5.jpg)
+
+---
+# Histogram Intensywności zmian
+- Co przedstawia histogram? To rozkład danych zebranych w określonych przedziałach. Każdy słupek pokazuje, ile razy wartość z pomiaru lub obserwacji wpadła do danego zakresu.
+Oś pozioma (X): Przedziały wartości (np. 0–10, 10–20, …). To skale, według której grupujemy dane – widzisz, w jakich zakresach koncentrują się pomiary. Najwięcej wyników (najwyższy słupek) mamy w przedziale 40–50, czyli to jest nasz dominujący zakres. Ogniskując się na kształcie wykresu, widzimy, że większość danych mieści się między 20 a 70, a poza tymi granicami mamy tylko nieliczne obserwacje.”
+Oś pionowa (Y): Liczba obserwacji (częstość). Im słupek wyższy, tym więcej pomiarów/ przypadków znalazło się w danym przedziale.
+Interpretacja:
+Szczyt histogramu (najwyższy słupek) wskazuje na najczęściej występujący zakres wartości.
+Kształt rozkładu mówi, czy dane są mocno skupione wokół jednej wartości (wąski rozkład), czy rozproszone (szeroki rozkład).
+Niebieska linia to wygładzony trend (“smooth curve”), który nakłada się na słupki histogramu, aby pokazać ogólny przebieg danych:
+•	Wyraźnie wskazuje, w jakich przedziałach intensywności zmian występuje najwięcej przypadków (szczyty krzywej).
+•	Ułatwia dostrzeżenie wzorców i odchyleń, których pojedyncze słupki nie zdradzają (np. subtelne spadki lub wzrosty między koszykami).
+•	Pomaga ocenić, czy rozkład jest symetryczny, czy ma rozciągnięty “ogon” po którejś stronie.
+Podsumowując: niebieska linia wzmacnia interpretację histogramu, pokazując gładką, ciągłą prezentację częstotliwości intensywności zmian zamiast skokowych słupków.
+
+
+- **Wizualizacja:**
+
+![Skutecznosc wykrywania raka mózgu](image/zd6.jpg)
 
 ---
 
