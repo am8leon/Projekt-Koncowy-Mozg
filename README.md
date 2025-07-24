@@ -107,10 +107,14 @@ Histogramy skuteczności oraz cech nowotworu
 - •	brain_tumor – Prawdopodobnie folder zawiera mieszane przypadki różnych nowotworów mózgu, bez podziału na konkretny typ.
 
 
-  - **Wizualizacja:**
+- **Wizualizacja:**
+
 ![Braki w danych wynajmu](image/zd1.jpg)
 
+
 ----
+
+
 
 
 
