@@ -108,7 +108,7 @@ Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały 
 
 - **Wizualizacja:**
 
-![Braki w danych wynajmu](image/zd1.jpg)
+![Obrazy Gozów Mózgu](image/zd1.jpg)
 
 
 ---
@@ -129,26 +129,12 @@ Pod tabelą podano jeszcze sumaryczne dane: – Całkowita liczba parametrów: 3
 
 - **Wizualizacja:**
 
-![Braki w danych wynajmu](image/zd2.jpg)
+![Tabela podsumowane modelu](image/zd2.jpg)
 
 
 
 
 
-
-
----
-
-# Przykładowe wyniki
-- Najlepszy model: D_batchnorm
-- Skuteczność na zbiorze testowym: ~85% (symulowane)
-
-- Wykres dokładności treningu i walidacji
-Histogramy skuteczności oraz cech nowotworu
-
-- **Wizualizacja:**
-
-![Braki w danych wynajmu](image/zd5.jpg)
 
 
 ---
@@ -163,10 +149,42 @@ Interpretacja w prezentacji: „Raport pokazuje niemal idealne wyniki modelu –
 
 - **Wizualizacja:**
 
-![Braki w danych wynajmu](image/zd12.jpg)
-
+![Raport klasyfikacji modelu](image/zd12.jpg)
 
 ---
+# Histogram Skuteczności modelu
+
+Opis: wykres ilustruje postęp w nauce modelu oraz porównuje jego wydajność na danych treningowych i walidacyjnych.
+Tytuł wykresu „Dokładność modelu” wskazuje, że śledzimy, jak skutecznie sieć uczy się rozpoznawać wzorce.Oś pozioma (X) – Epoki Każdy punkt na osi X to kolejna epoka treningu, czyli pełne przejście przez cały zestaw treningowy (1, 2, …, 10).
+Oś pionowa (Y) – Dokładność Pokazuje, jaki odsetek przykładów model sklasyfikował prawidłowo (zakres od 0,55 do 0,85, czyli 55–85 %).
+Linie na wykresie 
+• Niebieska linia – dokładność na zbiorze treningowym. Rosnący trend oznacza, że model coraz lepiej „zapamiętuje” dane treningowe. 
+• Pomarańczowa linia – dokładność na zbiorze walidacyjnym (testowym). Dzięki niej widzimy, jak model radzi sobie z danymi, których nie widział podczas treningu.
+Co z tego wynika? – Jeśli obie linie rosną równolegle i niewiele się od siebie różnią, model dobrze generalizuje. – Jeśli niebieska rośnie szybciej niż pomarańczowa (duży rozjazd), może występować przeuczenie (overfitting).
+
+
+- **Wizualizacja:**
+
+![Skutecznosc wykrywania raka mózgu](image/zd4.jpg)
+
+---
+# Wyniki modelu 
+- Najlepszy model: D_batchnorm
+- Skuteczność na zbiorze testowym: ~85% (symulowane)
+
+- Wykres dokładności treningu i walidacji
+Histogramy skuteczności oraz cech nowotworu
+
+- **Wizualizacja:**
+
+![Skutecznosc wykrywania raka mózgu](image/zd5.jpg)
+
+---
+
+
+
+
+
 
 
 
