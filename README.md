@@ -83,7 +83,7 @@ Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały 
 - Najlepszy model: D_batchnorm
 - Skuteczność na zbiorze testowym: ~85% (symulowane)
 
-- ** Wizualizacja:**
+- **Wizualizacja:**
 ![Braki w danych wynajmu](image/zd5.jpg)
 
 
@@ -106,7 +106,7 @@ Histogramy skuteczności oraz cech nowotworu
 - •	brain_tumor – Prawdopodobnie folder zawiera mieszane przypadki różnych nowotworów mózgu, bez podziału na konkretny typ.
 
 
-- ** Wizualizacja:**
+  - **Wizualizacja:**
 ![Braki w danych wynajmu](image/zd1.jpg)
 
 ----
