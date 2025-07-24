@@ -153,6 +153,7 @@ Interpretacja w prezentacji: „Raport pokazuje niemal idealne wyniki modelu –
 
 ---
 # Histogram Skuteczności modelu
+- Wykres dokładności treningu i walidacji
 
 Opis: wykres ilustruje postęp w nauce modelu oraz porównuje jego wydajność na danych treningowych i walidacyjnych.
 Tytuł wykresu „Dokładność modelu” wskazuje, że śledzimy, jak skutecznie sieć uczy się rozpoznawać wzorce.Oś pozioma (X) – Epoki Każdy punkt na osi X to kolejna epoka treningu, czyli pełne przejście przez cały zestaw treningowy (1, 2, …, 10).
@@ -172,14 +173,27 @@ Co z tego wynika? – Jeśli obie linie rosną równolegle i niewiele się od si
 - Najlepszy model: D_batchnorm
 - Skuteczność na zbiorze testowym: ~85% (symulowane)
 
-- Wykres dokładności treningu i walidacji
-Histogramy skuteczności oraz cech nowotworu
+- Opis Wykresu
+Co przedstawia histogram? To wizualizacja rozkładu wartości (np. pomiarów, wyników, czasów reakcji) w określonych przedziałach (koszykach). Każda “słupek” pokazuje, ile obserwacji wpada do danego przedziału. Najwyższy słupek widzicie przy przedziale 60–70, co oznacza, że większość uczniów zdobyła właśnie tyle punktów. Widzimy też, że nikt nie uzyskał poniżej 20 punktów, a tylko garstka przekroczyła 90.”
+Oś pozioma (X) – Przedziały wartości Rozkład jest podzielony na równe koszyki, np. 0–10, 10–20, 20–30 itd. Oś X pokazuje te zakresy, dzięki czemu widzimy, w jakim przedziale mieści się najwięcej pomiarów.
+Oś pionowa (Y) – Liczba obserwacji Oś Y przedstawia liczbę przypadków (lub częstość), które wpadły w dany przedział wartości. Wyższy słupek oznacza więcej obserwacji w tym zakresie.
+Co z tego wynika?
+Szczyt histogramu wskazuje na najczęstszy (dominujący) zakres wartości.
+Możemy ocenić rozkład: czy jest skupiony w jednym miejscu, czy rozproszony?
+Niebieska linia:
+Niebieska linia to nałożona na histogram gęstość rozkładu (tzw. density curve). Pokazuje ona wygładzony przebieg danych, czyli:
+•	Gdzie koncentruje się najwięcej przypadków (szczyty krzywej).
+•	Jak szeroko rozkładają się wartości skuteczności modelu (szerokość krzywej).
+•	Czy rozkład jest symetryczny, czy zaburzony (asymetria – dłuższy „ogon” z jednej strony).
+Dzięki tej krzywej od razu widać ogólny trend rozkładu skuteczności: w których zakresach jest najwięcej wyników, a gdzie występują rzadkie wartości.
+
 
 - **Wizualizacja:**
 
 ![Skutecznosc wykrywania raka mózgu](image/zd5.jpg)
 
 ---
+
 
 
 
