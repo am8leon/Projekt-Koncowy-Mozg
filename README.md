@@ -166,7 +166,9 @@ Co z tego wynika? – Jeśli obie linie rosną równolegle i niewiele się od si
 ![Skutecznosc wykrywania raka mózgu](image/zd4.jpg)
 
 ---
-# Wyniki modelu bez rozrzeżeń
+# 5. Wyniki modelu bez rozrzeżeń
+---
+- Wyniki modelu bez rozrzeżeń
 - Najlepszy model: D_batchnorm
 - Skuteczność na zbiorze testowym: ~85% (symulowane)
 
@@ -301,9 +303,54 @@ Ciemniejszy kolor oznacza większą liczbę przypadków, a pasek kolorów z boku
 ![Porównanie nowotworów](image/zd11.jpg)
 
 ---
-Wyniki modelu z rozszerzeniami 
+# 6. Wyniki modelu z rozszerzeniami 
+---
+- Wyniki modelu z rozszerzeniami 
 Histogram 
 Macierz pomyłek (confusion matrix)
+
+- 1. Co przedstawia wykres?
+To macierz pomyłek dla modelu klasyfikującego obrazy na trzy kategorie:
+brain_glioma
+brain_menin
+brain_tumor
+Pozwala ocenić, jak często model poprawnie rozpoznaje każdą klasę i gdzie popełnia błędy.
+
+- 2. Oś pozioma (X) – Przewidywana klasa
+Kolumny to klasy przypisane przez model:
+brain_glioma
+brain_menin
+brain_tumor
+Każda kolumna pokazuje, ile próbek zostało zaklasyfikowanych jako dana etykieta.
+
+- 3. Oś pionowa (Y) – Prawdziwa klasa
+Wiersze to rzeczywiste etykiety w zbiorze testowym:
+brain_glioma
+brain_menin
+brain_tumor
+Każdy wiersz wskazuje, z której klasy pochodziły próbki.
+
+- 4. Co przedstawiają kwadraty i liczby
+W każdym kwadracie znajduje się liczba próbek, które mają daną parę (prawdziwa klasa → przewidywana klasa).
+
+- Przykładowe wartości:
+W kwadracie na przecięciu wiersza brain_glioma i kolumny brain_glioma jest 522 – tyle przypadków glejaka poprawnie sklasyfikowano.
+W przecięciu brain_glioma → brain_menin mamy 752 – tyle glejaków model uznał błędnie za oponiaki.
+Analogicznie, np. brain_tumor → brain_tumor = 778 to prawidłowe rozpoznania guzów.
+
+- 5. Co oznaczają kolory?
+Skala koloru od jasnobłękitnego (niskie wartości) do ciemnoniebieskiego (wysokie wartości).
+Im ciemniejszy kwadrat, tym więcej próbek trafiło do tej kombinacji prawdziwej vs. przewidywanej klasy.
+Kolory ułatwiają szybką identyfikację, gdzie model radzi sobie najlepiej (ciemne pola na przekątnej) i gdzie są największe pomyłki (poza przekątną).
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd13.jpg)
+
+
+
+---
+
 
 
 
