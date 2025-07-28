@@ -347,9 +347,63 @@ Kolory ułatwiają szybką identyfikację, gdzie model radzi sobie najlepiej (ci
 
 ![Porównanie nowotworów](image/zd13.jpg)
 
+---
+- Macierz pomyłek (confusion matrix)
 
+Szczegółowy opis wykresu: Heatmapa macierzy pomyłek (confusion matrix)
+- 1. Co przedstawia wykres?
+To heatmapa macierzy pomyłek dla modelu klasyfikującego obrazy mózgu na trzy kategorie:
+brain_glioma
+brain_menin
+brain_tumor
+Pozwala ocenić, jak często model poprawnie identyfikuje każdą klasę oraz gdzie najczęściej popełnia błędy.
+
+- 2. Oś pozioma (X) – Przewidywane etykiety
+Kolumny odpowiadają klasom, które model przypisał próbkom:
+brain_glioma
+brain_menin
+brain_tumor
+Każda kolumna pokazuje, ile przykładów zostało zaklasyfikowanych jako dana kategoria.
+
+- 3. Oś pionowa (Y) – Rzeczywiste etykiety
+Wiersze odpowiadają faktycznym etykietom w zbiorze testowym:
+brain_glioma
+brain_menin
+brain_tumor
+Każdy wiersz to zbiór próbek rzeczywiście należących do tej klasy.
+
+- 4. Wartości w komórkach
+W każdym kwadracie znajduje się liczba próbek o określonej parze (prawdziwa klasa → przewidywana klasa).
+brain_glioma → brain_glioma: 677
+brain_glioma → brain_menin: 660
+brain_glioma → brain_tumor: 677
+brain_menin → brain_glioma: 679
+brain_menin → brain_menin: 659
+brain_menin → brain_tumor: 666
+brain_tumor → brain_glioma: 671
+brain_tumor → brain_menin: 677
+brain_tumor → brain_tumor: 700
+Kwadraty sumują się do całkowitej liczby próbek testowych i pokazują zarówno poprawne klasyfikacje (diagonalne), jak i pomyłki (poza przekątną).
+
+- 5. Kolory – co oznaczają?
+Skala kolorów biegnie od jasnoniebieskiego (niższe liczby, ok. 660) do ciemnoniebieskiego (wyższe liczby, ok. 700).
+Im ciemniejszy kwadrat, tym więcej przykładów trafiło do tej kategorii.
+Kolory ułatwiają szybkie zlokalizowanie mocnych i słabych punktów modelu:
+ciemne pola na przekątnej → dużo poprawnych rozpoznań,
+ciemne pola poza przekątną → dużo pomyłek między konkretnymi klasami.
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd14.jpg)
 
 ---
+
+
+
+
+
+
+
 
 
 
