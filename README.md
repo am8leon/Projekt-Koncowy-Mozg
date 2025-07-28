@@ -231,7 +231,7 @@ Dzięki temu dodatkowi z histogramu od razu widać ogólny trend: nie tylko ile 
 ![Wilekosć nowotworu](image/zd7.jpg)
 
 ---
-# Hisotgram  Położenia guza 
+# Histogram  Położenia guza 
 
 - Histogram to wykres, który pokazuje, jak często pojawiają się mierzone wartości w określonych zakresach.
 Oś X (pozioma): przedziały wartości (np. 0–10, 10–20 itd.) – to, jak dzielimy dane na „koszyki”. Na osi poziomej widzicie kolejne przedziały wartości, w które grupujemy dane.
