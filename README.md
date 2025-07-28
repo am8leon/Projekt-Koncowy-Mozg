@@ -305,9 +305,7 @@ Ciemniejszy kolor oznacza większą liczbę przypadków, a pasek kolorów z boku
 ---
 # 6. Wyniki modelu z rozszerzeniami 
 ---
-- Wyniki modelu z rozszerzeniami 
-Histogram 
-Macierz pomyłek (confusion matrix)
+# Histogram Macierz pomyłek (confusion matrix)
 
 - 1. Co przedstawia wykres?
 To macierz pomyłek dla modelu klasyfikującego obrazy na trzy kategorie:
@@ -348,7 +346,7 @@ Kolory ułatwiają szybką identyfikację, gdzie model radzi sobie najlepiej (ci
 ![Porównanie nowotworów](image/zd13.jpg)
 
 ---
-- Macierz pomyłek (confusion matrix)
+# Macierz pomyłek (confusion matrix)
 
 Szczegółowy opis wykresu: Heatmapa macierzy pomyłek (confusion matrix)
 - 1. Co przedstawia wykres?
@@ -374,11 +372,11 @@ Każdy wiersz to zbiór próbek rzeczywiście należących do tej klasy.
 
 - 4. Wartości w komórkach
 W każdym kwadracie znajduje się liczba próbek o określonej parze (prawdziwa klasa → przewidywana klasa).
-brain_glioma → brain_glioma: 677
-brain_glioma → brain_menin: 660
-brain_glioma → brain_tumor: 677
-brain_menin → brain_glioma: 679
-brain_menin → brain_menin: 659
+- brain_glioma → brain_glioma: 677
+- brain_glioma → brain_menin: 660
+- brain_glioma → brain_tumor: 677
+- brain_menin → brain_glioma: 679
+- brain_menin → brain_menin: 659
 brain_menin → brain_tumor: 666
 brain_tumor → brain_glioma: 671
 brain_tumor → brain_menin: 677
@@ -398,7 +396,103 @@ ciemne pola poza przekątną → dużo pomyłek między konkretnymi klasami.
 
 ---
 
+Histogram  heatmapy macierzy pomyłek
+1. Co przedstawia wykres?
+Heatmapa obrazuje macierz pomyłek (confusion matrix) modelu klasyfikującego badania mózgu na trzy typy schorzeń. Dzięki niej szybko ocenisz, jak często model poprawnie rozpoznaje każdą klasę oraz gdzie myli się między nimi.
 
+2. Osie wykresu
+Oś pozioma (X) pokazuje etykiety przypisane przez model (przewidywane klasy).
+Oś pionowa (Y) pokazuje rzeczywiste etykiety próbek (prawdziwe klasy).
+Dzięki temu w każdej komórce krzyżują się prawdziwa i przewidywana klasa.
+
+3. Wartości w komórkach
+Każde pole zawiera liczbę przypadków o danej parze etykiet (rzeczywiste → przewidywane). Poniższa tabela zestawia wszystkie wartości:
+Prawdziwa \ Przewidywana	brain_glioma	brain_menin	brain_tumor
+brain_glioma	596	610	808
+brain_menin	535	621	848
+brain_tumor	574	585	889
+Liczby na przekątnej (596, 621, 889) to poprawne klasyfikacje. Pola poza przekątną to pomyłki między określonymi parami klas.
+
+4. Znaczenie kolorów
+Gradient od jasnoniebieskiego do ciemnoniebieskiego wskazuje liczbę przypadków w komórce:
+Jasny kolor oznacza mniejszą liczbę (ok. 535–610).
+Ciemniejszy kolor oznacza wyższą liczbę (ok. 808–889).
+Intensywność barwy pozwala w mig zidentyfikować, gdzie model ma najwięcej trafień (ciemne pola na przekątnej) i gdzie popełnia najwięcej błędów (ciemne pola poza przekątną).
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd15.jpg)
+
+---
+
+Szczegółowy opis wykresu: Macierz pomyłek (confusion matrix)
+1. Co przedstawia wykres?
+To heatmapa macierzy pomyłek klasyfikatora rozpoznającego trzy schorzenia mózgu:
+brain_glioma
+brain_menin
+brain_tumor
+Pozwala zobaczyć, ile próbek każdej prawdziwej klasy zostało poprawnie rozpoznanych, a ile przypisano błędnie do innych kategorii.
+
+2. Osie wykresu
+Oś pozioma (X): przewidywane etykiety (predykcje modelu) – brain_glioma, brain_menin, brain_tumor
+Oś pionowa (Y): rzeczywiste etykiety (etykiety prawdziwe) – brain_glioma, brain_menin, brain_tumor
+Każda komórka leży na przecięciu wiersza (prawdziwa klasa) i kolumny (przewidywana klasa).
+
+3. Wartości w komórkach
+Wartość w każdym kwadracie to liczba próbek z danej pary:
+prawdziwa klasa → przewidywana klasa
+Konkretne liczby:
+brain_glioma → brain_glioma: 149
+brain_glioma → brain_menin: 239
+brain_glioma → brain_tumor: 1626
+brain_menin → brain_glioma: 134
+brain_menin → brain_menin: 221
+brain_menin → brain_tumor: 1649
+brain_tumor → brain_glioma: 136
+brain_tumor → brain_menin: 231
+brain_tumor → brain_tumor: 1681
+Liczby na przekątnej (149, 221, 1681) to poprawne klasyfikacje, pozostałe to pomyłki modelu.
+
+4. Znaczenie kolorów
+Gradient od jasnoniebieskiego (niższe wartości) do ciemnoniebieskiego (wyższe wartości).
+Im ciemniejszy odcień, tym więcej próbek znalazło się w tej kombinacji prawdziwej vs. przewidywanej klasy.
+Pozwala szybko zidentyfikować:
+mocne strony modelu (ciemne pola na przekątnej)
+obszary wymagające poprawy (ciemniejsze pola poza przekątną)
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd16.jpg)
+
+---
+Historgram Szczegółowy opis macierzy pomyłek
+1. Co przedstawia wykres?
+Ta heatmapa pokazuje, jak model klasyfikujący typy nowotworów mózgu radzi sobie na zestawie treningowym. Każdy kwadrat to liczba przypadków, w których prawdziwa klasa (wiersz) została przypisana do klasy przewidywanej (kolumna).
+
+2. Osie wykresu
+Oś pozioma (X): etykiety przewidywane przez model
+Oś pionowa (Y): etykiety rzeczywiste (prawdziwe)
+Kategorie na obu osiach to brain_glioma, brain_menin oraz brain_tumor.
+
+3. Wartości w kwadratach
+Prawdziwa \ Przewidywana	brain_glioma	brain_menin	brain_tumor
+brain_glioma	529	505	980
+brain_menin	529	490	985
+brain_tumor	484	514	1050
+Komórki na przekątnej (529, 490, 1050) to poprawne klasyfikacje.
+Pozostałe liczby to błędne przewidywania modelu.
+
+4. Znaczenie kolorów
+Gradient od jasnoniebieskiego do ciemnoniebieskiego odzwierciedla liczbę próbek:
+Jasny odcień: niewiele przypadków w danej kombinacji
+Ciemny odcień: dużo przypadków
+Dzięki temu widać, gdzie model najczęściej trafia i gdzie się my
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd17.jpg)
+
+---
 
 
 
