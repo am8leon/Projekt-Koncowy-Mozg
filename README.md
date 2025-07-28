@@ -5,13 +5,15 @@ Projekt klasyfikuje obrazy rezonansu magnetycznego (MRI) do jednej z trzech kate
 ---
 
 # Agenda  
-1. Cel stworzenia modelu   
-2. Dane i wstępne przetwarzanie  
-3. Eksploracyjna analiza danych
-4. Wyniki modelu
-5. Wizualizacje  
-6. Kluczowe wnioski  
-7. Rekomendacje  
+1. Cel stworzenia modelu
+2. Statystyki zachochorowań na danyc typ góza mozgu  
+3. Dane i wstępne przetwarzanie  
+4. Eksploracyjna analiza danych
+5. Wyniki modelu bez zroszeżeń
+6. Wyniki modelu z roszerzeniami 
+7. Wizualizacje  
+8. Kluczowe wnioski  
+9. Podsumowanie i Rekomendacje  
 
 ---
 # Uruchomienie projektu
@@ -69,7 +71,6 @@ Przeprowadzono kilka wariantów eksperymentów z różnymi parametrami:
 | D_batchnorm      | TAK  ✅       | batch normalization | 1e-3         |
 | E_lr_low         | TAK  ✅       | baseline            | 1e-4         |
 
----
 ---
 # Porównanie modeli
 Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały zwizualizowane na wspólnym wykresie.
@@ -165,7 +166,7 @@ Co z tego wynika? – Jeśli obie linie rosną równolegle i niewiele się od si
 ![Skutecznosc wykrywania raka mózgu](image/zd4.jpg)
 
 ---
-# Wyniki modelu 
+# Wyniki modelu bez rozrzeżeń
 - Najlepszy model: D_batchnorm
 - Skuteczność na zbiorze testowym: ~85% (symulowane)
 
@@ -300,6 +301,10 @@ Ciemniejszy kolor oznacza większą liczbę przypadków, a pasek kolorów z boku
 ![Porównanie nowotworów](image/zd11.jpg)
 
 ---
+Wyniki modelu z rozszerzeniami 
+Histogram 
+Macierz pomyłek (confusion matrix)
+
 
 
 
