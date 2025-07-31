@@ -6,23 +6,35 @@ Projekt klasyfikuje obrazy rezonansu magnetycznego (MRI) do jednej z trzech kate
 
 # Agenda  
 1. Cel stworzenia modelu
-2. Statystyki zachochorowań na danyc typ góza mozgu  
-3. Dane i wstępne przetwarzanie  
-4. Eksploracyjna analiza danych
-5. Wyniki modelu bez zroszeżeń
-6. Wyniki modelu z roszerzeniami 
-7. Wizualizacje  
-8. Kluczowe wnioski  
-9. Podsumowanie i Rekomendacje  
+2. Dane i wstępne przetwarzanie
+3. Eksploracyjna analiza danych
+4. Wyniki modelu bez zroszeżeń
+5. Wyniki modelu z roszerzeniami
+6. Wizualizacje
+7. Kluczowe wnioski
+8. Podsumowanie i Rekomendacje  
 
 ---
+1. Cel stworzenia modelu
+Celem projektu było opracowanie modelu głębokiego uczenia (CNN), który automatycznie klasyfikuje obrazy MRI mózgu na trzy typy guzów: glioma, meningioma i guzy przysadki.
+Model ma wspomóc diagnostykę radiologiczną poprzez przyspieszenie i zwiększenie dokładności wykrywania oraz klasyfikacji nowotworów.
+---
+
 # Uruchomienie projektu
-1. Montowanie Dysku Google
+. Montowanie Dysku Google
 - Kod:  
   ```python
   from google.colab import drive
   drive.mount('/content/drive')
 ---
+2. Dane i wstępne przetwarzanie
+Dane podzielone zostały na zbiory: train, validation, test w strukturze katalogowej.
+Obrazy były skalowane do rozmiaru 128x128 pikseli i przeskalowane wartościami rescale=1./255.
+Wykorzystano augmentację danych (obrót, przesunięcia, zoom, odbicia), co zwiększa różnorodność zbioru treningowego i ogranicza przeuczenie.
+
+---
+
+
 # Przygotowanie danych
 Dane treningowe: z augmentacją
 Dane walidacyjne i testowe: tylko reskalowanie
@@ -148,7 +160,19 @@ Interpretacja w prezentacji: „Raport pokazuje niemal idealne wyniki modelu –
 
 ![Raport klasyfikacji modelu](image/zd12.jpg)
 
+
 ---
+3. Eksploracyjna analiza danych
+Wyświetlono przykładowe obrazy z etykietami.
+Stworzono histogramy:
+Skuteczności modelu (przybliżona rozkładowo normalnie).
+Parametrów guza (intensywność, wielkość, położenie, rodzaj).
+Czynników operacyjności (rozmiar, lokalizacja, zaawansowanie).
+Analiza błędów modelu (z pomocą Grad-CAM i histogramów błędnych predykcji).
+Rozkład klas został przeanalizowany wizualnie dla lepszego zrozumienia balansu danych.
+
+---
+
 # Histogram Skuteczności modelu
 - Wykres dokładności treningu i walidacji
 
@@ -166,7 +190,17 @@ Co z tego wynika? – Jeśli obie linie rosną równolegle i niewiele się od si
 ![Skutecznosc wykrywania raka mózgu](image/zd4.jpg)
 
 ---
-# 5. Wyniki modelu bez rozrzeżeń
+4. Wyniki modelu bez rozszerzeń (baseline)
+Model bazowy (CNN):
+3 warstwy konwolucyjne (z ReLU i MaxPooling).
+Dense layer + Dropout 0.5.
+Funkcja aktywacji wyjściowej: softmax.
+Trening przez 10 epok z Adam(lr=0.001).
+
+- Wyniki:
+Skuteczność na zbiorze walidacyjnym: ~85%.
+Brak warstw normalizacji lub dodatkowych mechanizmów redukcji przeuczenia.
+
 ---
 - Wyniki modelu bez rozrzeżeń
 - Najlepszy model: D_batchnorm
@@ -192,7 +226,7 @@ Dzięki tej krzywej od razu widać ogólny trend rozkładu skuteczności: w któ
 ![Skutecznosc wykrywania raka mózgu](image/zd5.jpg)
 
 ---
-# Histogram Intensywności zmian
+
 - Co przedstawia histogram? To rozkład danych zebranych w określonych przedziałach. Każdy słupek pokazuje, ile razy wartość z pomiaru lub obserwacji wpadła do danego zakresu.
 Oś pozioma (X): Przedziały wartości (np. 0–10, 10–20, …). To skale, według której grupujemy dane – widzisz, w jakich zakresach koncentrują się pomiary. Najwięcej wyników (najwyższy słupek) mamy w przedziale 40–50, czyli to jest nasz dominujący zakres. Ogniskując się na kształcie wykresu, widzimy, że większość danych mieści się między 20 a 70, a poza tymi granicami mamy tylko nieliczne obserwacje.”
 Oś pionowa (Y): Liczba obserwacji (częstość). Im słupek wyższy, tym więcej pomiarów/ przypadków znalazło się w danym przedziale.
@@ -303,7 +337,18 @@ Ciemniejszy kolor oznacza większą liczbę przypadków, a pasek kolorów z boku
 ![Porównanie nowotworów](image/zd11.jpg)
 
 ---
-# 6. Wyniki modelu z rozszerzeniami 
+
+# 5. Wyniki modelu z rozszerzeniami 
+Przeprowadzono serię eksperymentów z różnymi wariantami modelu:
+Dropout: lepsze generalizowanie (redukcja przeuczenia).
+Batch Normalization: stabilniejsze uczenie.
+Niższe learning rate (1e-4): wolniejsze, ale potencjalnie dokładniejsze uczenie.
+Bez augmentacji: widocznie gorsze wyniki – potwierdza wartość augmentacji.
+- Najlepszy model:
+Eksperyment D_batchnorm osiągnął najwyższy val_accuracy.
+Model zapisany, oceniony na testowym zbiorze danych.
+Zintegrowano z MLFLOW do śledzenia metryk.
+
 ---
 # Histogram Macierz pomyłek (confusion matrix)
 
@@ -493,6 +538,36 @@ Dzięki temu widać, gdzie model najczęściej trafia i gdzie się my
 ![Porównanie nowotworów](image/zd17.jpg)
 
 ---
+# 6. Wizualizacje
+W projekcie zaimplementowano liczne wizualizacje:
+Krzywe dokładności (accuracy, val_accuracy) dla każdego eksperymentu.
+Macierz pomyłek (confusion matrix) dla najlepszego modelu.
+Grad-CAM – interpretacja obszarów obrazu decydujących o klasyfikacji.
+ROC Curve + AUC dla każdej klasy.
+Histogramy: skuteczności, błędnych predykcji, rozkładu klas.
+
+---
+# 7. Kluczowe wnioski
+Augmentacja danych znacząco poprawia skuteczność modeli.
+Batch Normalization + Dropout wspierają stabilność i dokładność.
+Największą skuteczność osiągnięto na modelach z rozszerzeniami, przy learning rate = 1e-3.
+Grad-CAM potwierdza, że model uczy się na właściwych strukturach anatomicznych.
+System działa dobrze przy małych rozmiarach danych i może być łatwo wdrożony.
+
+---
+# 8.Podsumowanie i rekomendacje
+Projekt z sukcesem stworzył dokładny i dobrze uogólniający model CNN do klasyfikacji guzów mózgu na podstawie obrazów MRI. System został:
+Przetestowany na rzeczywistych danych (BraTS),
+Wsparty narzędziami śledzenia eksperymentów (MLflow),
+Rozszerzony o interpretowalne wyniki (Grad-CAM, ROC, confusion matrix).
+- Rekomendacje na przyszłość:
+Skalowanie na większe i bardziej zróżnicowane zbiory MRI (np. 3D NIfTI).
+Wykorzystanie modeli przetrenowanych (np. EfficientNet, ResNet).
+Integracja z systemem PACS szpitalnym.
+Automatyczna lokalizacja guza (segmentacja) jako uzupełnienie klasyfikacji.
+
+---
+
 
 
 
