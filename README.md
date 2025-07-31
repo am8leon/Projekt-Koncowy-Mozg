@@ -15,7 +15,7 @@ Projekt klasyfikuje obrazy rezonansu magnetycznego (MRI) do jednej z trzech kate
 8. Podsumowanie i Rekomendacje  
 
 ---
-1. Cel stworzenia modelu
+# 1. Cel stworzenia modelu
 Celem projektu było opracowanie modelu głębokiego uczenia (CNN), który automatycznie klasyfikuje obrazy MRI mózgu na trzy typy guzów: glioma, meningioma i guzy przysadki.
 Model ma wspomóc diagnostykę radiologiczną poprzez przyspieszenie i zwiększenie dokładności wykrywania oraz klasyfikacji nowotworów.
 ---
@@ -27,14 +27,12 @@ Model ma wspomóc diagnostykę radiologiczną poprzez przyspieszenie i zwiększe
   from google.colab import drive
   drive.mount('/content/drive')
 ---
-2. Dane i wstępne przetwarzanie
+# 2. Dane i wstępne przetwarzanie
 Dane podzielone zostały na zbiory: train, validation, test w strukturze katalogowej.
 Obrazy były skalowane do rozmiaru 128x128 pikseli i przeskalowane wartościami rescale=1./255.
 Wykorzystano augmentację danych (obrót, przesunięcia, zoom, odbicia), co zwiększa różnorodność zbioru treningowego i ogranicza przeuczenie.
 
 ---
-
-
 # Przygotowanie danych
 Dane treningowe: z augmentacją
 Dane walidacyjne i testowe: tylko reskalowanie
@@ -162,7 +160,7 @@ Interpretacja w prezentacji: „Raport pokazuje niemal idealne wyniki modelu –
 
 
 ---
-3. Eksploracyjna analiza danych
+# 3. Eksploracyjna analiza danych
 Wyświetlono przykładowe obrazy z etykietami.
 Stworzono histogramy:
 Skuteczności modelu (przybliżona rozkładowo normalnie).
@@ -190,7 +188,7 @@ Co z tego wynika? – Jeśli obie linie rosną równolegle i niewiele się od si
 ![Skutecznosc wykrywania raka mózgu](image/zd4.jpg)
 
 ---
-4. Wyniki modelu bez rozszerzeń (baseline)
+# 4. Wyniki modelu bez rozszerzeń (baseline)
 Model bazowy (CNN):
 3 warstwy konwolucyjne (z ReLU i MaxPooling).
 Dense layer + Dropout 0.5.
