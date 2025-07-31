@@ -123,7 +123,7 @@ for csv in csv_files:
     else:
         print(f"Brak pliku {csv}")
 
-#  MLflow 
+#  MLflow + Pętla Treningowa
 mlflow.set_experiment("brain_mri_classification")
 results = {}
 best_val_acc = 0
@@ -147,16 +147,18 @@ for name, datagen, variant, lr in experiments:
         val_acc = max(hist.history["val_accuracy"])
         mlflow.log_metric("max_val_accuracy", val_acc)
 
+        #  Zapisz model tymczasowy
         tmp_path = f"model_{name}.h5"
         model.save(tmp_path)
         mlflow.log_artifact(tmp_path)
         os.remove(tmp_path)
-
+        #  najlepsza wersja modelu 
         if val_acc > best_val_acc:
             best_val_acc = val_acc
             best_run_id = run.info.run_id
             model.save("best_model.h5")
-
+        
+        # Oceń na zestawie testowym
         y_true = test_gen.classes
         y_pred_probs = model.predict(test_gen)
         y_pred = np.argmax(y_pred_probs, axis=1)
@@ -165,6 +167,8 @@ for name, datagen, variant, lr in experiments:
         mlflow.log_metric("test_accuracy", report["accuracy"])
 
         cm = confusion_matrix(y_true, y_pred)
+
+        # artefakt: matryca 
         plt.figure(figsize=(6, 6))
         sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=list(test_gen.class_indices), yticklabels=list(test_gen.class_indices))
         plt.title("Confusion Matrix")
@@ -215,3 +219,6 @@ mlflow.log_artifact("brats_preds.json")
 os.remove("brats_preds.json")
 if os.path.exists("best_model.h5"):
     os.remove("best_model.h5")
+
+
+
