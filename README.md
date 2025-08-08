@@ -536,6 +536,34 @@ Dzięki temu widać, gdzie model najczęściej trafia i gdzie się my
 ![Porównanie nowotworów](image/zd17.jpg)
 
 ---
+
+**Histogram błędnych predykcji** 
+ - To histogram ilustrujący porównanie liczby poprawnych i błędnych predykcji modelu klasyfikacyjnego. Pokazuje, jak wiele przypadków model sklasyfikował prawidłowo, a ile przypadków skategoryzował niewłaściwie.
+
+- Oś pozioma (X) – Typ predykcji
+Dwie kategorie:
+Poprawne – liczba przypadków, w których model dokonał właściwej klasyfikacji
+Błędne – liczba przypadków, w których model pomylił się w klasyfikacji
+
+- Oś pionowa (Y) – Count
+Pokazuje liczbę przypadków (obserwacji) dla każdej kategorii X.
+Skala od 0 do 6 000, dostosowana tak, by uwzględnić zarówno dużą liczbę poprawnych, jak i relatywnie niewielką liczbę błędnych predykcji.
+
+-Co przedstawiają słupki?
+Wysokość słupka odpowiada liczbie obserwacji w danej kategorii:
+Słupek „Poprawne” sięga prawie do 6 000, co oznacza, że model dokonał prawidłowej klasyfikacji w niemal wszystkich przypadkach.
+Słupek „Błędne” jest bardzo niski (kilkadziesiąt przypadków), co wskazuje na niewielki odsetek pomyłek.
+
+- Interpretacja kluczowa
+Dominacja poprawnych predykcji: model osiąga bardzo wysoką dokładność, co jest widoczne poprzez zdecydowaną przewagę słupka „Poprawne”.
+Minimalna liczba błędów: niski słupek „Błędne” świadczy o skuteczności modelu i jego niezawodności w typowych scenariuszach.
+
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd19.jpg)
+
+---
 # 6. Wizualizacje
 W projekcie zaimplementowano liczne wizualizacje:
 Krzywe dokładności (accuracy, val_accuracy) dla każdego eksperymentu.
