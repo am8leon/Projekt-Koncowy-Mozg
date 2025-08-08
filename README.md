@@ -563,6 +563,74 @@ Minimalna liczba błędów: niski słupek „Błędne” świadczy o skutecznoś
 
 ![Porównanie nowotworów](image/zd19.jpg)
 
+
+---
+
+- Co przedstawia wykres?
+Ten histogram (wykres słupkowy) pokazuje, jak model klasyfikacyjny rozdzielił swoje predykcje pomiędzy trzy klasy:
+Klasa 0.00
+Klasa 1.00
+Klasa 2.00
+Wizualizacja pozwala ocenić, czy model przewiduje klasy równomiernie, czy też faworyzuje którąś z nich.
+
+- Oś pozioma (X) – Klasa
+Przedstawia trzy możliwe klasy, które model może przypisać:
+0.00
+1.00
+2.00
+Oś zawiera również pomocnicze wartości pośrednie (np. 0.25, 0.50), ale tylko trzy słupki mają rzeczywiste wartości predykcji.
+
+- Oś pionowa (Y) – Liczba predykcji
+Pokazuje, ile razy dana klasa została przewidziana przez model.
+Skala sięga od 0 do 2000, z podziałką co 250.
+
+- Co oznaczają słupki?
+Słupek dla klasy 0.00: ok. 1900 predykcji
+Słupek dla klasy 1.00: ok. 2100 predykcji
+Słupek dla klasy 2.00: ok. 2000 predykcji
+Każdy słupek reprezentuje liczbę przypadków, w których model przypisał daną klasę jako wynik predykcji.
+
+- Wnioski z wykresu
+Model nie jest skrajnie niezrównoważony – wszystkie trzy klasy są przewidywane w podobnych ilościach.
+Klasa 1.00 jest najczęściej przewidywana, co może wskazywać na jej dominację w danych treningowych lub większą pewność modelu w jej rozpoznawaniu.
+Równomierny rozkład może świadczyć o dobrym wyważeniu modelu, ale warto sprawdzić, czy odpowiada rzeczywistej proporcji klas w danych.
+
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd20.jpg)
+
+
+---
+
+Wykre ROC Curve dla każdej klasy
+- Co przedstawia wykres?
+Ten wykres to krzywa ROC (Receiver Operating Characteristic), która pokazuje, jak dobrze model rozróżnia między klasami 0, 1 i 2. Każda linia odpowiada jednej klasie, a wartość AUC (Area Under the Curve) mówi o skuteczności klasyfikacji.
+
+- Oś pozioma (False Positive Rate)
+Pokazuje odsetek negatywnych przykładów błędnie zaklasyfikowanych jako pozytywne
+Skala od 0.0 do 1.0
+Im bliżej 0, tym mniej fałszywych alarmów
+
+- Oś pionowa (True Positive Rate)
+Pokazuje odsetek pozytywnych przykładów poprawnie rozpoznanych
+Skala od 0.0 do 1.0
+Im bliżej 1, tym więcej prawidłowych wykryć
+
+- Linie i ich kolory
+Klasa 0 (niebieska linia) – AUC = 1.00
+Klasa 1 (pomarańczowa linia) – AUC = 1.00
+Klasa 2 (zielona linia) – AUC = 1.00
+Wszystkie linie biegną wzdłuż krawędzi od (0,0) do (0,1) i dalej do (1,1), co oznacza perfekcyjną separację klas.
+
+- Co oznaczają wartości AUC?
+AUC = 1.00 dla każdej klasy wskazuje na idealny model, który nigdy nie myli pozytywów z negatywami.
+Brak kompromisów między czułością (TPR) a specyficznością (1 – FPR).
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd21.jpg)
+
 ---
 # 6. Wizualizacje
 W projekcie zaimplementowano liczne wizualizacje:
