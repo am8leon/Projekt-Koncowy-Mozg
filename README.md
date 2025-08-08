@@ -75,11 +75,11 @@ Przeprowadzono kilka wariantów eksperymentów z różnymi parametrami:
 
 | Nazwa eksperymentu | Augmentacja | Wariant modelu     | Learning Rate |
 | ------------------ | ----------- | ------------------ | ------------|
-| A_basic_aug      | TAK  ✅       | baseline            | 1e-3         |
-| B_no_aug         | TAK  ✅       | baseline            | 1e-3         |
-| C_dropout        | TAK  ✅       | dropout             | 1e-3         |
-| D_batchnorm      | TAK  ✅       | batch normalization | 1e-3         |
-| E_lr_low         | TAK  ✅       | baseline            | 1e-4         |
+| A_basic_aug      | TAK           | baseline            | 1e-3         |
+| B_no_aug         | TAK           | baseline            | 1e-3         |
+| C_dropout        | TAK           | dropout             | 1e-3         |
+| D_batchnorm      | TAK           | batch normalization | 1e-3         |
+| E_lr_low         | TAK           | baseline            | 1e-4         |
 
 ---
 # Porównanie modeli
@@ -391,7 +391,7 @@ Kolory ułatwiają szybką identyfikację, gdzie model radzi sobie najlepiej (ci
 ---
 # Macierz pomyłek (confusion matrix)
 
-Szczegółowy opis wykresu: Heatmapa macierzy pomyłek (confusion matrix)
+Heatmapa macierzy pomyłek (confusion matrix)
 - 1. Co przedstawia wykres?
 To heatmapa macierzy pomyłek dla modelu klasyfikującego obrazy mózgu na trzy kategorie:
 brain_glioma
@@ -426,7 +426,7 @@ brain_tumor → brain_menin: 677
 brain_tumor → brain_tumor: 700
 Kwadraty sumują się do całkowitej liczby próbek testowych i pokazują zarówno poprawne klasyfikacje (diagonalne), jak i pomyłki (poza przekątną).
 
-- 5. Kolory – co oznaczają?
+- 5. Kolory – co oznaczają
 Skala kolorów biegnie od jasnoniebieskiego (niższe liczby, ok. 660) do ciemnoniebieskiego (wyższe liczby, ok. 700).
 Im ciemniejszy kwadrat, tym więcej przykładów trafiło do tej kategorii.
 Kolory ułatwiają szybkie zlokalizowanie mocnych i słabych punktów modelu:
@@ -508,8 +508,8 @@ obszary wymagające poprawy (ciemniejsze pola poza przekątną)
 ![Porównanie nowotworów](image/zd16.jpg)
 
 ---
-Historgram Szczegółowy opis macierzy pomyłek
-1. Co przedstawia wykres?
+Historgram  macierzy pomyłek
+1. Co przedstawia wykres
 Ta heatmapa pokazuje, jak model klasyfikujący typy nowotworów mózgu radzi sobie na zestawie treningowym. Każdy kwadrat to liczba przypadków, w których prawdziwa klasa (wiersz) została przypisana do klasy przewidywanej (kolumna).
 
 2. Osie wykresu
@@ -537,7 +537,7 @@ Dzięki temu widać, gdzie model najczęściej trafia i gdzie się my
 
 ---
 
-**Histogram błędnych predykcji** 
+**Histogram błędnych predykcji**
  - To histogram ilustrujący porównanie liczby poprawnych i błędnych predykcji modelu klasyfikacyjnego. Pokazuje, jak wiele przypadków model sklasyfikował prawidłowo, a ile przypadków skategoryzował niewłaściwie.
 
 - Oś pozioma (X) – Typ predykcji
