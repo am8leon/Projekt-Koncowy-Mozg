@@ -155,16 +155,17 @@ raport klasyfikacji (classification report) dla modelu rozróżniającego trzy t
 - Rodzaj góza mózgu klasa :
 - Metryki dla każdej klasy: – Precision (precyzja) odsetek prawidłowych przewidywań danej klasy spośród wszystkich przewidywań tej klasy
 - Precision (precyzja odsetek poprawnie wykrytych próbek danej klasy spośród wszystkich rzeczywistych próbek tej klasy.
+- Recall (czułość): odsetek poprawnie wykrytych próbek danej klasy spośród wszystkich rzeczywistych próbek tej klasy
 - F1-score: średnia harmoniczna precyzji i recall, łącząca oba wskaźniki w jednym
 - Support: liczba prawdziwych  próbek danej klasy w zbiorze testowym.
 
-| Rodzaj góza mózgu klasa      | Precision (precyzja |
-| -------------------------    | --------------------|----------------|-----------------|----------------
-| brain_glioma                 | precision 1.00      | recall 0.99    | f1-score 1.00   | support 2014   |
-| brain_menin                  | precision 1.00      | recall 1.00    | f1-score 1.00   | support 2004   |             
-| brain_tumor                  | precision 1.00      | recall 1.00    | f1-score 1.00   | support 2048   |
+| Rodzaj góza mózgu klasa      | Precision (precyzja | Recall (czułość)| F1-score        |Support         |
+| -----------------------------| --------------------|-----------------|-----------------|----------------|
+| brain_glioma                 | precision 1.00      | recall 0.99     | f1-score 1.00   | support 2014   |
+| brain_menin                  | precision 1.00      | recall 1.00     | f1-score 1.00   | support 2004   |             
+| brain_tumor                  | precision 1.00      | recall 1.00     | f1-score 1.00   | support 2048   |
 
-| Podsumowanie                 |                 
+| Podsumowanie                 |                |             |               |               |
 |------------------------------|----------------|-------------|---------------|---------------|
 | Accuracy (dokładność ogólna) |       -        |      -      | f1-score 1.00 | support: 6066 |
 | Macro avg                    | precision 1.00 | recall 1.00 | f1-score 1.00 | support: 6066 |                        
