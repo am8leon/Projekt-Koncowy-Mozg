@@ -151,7 +151,7 @@ Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały 
 
 ---
 # Raport klasyfikacji 
-raport klasyfikacji (classification report) dla modelu rozróżniającego trzy typy zmian mózgowych:
+- raport klasyfikacji (classification report) dla modelu rozróżniającego trzy typy zmian mózgowych:
 - Rodzaj góza mózgu klasa :
 - Metryki dla każdej klasy: – Precision (precyzja) odsetek prawidłowych przewidywań danej klasy spośród wszystkich przewidywań tej klasy
 - Precision (precyzja odsetek poprawnie wykrytych próbek danej klasy spośród wszystkich rzeczywistych próbek tej klasy.
@@ -159,11 +159,16 @@ raport klasyfikacji (classification report) dla modelu rozróżniającego trzy t
 - F1-score: średnia harmoniczna precyzji i recall, łącząca oba wskaźniki w jednym
 - Support: liczba prawdziwych  próbek danej klasy w zbiorze testowym.
 
+- Interpretacja w prezentacji: „Raport pokazuje niemal idealne wyniki modelu – dla meningioma i guza mózgu precyzja i czułość są na poziomie 100%, 
+a dla glejaka mamy recall 99% przy pozostałych metrykach 100%. Oznacza to, że model praktycznie zawsze poprawnie klasyfikuje typ nowotworu.
+
+
 | Rodzaj góza mózgu klasa      | Precision (precyzja | Recall (czułość)| F1-score        |Support         |
 | -----------------------------| --------------------|-----------------|-----------------|----------------|
 | brain_glioma                 | precision 1.00      | recall 0.99     | f1-score 1.00   | support 2014   |
 | brain_menin                  | precision 1.00      | recall 1.00     | f1-score 1.00   | support 2004   |             
 | brain_tumor                  | precision 1.00      | recall 1.00     | f1-score 1.00   | support 2048   |
+
 
 | Podsumowanie                 |                |             |               |               |
 |------------------------------|----------------|-------------|---------------|---------------|
@@ -171,9 +176,6 @@ raport klasyfikacji (classification report) dla modelu rozróżniającego trzy t
 | Macro avg                    | precision 1.00 | recall 1.00 | f1-score 1.00 | support: 6066 |                        
 | Weighted avg                 | precision 1.00 | recall 1.00 | f1-score 1.00 | support: 6066 | 
 
-
-Interpretacja w prezentacji: „Raport pokazuje niemal idealne wyniki modelu – dla meningioma i guza mózgu precyzja i czułość są na poziomie 100%, 
-a dla glejaka mamy recall 99% przy pozostałych metrykach 100%. Oznacza to, że model praktycznie zawsze poprawnie klasyfikuje typ nowotworu.
 
 - **Wizualizacja:**
 
@@ -584,8 +586,41 @@ Minimalna liczba błędów: niski słupek „Błędne” świadczy o skutecznoś
 
 ![Porównanie nowotworów](image/zd19.jpg)
 
+---
+- Co przedstawia obraz
+Na obrazie widzimy przekrój mózgu pozyskany w sekwencji T1-z kontrastem, oznaczony jako „VAL Predicted class: 0”. Obraz jest w skali szarości i pokryty maską segmentacyjną, gdzie różne odcienie wskazują na różne typy tkanek lub obszary patologiczne. Jasne, niemal białe pole w górnej części centralnej to najbardziej podejrzany obszar, mogący odpowiadać zmianie nowotworowej lub obszarowi z wysokim wzmocnieniem kontrastu.
+
+- Osie obrazu
+Oś pozioma (X): wartości od 0 do 120 odpowiadają pikselom w kierunku lewej–prawej.
+Oś pionowa (Y): wartości od 0 do 120 odpowiadają pikselom w kierunku góra–dół.
+Skala pikseli jest jednorodna, co pozwala na bezpośrednie szacowanie odległości i powierzchni w obrębie przekroju.
+
+- Struktury i segmentacja
+Obszary o średniej intensywności (szare): zdrowe tkanki mózgowe, typowo istota biała i szara.
+Obszary ciemniejsze: przestrzenie płynowe (np. komory, płyn mózgowo-rdzeniowy).
+Obszary białe lub bardzo jasne: maska segmentacyjna rezonansu oraz potencjalne zmiany patologiczne.
+Każdy piksel jest przypisany do jednej z warstw segmentacji, co ułatwia ilościową analizę objętości i kształtu.
+
+- Interpretacja i wnioski
+Obecność jasnego, kontrastującego obszaru wskazuje na potencjalne uszkodzenie lub guza. Jego wielkość i kształt mogą być mierzone w pikselach, a następnie przeliczane na wartości w milimetrach sześciennych. Taka segmentacja pozwala:
+ocenić progresję zmiany między kolejnymi badaniami
+porównać efekty leczenia
+zbudować zbiór cech teksturalnych do klasyfikacji typów nowotworów
+
+- Jakie dane można wyciągnąć z tego zdjęcia
+Wolumen obszaru zmiany (liczba pikseli × rozdzielczość przestrzenna).
+Wskaźniki intensywności: średnia, odchylenie standardowe, asymetria.
+Cechy kształtu: obwód, współczynnik zaokrąglenia, elongacja.
+Teksturalne cechy radiomiczne: entropia, kontrast, homogeniczność.
+Te dane mogą stanowić wektor cech do dalszych analiz statystycznych lub uczenia maszynowego, ułatwiając diagnozę i prognozę przebiegu choroby.
+
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd18.jpg)
 
 ---
+
 
 - Co przedstawia wykres?
 Ten histogram (wykres słupkowy) pokazuje, jak model klasyfikacyjny rozdzielił swoje predykcje pomiędzy trzy klasy:
