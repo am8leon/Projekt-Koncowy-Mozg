@@ -604,9 +604,13 @@ Minimalna liczba błędów: niski słupek „Błędne” świadczy o skutecznoś
 ![Porównanie nowotworów](image/zd19.jpg)
 
 ---
+# Obraz przekroju mózgu pozyskany w sekwencji T1-z kontrastem
+
 - Co przedstawia obraz
-Na obrazie widzimy przekrój mózgu pozyskany w sekwencji T1-z kontrastem, oznaczony jako „VAL Predicted class: 0”. Obraz jest w skali szarości i pokryty maską segmentacyjną,
-gdzie różne odcienie wskazują na różne typy tkanek lub obszary patologiczne. Jasne, niemal białe pole w górnej części centralnej to najbardziej podejrzany obszar,
+Na obrazie widzimy przekrój mózgu pozyskany w sekwencji T1-z kontrastem, oznaczony jako „VAL Predicted class: 0”.
+Obraz jest w skali szarości i pokryty maską segmentacyjną,
+gdzie różne odcienie wskazują na różne typy tkanek lub obszary patologiczne.
+Jasne, niemal białe pole w górnej części centralnej to najbardziej podejrzany obszar,
  mogący odpowiadać zmianie nowotworowej lub obszarowi z wysokim wzmocnieniem kontrastu.
 
 - Osie obrazu
@@ -674,7 +678,6 @@ Równomierny rozkład może świadczyć o dobrym wyważeniu modelu, ale warto sp
 
 ![Porównanie nowotworów](image/zd20.jpg)
 
-
 ---
 # Wykre ROC Curve dla każdej klasy
 - Co przedstawia wykres?
@@ -734,6 +737,7 @@ Integracja z systemem PACS szpitalnym.
 Automatyczna lokalizacja guza (segmentacja) jako uzupełnienie klasyfikacji.
 
 ---
+
 
 
 
