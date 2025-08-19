@@ -589,7 +589,7 @@ Błędne – liczba przypadków, w których model pomylił się w klasyfikacji
 Pokazuje liczbę przypadków (obserwacji) dla każdej kategorii X.
 Skala od 0 do 6 000, dostosowana tak, by uwzględnić zarówno dużą liczbę poprawnych, jak i relatywnie niewielką liczbę błędnych predykcji.
 
--Co przedstawiają słupki?
+- Co przedstawiają słupki?
 Wysokość słupka odpowiada liczbie obserwacji w danej kategorii:
 Słupek „Poprawne” sięga prawie do 6 000, co oznacza, że model dokonał prawidłowej klasyfikacji w niemal wszystkich przypadkach.
 Słupek „Błędne” jest bardzo niski (kilkadziesiąt przypadków), co wskazuje na niewielki odsetek pomyłek.
