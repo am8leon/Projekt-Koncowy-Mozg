@@ -577,7 +577,7 @@ Dzięki temu widać, gdzie model najczęściej trafia i gdzie się my
 
 ---
 
-**Histogram błędnych predykcji**
+# Histogram błędnych predykcji
  - To histogram ilustrujący porównanie liczby poprawnych i błędnych predykcji modelu klasyfikacyjnego. Pokazuje, jak wiele przypadków model sklasyfikował prawidłowo, a ile przypadków skategoryzował niewłaściwie.
 
 - Oś pozioma (X) – Typ predykcji
