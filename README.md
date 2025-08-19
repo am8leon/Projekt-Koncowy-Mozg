@@ -104,13 +104,11 @@ Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały 
 •	Porównanie wariantów pozwala dobrać najlepszą kombinację hiperparametrów i architektury.
 
 ---
-
-- Opis Wizualizacji
 - Na obrazku widzisz pięć skanów rezonansem magnetycznym (MRI) mózgu, każdy z nich oznaczony etykietą „0” lub „1”:
-1.	Różne płaszczyzny cięcia – Część skanów to przekroje osiowe (widok z góry na dół mózgu), jeden to przekrój strzałkowy (bok mózgu).
-2.	Etykiety binarne – „0” prawdopodobnie oznacza brak zmiany (zdrowy mózg), – „1” oznacza obecność patologii (np. guz, zmiana ogniskowa).
-3.	Rozmieszczenie etykiet – Pierwszy i piąty obrazek mają etykietę „0” – brak wykrytej zmiany, – środkowe trzy są oznaczone „1” – tu występuje zmiana, którą model (lub radiolog) oznaczył jako istotną.
-4.	Cel prezentacji – Takie przykłady służą do zobrazowania różnicy między zdrowymi i chorymi skanami w zadaniu automatycznej klasyfikacji czy wspomagania diagnostyki.
+- Różne płaszczyzny cięcia – Część skanów to przekroje osiowe (widok z góry na dół mózgu), jeden to przekrój strzałkowy (bok mózgu).
+- Etykiety binarne – „0” prawdopodobnie oznacza brak zmiany (zdrowy mózg), – „1” oznacza obecność patologii (np. guz, zmiana ogniskowa).
+- Rozmieszczenie etykiet – Pierwszy i piąty obrazek mają etykietę „0” – brak wykrytej zmiany, – środkowe trzy są oznaczone „1” – tu występuje zmiana, którą model (lub radiolog) oznaczył jako istotną.
+- Cel prezentacji – Takie przykłady służą do zobrazowania różnicy między zdrowymi i chorymi skanami w zadaniu automatycznej klasyfikacji czy wspomagania diagnostyki.
 
 - Klasy gózów mózgu
 - •	brain_glioma – Zawiera obrazy guzów glejowych, które powstają z komórek glejowych w mózgu. Mogą mieć różny stopień złośliwości.
@@ -197,13 +195,16 @@ Rozkład klas został przeanalizowany wizualnie dla lepszego zrozumienia balansu
 # Histogram Skuteczności modelu
 - Wykres dokładności treningu i walidacji
 
-Opis: wykres ilustruje postęp w nauce modelu oraz porównuje jego wydajność na danych treningowych i walidacyjnych.
-Tytuł wykresu „Dokładność modelu” wskazuje, że śledzimy, jak skutecznie sieć uczy się rozpoznawać wzorce.Oś pozioma (X) – Epoki Każdy punkt na osi X to kolejna epoka treningu, czyli pełne przejście przez cały zestaw treningowy (1, 2, …, 10).
-Oś pionowa (Y) – Dokładność Pokazuje, jaki odsetek przykładów model sklasyfikował prawidłowo (zakres od 0,55 do 0,85, czyli 55–85 %).
-Linie na wykresie 
+- Opis: wykres ilustruje postęp w nauce modelu oraz porównuje jego wydajność na danych treningowych i walidacyjnych.
+Tytuł wykresu „Dokładność modelu” wskazuje, że śledzimy, jak skutecznie sieć uczy się rozpoznawać wzorce.
+- Oś pozioma (X) – Epoki Każdy punkt na osi X to kolejna epoka treningu, czyli pełne przejście przez cały zestaw treningowy (1, 2, …, 10).
+- Oś pionowa (Y) – Dokładność Pokazuje, jaki odsetek przykładów model sklasyfikował prawidłowo (zakres od 0,55 do 0,85, czyli 55–85 %).
+- Linie na wykresie 
 • Niebieska linia – dokładność na zbiorze treningowym. Rosnący trend oznacza, że model coraz lepiej „zapamiętuje” dane treningowe. 
 • Pomarańczowa linia – dokładność na zbiorze walidacyjnym (testowym). Dzięki niej widzimy, jak model radzi sobie z danymi, których nie widział podczas treningu.
-Co z tego wynika? – Jeśli obie linie rosną równolegle i niewiele się od siebie różnią, model dobrze generalizuje. – Jeśli niebieska rośnie szybciej niż pomarańczowa (duży rozjazd), może występować przeuczenie (overfitting).
+Co z tego wynika?
+– Jeśli obie linie rosną równolegle i niewiele się od siebie różnią, model dobrze generalizuje.
+– Jeśli niebieska rośnie szybciej niż pomarańczowa (duży rozjazd), może występować przeuczenie (overfitting).
 
 
 - **Wizualizacja:**
@@ -228,7 +229,8 @@ Brak warstw normalizacji lub dodatkowych mechanizmów redukcji przeuczenia.
 - Skuteczność na zbiorze testowym: ~85% (symulowane)
 
 - Opis Wykresu
-Co przedstawia histogram? To wizualizacja rozkładu wartości (np. pomiarów, wyników, czasów reakcji) w określonych przedziałach (koszykach). Każda “słupek” pokazuje, ile obserwacji wpada do danego przedziału. Najwyższy słupek widzicie przy przedziale 60–70, co oznacza, że większość uczniów zdobyła właśnie tyle punktów. Widzimy też, że nikt nie uzyskał poniżej 20 punktów, a tylko garstka przekroczyła 90.”
+Co przedstawia histogram? To wizualizacja rozkładu wartości (np. pomiarów, wyników, czasów reakcji) w określonych przedziałach (koszykach). Każda “słupek” pokazuje, ile obserwacji wpada do danego przedziału.
+Najwyższy słupek widzicie przy przedziale 60–70, co oznacza, że większość uczniów zdobyła właśnie tyle punktów. Widzimy też, że nikt nie uzyskał poniżej 20 punktów, a tylko garstka przekroczyła 90.”
 Oś pozioma (X) – Przedziały wartości Rozkład jest podzielony na równe koszyki, np. 0–10, 10–20, 20–30 itd. Oś X pokazuje te zakresy, dzięki czemu widzimy, w jakim przedziale mieści się najwięcej pomiarów.
 Oś pionowa (Y) – Liczba obserwacji Oś Y przedstawia liczbę przypadków (lub częstość), które wpadły w dany przedział wartości. Wyższy słupek oznacza więcej obserwacji w tym zakresie.
 Co z tego wynika?
@@ -249,7 +251,8 @@ Dzięki tej krzywej od razu widać ogólny trend rozkładu skuteczności: w któ
 ---
 
 - Co przedstawia histogram? To rozkład danych zebranych w określonych przedziałach. Każdy słupek pokazuje, ile razy wartość z pomiaru lub obserwacji wpadła do danego zakresu.
-Oś pozioma (X): Przedziały wartości (np. 0–10, 10–20, …). To skale, według której grupujemy dane – widzisz, w jakich zakresach koncentrują się pomiary. Najwięcej wyników (najwyższy słupek) mamy w przedziale 40–50, czyli to jest nasz dominujący zakres. Ogniskując się na kształcie wykresu, widzimy, że większość danych mieści się między 20 a 70, a poza tymi granicami mamy tylko nieliczne obserwacje.”
+Oś pozioma (X): Przedziały wartości (np. 0–10, 10–20, …). To skale, według której grupujemy dane – widzisz, w jakich zakresach koncentrują się pomiary.
+ Najwięcej wyników (najwyższy słupek) mamy w przedziale 40–50, czyli to jest nasz dominujący zakres. Ogniskując się na kształcie wykresu, widzimy, że większość danych mieści się między 20 a 70, a poza tymi granicami mamy tylko nieliczne obserwacje.”
 Oś pionowa (Y): Liczba obserwacji (częstość). Im słupek wyższy, tym więcej pomiarów/ przypadków znalazło się w danym przedziale.
 Interpretacja:
 Szczyt histogramu (najwyższy słupek) wskazuje na najczęściej występujący zakres wartości.
@@ -274,7 +277,7 @@ Każdy przedział (np. 0–10, 10–20, 20–30…) grupuje pomiary, które do n
 Dzięki temu widzimy, w jakich zakresach gromadzi się najwięcej danych.
 Oś pionowa (Y): liczba obserwacji (częstość) Pokazuje, ile przypadków znalazło się w każdym z przedziałów.
 Wyższy słupek oznacza więcej pomiarów w danym koszyku.
- Co z tego wynika?
+- Co z tego wynika?
 Najwyższy słupek wskazuje najczęstszy zakres wartości (dominujący przedział).
 Kształt całego wykresu mówi o koncentracji danych (wąski vs. szeroki rozkład).
 Niebieska linia na tym histogramie to oszacowanie gęstości empirycznej (tzw. density curve). Oznacza ona:
@@ -373,28 +376,28 @@ Zintegrowano z MLFLOW do śledzenia metryk.
 ---
 # Histogram Macierz pomyłek (confusion matrix)
 
-- 1. Co przedstawia wykres?
+-  Co przedstawia wykres?
 To macierz pomyłek dla modelu klasyfikującego obrazy na trzy kategorie:
 brain_glioma
 brain_menin
 brain_tumor
 Pozwala ocenić, jak często model poprawnie rozpoznaje każdą klasę i gdzie popełnia błędy.
 
-- 2. Oś pozioma (X) – Przewidywana klasa
+-  Oś pozioma (X) – Przewidywana klasa
 Kolumny to klasy przypisane przez model:
 brain_glioma
 brain_menin
 brain_tumor
 Każda kolumna pokazuje, ile próbek zostało zaklasyfikowanych jako dana etykieta.
 
-- 3. Oś pionowa (Y) – Prawdziwa klasa
+-  Oś pionowa (Y) – Prawdziwa klasa
 Wiersze to rzeczywiste etykiety w zbiorze testowym:
 brain_glioma
 brain_menin
 brain_tumor
 Każdy wiersz wskazuje, z której klasy pochodziły próbki.
 
-- 4. Co przedstawiają kwadraty i liczby
+- Co przedstawiają kwadraty i liczby
 W każdym kwadracie znajduje się liczba próbek, które mają daną parę (prawdziwa klasa → przewidywana klasa).
 
 - Przykładowe wartości:
@@ -402,7 +405,7 @@ W kwadracie na przecięciu wiersza brain_glioma i kolumny brain_glioma jest 522 
 W przecięciu brain_glioma → brain_menin mamy 752 – tyle glejaków model uznał błędnie za oponiaki.
 Analogicznie, np. brain_tumor → brain_tumor = 778 to prawidłowe rozpoznania guzów.
 
-- 5. Co oznaczają kolory?
+- Co oznaczają kolory?
 Skala koloru od jasnobłękitnego (niskie wartości) do ciemnoniebieskiego (wysokie wartości).
 Im ciemniejszy kwadrat, tym więcej próbek trafiło do tej kombinacji prawdziwej vs. przewidywanej klasy.
 Kolory ułatwiają szybką identyfikację, gdzie model radzi sobie najlepiej (ciemne pola na przekątnej) i gdzie są największe pomyłki (poza przekątną).
@@ -415,28 +418,28 @@ Kolory ułatwiają szybką identyfikację, gdzie model radzi sobie najlepiej (ci
 # Macierz pomyłek (confusion matrix)
 
 Heatmapa macierzy pomyłek (confusion matrix)
-- 1. Co przedstawia wykres?
+- Co przedstawia wykres?
 To heatmapa macierzy pomyłek dla modelu klasyfikującego obrazy mózgu na trzy kategorie:
 brain_glioma
 brain_menin
 brain_tumor
 Pozwala ocenić, jak często model poprawnie identyfikuje każdą klasę oraz gdzie najczęściej popełnia błędy.
 
-- 2. Oś pozioma (X) – Przewidywane etykiety
+- Oś pozioma (X) – Przewidywane etykiety
 Kolumny odpowiadają klasom, które model przypisał próbkom:
 brain_glioma
 brain_menin
 brain_tumor
 Każda kolumna pokazuje, ile przykładów zostało zaklasyfikowanych jako dana kategoria.
 
-- 3. Oś pionowa (Y) – Rzeczywiste etykiety
+-  Oś pionowa (Y) – Rzeczywiste etykiety
 Wiersze odpowiadają faktycznym etykietom w zbiorze testowym:
 brain_glioma
 brain_menin
 brain_tumor
 Każdy wiersz to zbiór próbek rzeczywiście należących do tej klasy.
 
-- 4. Wartości w komórkach
+-  Wartości w komórkach
 W każdym kwadracie znajduje się liczba próbek o określonej parze (prawdziwa klasa → przewidywana klasa).
 - brain_glioma → brain_glioma: 677
 - brain_glioma → brain_menin: 660
@@ -449,7 +452,7 @@ brain_tumor → brain_menin: 677
 brain_tumor → brain_tumor: 700
 Kwadraty sumują się do całkowitej liczby próbek testowych i pokazują zarówno poprawne klasyfikacje (diagonalne), jak i pomyłki (poza przekątną).
 
-- 5. Kolory – co oznaczają
+-  Kolory – co oznaczają
 Skala kolorów biegnie od jasnoniebieskiego (niższe liczby, ok. 660) do ciemnoniebieskiego (wyższe liczby, ok. 700).
 Im ciemniejszy kwadrat, tym więcej przykładów trafiło do tej kategorii.
 Kolory ułatwiają szybkie zlokalizowanie mocnych i słabych punktów modelu:
@@ -463,15 +466,15 @@ ciemne pola poza przekątną → dużo pomyłek między konkretnymi klasami.
 ---
 
 Histogram  heatmapy macierzy pomyłek
-1. Co przedstawia wykres?
+- Co przedstawia wykres?
 Heatmapa obrazuje macierz pomyłek (confusion matrix) modelu klasyfikującego badania mózgu na trzy typy schorzeń. Dzięki niej szybko ocenisz, jak często model poprawnie rozpoznaje każdą klasę oraz gdzie myli się między nimi.
 
-2. Osie wykresu
+-  Osie wykresu
 Oś pozioma (X) pokazuje etykiety przypisane przez model (przewidywane klasy).
 Oś pionowa (Y) pokazuje rzeczywiste etykiety próbek (prawdziwe klasy).
 Dzięki temu w każdej komórce krzyżują się prawdziwa i przewidywana klasa.
 
-3. Wartości w komórkach
+-  Wartości w komórkach
 Każde pole zawiera liczbę przypadków o danej parze etykiet (rzeczywiste → przewidywane). Poniższa tabela zestawia wszystkie wartości:
 Prawdziwa \ Przewidywana	brain_glioma	brain_menin	brain_tumor
 brain_glioma	596	610	808
@@ -479,7 +482,7 @@ brain_menin	535	621	848
 brain_tumor	574	585	889
 Liczby na przekątnej (596, 621, 889) to poprawne klasyfikacje. Pola poza przekątną to pomyłki między określonymi parami klas.
 
-4. Znaczenie kolorów
+-  Znaczenie kolorów
 Gradient od jasnoniebieskiego do ciemnoniebieskiego wskazuje liczbę przypadków w komórce:
 Jasny kolor oznacza mniejszą liczbę (ok. 535–610).
 Ciemniejszy kolor oznacza wyższą liczbę (ok. 808–889).
@@ -491,20 +494,20 @@ Intensywność barwy pozwala w mig zidentyfikować, gdzie model ma najwięcej tr
 
 ---
 
-Szczegółowy opis wykresu: Macierz pomyłek (confusion matrix)
-1. Co przedstawia wykres?
+# Szczegółowy opis wykresu: Macierz pomyłek (confusion matrix)
+-  Co przedstawia wykres?
 To heatmapa macierzy pomyłek klasyfikatora rozpoznającego trzy schorzenia mózgu:
 brain_glioma
 brain_menin
 brain_tumor
 Pozwala zobaczyć, ile próbek każdej prawdziwej klasy zostało poprawnie rozpoznanych, a ile przypisano błędnie do innych kategorii.
 
-2. Osie wykresu
+-  Osie wykresu
 Oś pozioma (X): przewidywane etykiety (predykcje modelu) – brain_glioma, brain_menin, brain_tumor
 Oś pionowa (Y): rzeczywiste etykiety (etykiety prawdziwe) – brain_glioma, brain_menin, brain_tumor
 Każda komórka leży na przecięciu wiersza (prawdziwa klasa) i kolumny (przewidywana klasa).
 
-3. Wartości w komórkach
+-  Wartości w komórkach
 Wartość w każdym kwadracie to liczba próbek z danej pary:
 prawdziwa klasa → przewidywana klasa
 Konkretne liczby:
@@ -519,7 +522,7 @@ brain_tumor → brain_menin: 231
 brain_tumor → brain_tumor: 1681
 Liczby na przekątnej (149, 221, 1681) to poprawne klasyfikacje, pozostałe to pomyłki modelu.
 
-4. Znaczenie kolorów
+-  Znaczenie kolorów
 Gradient od jasnoniebieskiego (niższe wartości) do ciemnoniebieskiego (wyższe wartości).
 Im ciemniejszy odcień, tym więcej próbek znalazło się w tej kombinacji prawdziwej vs. przewidywanej klasy.
 Pozwala szybko zidentyfikować:
@@ -531,16 +534,16 @@ obszary wymagające poprawy (ciemniejsze pola poza przekątną)
 ![Porównanie nowotworów](image/zd16.jpg)
 
 ---
-Historgram  macierzy pomyłek
-1. Co przedstawia wykres
+# Historgram  macierzy pomyłek
+-  Co przedstawia wykres
 Ta heatmapa pokazuje, jak model klasyfikujący typy nowotworów mózgu radzi sobie na zestawie treningowym. Każdy kwadrat to liczba przypadków, w których prawdziwa klasa (wiersz) została przypisana do klasy przewidywanej (kolumna).
 
-2. Osie wykresu
+-  Osie wykresu
 Oś pozioma (X): etykiety przewidywane przez model
 Oś pionowa (Y): etykiety rzeczywiste (prawdziwe)
 Kategorie na obu osiach to brain_glioma, brain_menin oraz brain_tumor.
 
-3. Wartości w kwadratach
+-  Wartości w kwadratach
 Prawdziwa \ Przewidywana	brain_glioma	brain_menin	brain_tumor
 brain_glioma	529	505	980
 brain_menin	529	490	985
@@ -548,7 +551,7 @@ brain_tumor	484	514	1050
 Komórki na przekątnej (529, 490, 1050) to poprawne klasyfikacje.
 Pozostałe liczby to błędne przewidywania modelu.
 
-4. Znaczenie kolorów
+-  Znaczenie kolorów
 Gradient od jasnoniebieskiego do ciemnoniebieskiego odzwierciedla liczbę próbek:
 Jasny odcień: niewiele przypadków w danej kombinacji
 Ciemny odcień: dużo przypadków
@@ -658,8 +661,7 @@ Równomierny rozkład może świadczyć o dobrym wyważeniu modelu, ale warto sp
 
 
 ---
-
-Wykre ROC Curve dla każdej klasy
+#Wykre ROC Curve dla każdej klasy
 - Co przedstawia wykres?
 Ten wykres to krzywa ROC (Receiver Operating Characteristic), która pokazuje, jak dobrze model rozróżnia między klasami 0, 1 i 2. Każda linia odpowiada jednej klasie, a wartość AUC (Area Under the Curve) mówi o skuteczności klasyfikacji.
 
