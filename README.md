@@ -93,7 +93,8 @@ Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały 
 ---
 # Ewaluacja najlepszej wersji
 •	Wybór najlepszego wariantu – Na podstawie maksymalnej wartości val_accuracy.
-•	Testowanie na zbiorze testowym – Predykcje → macierz pomyłek (confusion_matrix) + raport klasyfikacji (precision, recall, f1-score). – Dlaczego: pozwala zobaczyć, które klasy są mylone i jak model radzi sobie z różnymi typami guzów.
+•	Testowanie na zbiorze testowym – Predykcje → macierz pomyłek (confusion_matrix) + raport klasyfikacji (precision, recall, f1-score). 
+– Dlaczego: pozwala zobaczyć, które klasy są mylone i jak model radzi sobie z różnymi typami guzów.
 
 ----
 # Dlaczego zastosowano te techniki?
@@ -107,7 +108,8 @@ Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały 
 - Na obrazku widzisz pięć skanów rezonansem magnetycznym (MRI) mózgu, każdy z nich oznaczony etykietą „0” lub „1”:
 - Różne płaszczyzny cięcia – Część skanów to przekroje osiowe (widok z góry na dół mózgu), jeden to przekrój strzałkowy (bok mózgu).
 - Etykiety binarne – „0” prawdopodobnie oznacza brak zmiany (zdrowy mózg), – „1” oznacza obecność patologii (np. guz, zmiana ogniskowa).
-- Rozmieszczenie etykiet – Pierwszy i piąty obrazek mają etykietę „0” – brak wykrytej zmiany, – środkowe trzy są oznaczone „1” – tu występuje zmiana, którą model (lub radiolog) oznaczył jako istotną.
+- Rozmieszczenie etykiet – Pierwszy i piąty obrazek mają etykietę „0” – brak wykrytej zmiany,
+-  środkowe trzy są oznaczone „1” – tu występuje zmiana, którą model (lub radiolog) oznaczył jako istotną.
 - Cel prezentacji – Takie przykłady służą do zobrazowania różnicy między zdrowymi i chorymi skanami w zadaniu automatycznej klasyfikacji czy wspomagania diagnostyki.
 
 - Klasy gózów mózgu
@@ -151,7 +153,7 @@ Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały 
 # Raport klasyfikacji 
 - raport klasyfikacji (classification report) dla modelu rozróżniającego trzy typy zmian mózgowych:
 - Rodzaj góza mózgu klasa :
-- Metryki dla każdej klasy: – Precision (precyzja) odsetek prawidłowych przewidywań danej klasy spośród wszystkich przewidywań tej klasy
+- Metryki dla każdej klasy: 
 - Precision (precyzja odsetek poprawnie wykrytych próbek danej klasy spośród wszystkich rzeczywistych próbek tej klasy.
 - Recall (czułość): odsetek poprawnie wykrytych próbek danej klasy spośród wszystkich rzeczywistych próbek tej klasy
 - F1-score: średnia harmoniczna precyzji i recall, łącząca oba wskaźniki w jednym
@@ -253,7 +255,7 @@ Dzięki tej krzywej od razu widać ogólny trend rozkładu skuteczności: w któ
 ---
 
 - Co przedstawia histogram? To rozkład danych zebranych w określonych przedziałach. Każdy słupek pokazuje, ile razy wartość z pomiaru lub obserwacji wpadła do danego zakresu.
-- Oś pozioma (X): Przedziały wartości (np. 0–10, 10–20, …). To skale, według której grupujemy dane – widzisz, w jakich zakresach koncentrują się pomiary.
+- Oś pozioma (X): Przedziały wartości (np. 0–10, 10–20, …). To skale, według której grupujemy dane – widzimy, w jakich zakresach koncentrują się pomiary.
  Najwięcej wyników (najwyższy słupek) mamy w przedziale 40–50, czyli to jest nasz dominujący zakres.
 Ogniskując się na kształcie wykresu, widzimy, że większość danych mieści się między 20 a 70, a poza tymi granicami mamy tylko nieliczne obserwacje.”
 - Oś pionowa (Y): Liczba obserwacji (częstość). Im słupek wyższy, tym więcej pomiarów/ przypadków znalazło się w danym przedziale.
@@ -321,7 +323,8 @@ Dzięki tej linii od razu widać, gdzie w zakresie od 0 do 100 kumulują się wa
 - Ten histogram ilustruje rozkład zakodowanych typów nowotworów w naszym zbiorze danych.
 -  Oś X (Rodzaj nowotworu): wartości typów nowotworów pogrupowane w równe przedziały (0–10, 10–20, 20–30, itd.). 
 -  Oś Y (Count): liczba przypadków (pacjentów) przypadająca na każdy taki przedział.
-Słupki pokazują, ile obserwacji mieści się w danym koszyku kodów – wyższy słupek oznacza większą liczbę pacjentów z typem nowotworu zakodowanym w tym zakresie.
+Słupki pokazują, ile obserwacji mieści się w danym koszyku kodów
+– wyższy słupek oznacza większą liczbę pacjentów z typem nowotworu zakodowanym w tym zakresie.
 Dodatkowo nałożona krzywa (linia) to estymacja gęstości rozkładu, która ułatwia dostrzeżenie ogólnego trendu i symetrii (lub asymetrii) danych.
 Niebieska linia to wygładzona krzywa gęstości rozkładu „Rodzaj nowotworu”.
 Oznacza, że:
