@@ -725,7 +725,7 @@ Grad-CAM potwierdza, że model uczy się na właściwych strukturach anatomiczny
 System działa dobrze przy małych rozmiarach danych i może być łatwo wdrożony.
 
 ---
-# 8.Podsumowanie i rekomendacje
+# 8. Podsumowanie i rekomendacje
 Projekt z sukcesem stworzył dokładny i dobrze uogólniający model CNN do klasyfikacji guzów mózgu na podstawie obrazów MRI. System został:
 Przetestowany na rzeczywistych danych (BraTS),
 Wsparty narzędziami śledzenia eksperymentów (MLflow),
