@@ -126,17 +126,22 @@ Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały 
 ---
 # Podsumowanie modelu tabela  szczegółowy spis warstw sieci konwolucyjnej wraz z rozmiarami wyjść i liczbą parametrów każdej z nich:
 
-conv2d (Conv2D) • Wyjście: (None, 126, 126, 32) • Parametry: 896 Pierwsza warstwa konwolucyjna z 32 filtrami.
-max_pooling2d (MaxPooling2D) • Wyjście: (None, 63, 63, 32) • Parametry: 0 Redukuje wymiary połowę przez max‐pooling.
-conv2d_1 (Conv2D) • Wyjście: (None, 30, 30, 64) • Parametry: 18 496 Druga konwolucja z 64 filtrami.
-max_pooling2d_1 (MaxPooling2D) • Wyjście: (None, 30, 30, 64) • Parametry: 0 Pooling zachowujący kształt (np. ze względu na padding).
-conv2d_2 (Conv2D) • Wyjście: (None, 28, 28, 128) • Parametry: 73 856 Trzecia konwolucja z 128 filtrami.
-max_pooling2d_2 (MaxPooling2D) • Wyjście: (None, 14, 14, 128) • Parametry: 0 Kolejne zmniejszenie wymiarów.
-flatten (Flatten) • Wyjście: (None, 25 088) • Parametry: 0 Spłaszczenie wielowymiarowej kostki do wektora.
-dense (Dense) • Wyjście: (None, 128) • Parametry: 3 211 392 Pełne połączenie do 128 neuronów.
-dropout (Dropout) • Wyjście: (None, 128) • Parametry: 0 Losowe wyłączanie części neuronów w trakcie treningu.
-dense_1 (Dense) • Wyjście: (None, 3) • Parametry: 387 Warstwa wyjściowa z 3 neuronami (np. klasyfikacja na 3 klasy).
-Pod tabelą podano jeszcze sumaryczne dane: – Całkowita liczba parametrów: 3 305 027 – Parametry trenowalne: 3 305 027 – Parametry nietrenowalne: 0
+
+|Nazwa warstwy (typ)            |Kształt wyjściowy     | Parametry                                                         |
+| ----------------------------- | ---------------------| ----------------------------------------------------------------- |
+| conv2d (Conv2D)               | (None, 126, 126, 32) | 896 Pierwsza warstwa konwolucyjna z 32 filtrami                   |  
+| max_pooling2d (MaxPooling2D)  | (None, 63, 63, 32)   | 0 Redukuje wymiary połowę przez max‐pooling                       | 
+| conv2d_1 (Conv2D)             | (None, 30, 30, 64)   | 18 496 Druga konwolucja z 64 filtrami                             | 
+| max_pooling2d_1 (MaxPooling2D)| (None, 30, 30, 64)   | 0 Pooling zachowujący kształt (np. ze względu na padding)         | 
+| conv2d_2 (Conv2D)             | (None, 28, 28, 128)  | 73 856 Trzecia konwolucja z 128 filtrami                          | 
+| max_pooling2d_2 (MaxPooling2D)| (None, 14, 14, 128)  | 0 Kolejne zmniejszenie wymiarów.                                  |
+| flatten (Flatten)             | (None, 25 088)       | 0 Spłaszczenie wielowymiarowej kostki do wektora                  |
+| dense (Dense)                 | (None, 128)          | 3 211 392 Pełne połączenie do 128 neuronów.                       |
+| dropout (Dropout)             | (None, 128)          | 0 Losowe wyłączanie części neuronów w trakcie treningu            |
+| dense_1 (Dense)               | (None, 3)            | 387 Warstwa wyjściowa z 3 neuronami (np. klasyfikacja na 3 klasy) | 
+
+- Pod tabelą podano jeszcze sumaryczne dane: – Całkowita liczba parametrów: 3 305 027 – Parametry trenowalne: 3 305 027 – Parametry nietrenowalne: 0 
+
 
 
 - **Wizualizacja:**
