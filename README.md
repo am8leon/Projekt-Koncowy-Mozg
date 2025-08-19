@@ -231,9 +231,11 @@ Brak warstw normalizacji lub dodatkowych mechanizmów redukcji przeuczenia.
 - Opis Wykresu
 Co przedstawia histogram? To wizualizacja rozkładu wartości (np. pomiarów, wyników, czasów reakcji) w określonych przedziałach (koszykach). Każda “słupek” pokazuje, ile obserwacji wpada do danego przedziału.
 Najwyższy słupek widzicie przy przedziale 60–70, co oznacza, że większość uczniów zdobyła właśnie tyle punktów. Widzimy też, że nikt nie uzyskał poniżej 20 punktów, a tylko garstka przekroczyła 90.”
-Oś pozioma (X) – Przedziały wartości Rozkład jest podzielony na równe koszyki, np. 0–10, 10–20, 20–30 itd. Oś X pokazuje te zakresy, dzięki czemu widzimy, w jakim przedziale mieści się najwięcej pomiarów.
-Oś pionowa (Y) – Liczba obserwacji Oś Y przedstawia liczbę przypadków (lub częstość), które wpadły w dany przedział wartości. Wyższy słupek oznacza więcej obserwacji w tym zakresie.
-Co z tego wynika?
+Oś pozioma (X) – Przedziały wartości Rozkład jest podzielony na równe koszyki, np. 0–10, 10–20, 20–30 itd.
+Oś X pokazuje te zakresy, dzięki czemu widzimy, w jakim przedziale mieści się najwięcej pomiarów.
+Oś pionowa (Y) – Liczba obserwacji
+Oś Y przedstawia liczbę przypadków (lub częstość), które wpadły w dany przedział wartości. Wyższy słupek oznacza więcej obserwacji w tym zakresie.
+- Co z tego wynika?
 Szczyt histogramu wskazuje na najczęstszy (dominujący) zakres wartości.
 Możemy ocenić rozkład: czy jest skupiony w jednym miejscu, czy rozproszony?
 Niebieska linia:
@@ -251,10 +253,11 @@ Dzięki tej krzywej od razu widać ogólny trend rozkładu skuteczności: w któ
 ---
 
 - Co przedstawia histogram? To rozkład danych zebranych w określonych przedziałach. Każdy słupek pokazuje, ile razy wartość z pomiaru lub obserwacji wpadła do danego zakresu.
-Oś pozioma (X): Przedziały wartości (np. 0–10, 10–20, …). To skale, według której grupujemy dane – widzisz, w jakich zakresach koncentrują się pomiary.
- Najwięcej wyników (najwyższy słupek) mamy w przedziale 40–50, czyli to jest nasz dominujący zakres. Ogniskując się na kształcie wykresu, widzimy, że większość danych mieści się między 20 a 70, a poza tymi granicami mamy tylko nieliczne obserwacje.”
-Oś pionowa (Y): Liczba obserwacji (częstość). Im słupek wyższy, tym więcej pomiarów/ przypadków znalazło się w danym przedziale.
-Interpretacja:
+- Oś pozioma (X): Przedziały wartości (np. 0–10, 10–20, …). To skale, według której grupujemy dane – widzisz, w jakich zakresach koncentrują się pomiary.
+ Najwięcej wyników (najwyższy słupek) mamy w przedziale 40–50, czyli to jest nasz dominujący zakres.
+Ogniskując się na kształcie wykresu, widzimy, że większość danych mieści się między 20 a 70, a poza tymi granicami mamy tylko nieliczne obserwacje.”
+- Oś pionowa (Y): Liczba obserwacji (częstość). Im słupek wyższy, tym więcej pomiarów/ przypadków znalazło się w danym przedziale.
+- Interpretacja:
 Szczyt histogramu (najwyższy słupek) wskazuje na najczęściej występujący zakres wartości.
 Kształt rozkładu mówi, czy dane są mocno skupione wokół jednej wartości (wąski rozkład), czy rozproszone (szeroki rozkład).
 Niebieska linia to wygładzony trend (“smooth curve”), który nakłada się na słupki histogramu, aby pokazać ogólny przebieg danych:
@@ -272,7 +275,7 @@ Podsumowując: niebieska linia wzmacnia interpretację histogramu, pokazując g�
 # Histogram Wielkości  nowotworu 
 
 - Co przedstawia histogram pokazuje, jak często występują kolejne wartości w badanym zbiorze.
- Oś pozioma (X): zakresy wartości (tzw. koszyki)
+ - Oś pozioma (X): zakresy wartości (tzw. koszyki)
 Każdy przedział (np. 0–10, 10–20, 20–30…) grupuje pomiary, które do niego należą.
 Dzięki temu widzimy, w jakich zakresach gromadzi się najwięcej danych.
 Oś pionowa (Y): liczba obserwacji (częstość) Pokazuje, ile przypadków znalazło się w każdym z przedziałów.
@@ -295,11 +298,12 @@ Dzięki temu dodatkowi z histogramu od razu widać ogólny trend: nie tylko ile 
 # Histogram  Położenia guza 
 
 - Histogram to wykres, który pokazuje, jak często pojawiają się mierzone wartości w określonych zakresach.
-Oś X (pozioma): przedziały wartości (np. 0–10, 10–20 itd.) – to, jak dzielimy dane na „koszyki”. Na osi poziomej widzicie kolejne przedziały wartości, w które grupujemy dane.
-Oś Y (pionowa): liczba obserwacji w każdym koszyku – im wyższy słupek, tym więcej pomiarów w tym przedziale.
-Na osi pionowej jest liczba przypadków w każdym z tych przedziałów. Najwyższy słupek mówi o tym, że w tym konkretnym zakresie mamy najwięcej obserwacji. Cały kształt histogramu pokazuje, czy dane są skoncentrowane w wąskim przedziale, czy rozproszone, a ewentualne wydłużone końce sygnalizują skrajne wartości.
+- Oś X (pozioma): przedziały wartości (np. 0–10, 10–20 itd.) – to, jak dzielimy dane na „koszyki”. Na osi poziomej widzicie kolejne przedziały wartości, w które grupujemy dane.
+- Oś Y (pionowa): liczba obserwacji w każdym koszyku – im wyższy słupek, tym więcej pomiarów w tym przedziale.
+Na osi pionowej jest liczba przypadków w każdym z tych przedziałów. Najwyższy słupek mówi o tym, że w tym konkretnym zakresie mamy najwięcej obserwacji.
+Cały kształt histogramu pokazuje, czy dane są skoncentrowane w wąskim przedziale, czy rozproszone, a ewentualne wydłużone końce sygnalizują skrajne wartości.
 Niebieska linia to wygładzona estymacja gęstości rozkładu „Położenia guza”.
-Co to znaczy w praktyce:
+- Co to znaczy w praktyce:
 •	Pokazuje ciągły trend w danych, wygładzając skokowe słupki histogramu.
 •	Szczyty krzywej wskazują na najbardziej typowe lokalizacje guza (przedziały x, gdzie mamy najwięcej przypadków).
 •	Oferuje lepszą percepcję kształtu rozkładu: asymetria, szerokość „ogona” czy ewentualne dodatkowe „piki”.
@@ -315,11 +319,16 @@ Dzięki tej linii od razu widać, gdzie w zakresie od 0 do 100 kumulują się wa
 # Histogram rodzaju nowotworów
 
 - Ten histogram ilustruje rozkład zakodowanych typów nowotworów w naszym zbiorze danych.
- Oś X (Rodzaj nowotworu): wartości typów nowotworów pogrupowane w równe przedziały (0–10, 10–20, 20–30, itd.). 
- Oś Y (Count): liczba przypadków (pacjentów) przypadająca na każdy taki przedział.
-Słupki pokazują, ile obserwacji mieści się w danym koszyku kodów – wyższy słupek oznacza większą liczbę pacjentów z typem nowotworu zakodowanym w tym zakresie. Dodatkowo nałożona krzywa (linia) to estymacja gęstości rozkładu, która ułatwia dostrzeżenie ogólnego trendu i symetrii (lub asymetrii) danych.
-Niebieska linia to wygładzona krzywa gęstości rozkładu „Rodzaj nowotworu”. Oznacza, że:
-• Szczyty krzywej wskazują na typy nowotworów (zakresy kodów na osi X), które występują najczęściej. • Obniżenia i przechylenia między słupkami pokazują subtelne zmiany częstotliwości, które nie są tak oczywiste w postaci samych słupków. • Kształt linii (asymetria, szerokość „ogona”) informuje o rozłożeniu danych – czy rozkład jest skupiony wokół jednego typu, czy rozproszony i czy mamy rzadkie, skrajne przypadki.
+-  Oś X (Rodzaj nowotworu): wartości typów nowotworów pogrupowane w równe przedziały (0–10, 10–20, 20–30, itd.). 
+-  Oś Y (Count): liczba przypadków (pacjentów) przypadająca na każdy taki przedział.
+Słupki pokazują, ile obserwacji mieści się w danym koszyku kodów – wyższy słupek oznacza większą liczbę pacjentów z typem nowotworu zakodowanym w tym zakresie.
+Dodatkowo nałożona krzywa (linia) to estymacja gęstości rozkładu, która ułatwia dostrzeżenie ogólnego trendu i symetrii (lub asymetrii) danych.
+Niebieska linia to wygładzona krzywa gęstości rozkładu „Rodzaj nowotworu”.
+Oznacza, że:
+• Szczyty krzywej wskazują na typy nowotworów (zakresy kodów na osi X), które występują najczęściej.
+• Obniżenia i przechylenia między słupkami pokazują subtelne zmiany częstotliwości, które nie są tak oczywiste w postaci samych słupków.
+• Kształt linii (asymetria, szerokość „ogona”) informuje o rozłożeniu danych
+– czy rozkład jest skupiony wokół jednego typu, czy rozproszony i czy mamy rzadkie, skrajne przypadki.
 Dzięki niej od razu widać ogólny trend: gdzie kumuluje się największa liczba przypadków poszczególnych typów nowotworów, a gdzie są one stosunkowo rzadkie.
 
 
@@ -331,10 +340,10 @@ Dzięki niej od razu widać ogólny trend: gdzie kumuluje się największa liczb
 # Porównanie validation accuraci
 
 - Ten histogram pokazuje rozkład dokładności modelu dla 10 epok treningu, z dodatkowymi liniami ilustrującymi trend.
-Oś X: numer epoki (1–10). • Oś Y: wartość dokładności (Accuracy), czyli odsetek poprawnych przewidywań.
+- Oś X: numer epoki (1–10). • Oś Y: wartość dokładności (Accuracy), czyli odsetek poprawnych przewidywań.
 Słupki: liczba epok, ale w tym przypadku każdy słupek to punkt danych dokładność w konkretnej epoce.
-OŚ Y: dokładność modelu.
-Linie: Niebieska linia: dokładność na zbiorze treningowym w kolejnych epokach. Rosnący kształt oznacza, że model uczy się coraz lepiej dopasowywać do danych treningowych. 
+- OŚ Y: dokładność modelu.
+- Linie: Niebieska linia: dokładność na zbiorze treningowym w kolejnych epokach. Rosnący kształt oznacza, że model uczy się coraz lepiej dopasowywać do danych treningowych. 
  Pomarańczowa linia: dokładność na zbiorze walidacyjnym (testowym). Porównując ją z niebieską, widzimy, jak model generalizuje na nowych danych. oraz podobny przebieg obu linii oznacza dobrą generalizację, większa rozbieżność to przeuczenie.”
 
 - **Wizualizacja:**
@@ -346,14 +355,16 @@ Linie: Niebieska linia: dokładność na zbiorze treningowym w kolejnych epokach
 
 - To nie histogram, lecz macierz pomyłek (confusion matrix) dla naszego modelu „B_no_aug”.
 Oś pozioma (X): etykiety przewidywane przez model (predicted) – kolejno:
-brain_glioma
-brain_menin
-brain_tumor
+• brain_glioma
+• brain_menin
+• brain_tumor
 Oś pionowa (Y): etykiety prawdziwe (true) – w tej samej kolejności:
-brain_glioma
-brain_menin
-brain_tumor
-W każdej komórce widzisz liczbę próbek o danej prawdziwej (wiersz) i przewidywanej (kolumna) klasie. – Komórki na przekątnej (np. w lewym górnym rogu 2001) to prawidłowe trafienia (true positives). – Komórki poza przekątną to błędy klasyfikacji (np. 7 przypadków glioma zaklasyfikowano jako menin).
+• brain_glioma
+• brain_menin
+• brain_tumor
+W każdej komórce widzisz liczbę próbek o danej prawdziwej (wiersz) i przewidywanej (kolumna) klasie.
+– Komórki na przekątnej (np. w lewym górnym rogu 2001) to prawidłowe trafienia (true positives).
+– Komórki poza przekątną to błędy klasyfikacji (np. 7 przypadków glioma zaklasyfikowano jako menin).
 Ciemniejszy kolor oznacza większą liczbę przypadków, a pasek kolorów z boku pokazuje skalę od 0 do ~2000.
 
 - **Wizualizacja:**
@@ -378,23 +389,23 @@ Zintegrowano z MLFLOW do śledzenia metryk.
 
 -  Co przedstawia wykres?
 To macierz pomyłek dla modelu klasyfikującego obrazy na trzy kategorie:
-brain_glioma
-brain_menin
-brain_tumor
+• brain_glioma
+• brain_menin
+• brain_tumor
 Pozwala ocenić, jak często model poprawnie rozpoznaje każdą klasę i gdzie popełnia błędy.
 
 -  Oś pozioma (X) – Przewidywana klasa
 Kolumny to klasy przypisane przez model:
-brain_glioma
-brain_menin
-brain_tumor
+• brain_glioma
+• brain_menin
+• brain_tumor
 Każda kolumna pokazuje, ile próbek zostało zaklasyfikowanych jako dana etykieta.
 
 -  Oś pionowa (Y) – Prawdziwa klasa
 Wiersze to rzeczywiste etykiety w zbiorze testowym:
-brain_glioma
-brain_menin
-brain_tumor
+• brain_glioma
+• brain_menin
+• brain_tumor
 Każdy wiersz wskazuje, z której klasy pochodziły próbki.
 
 - Co przedstawiają kwadraty i liczby
@@ -420,23 +431,23 @@ Kolory ułatwiają szybką identyfikację, gdzie model radzi sobie najlepiej (ci
 Heatmapa macierzy pomyłek (confusion matrix)
 - Co przedstawia wykres?
 To heatmapa macierzy pomyłek dla modelu klasyfikującego obrazy mózgu na trzy kategorie:
-brain_glioma
-brain_menin
-brain_tumor
+• brain_glioma
+• brain_menin
+• brain_tumor
 Pozwala ocenić, jak często model poprawnie identyfikuje każdą klasę oraz gdzie najczęściej popełnia błędy.
 
 - Oś pozioma (X) – Przewidywane etykiety
 Kolumny odpowiadają klasom, które model przypisał próbkom:
-brain_glioma
-brain_menin
-brain_tumor
+• brain_glioma
+• brain_menin
+• brain_tumor
 Każda kolumna pokazuje, ile przykładów zostało zaklasyfikowanych jako dana kategoria.
 
 -  Oś pionowa (Y) – Rzeczywiste etykiety
 Wiersze odpowiadają faktycznym etykietom w zbiorze testowym:
-brain_glioma
-brain_menin
-brain_tumor
+• brain_glioma
+• brain_menin
+• brain_tumor
 Każdy wiersz to zbiór próbek rzeczywiście należących do tej klasy.
 
 -  Wartości w komórkach
@@ -446,10 +457,10 @@ W każdym kwadracie znajduje się liczba próbek o określonej parze (prawdziwa 
 - brain_glioma → brain_tumor: 677
 - brain_menin → brain_glioma: 679
 - brain_menin → brain_menin: 659
-brain_menin → brain_tumor: 666
-brain_tumor → brain_glioma: 671
-brain_tumor → brain_menin: 677
-brain_tumor → brain_tumor: 700
+- brain_menin → brain_tumor: 666
+- brain_tumor → brain_glioma: 671
+- brain_tumor → brain_menin: 677
+- brain_tumor → brain_tumor: 700
 Kwadraty sumują się do całkowitej liczby próbek testowych i pokazują zarówno poprawne klasyfikacje (diagonalne), jak i pomyłki (poza przekątną).
 
 -  Kolory – co oznaczają
@@ -591,7 +602,9 @@ Minimalna liczba błędów: niski słupek „Błędne” świadczy o skutecznoś
 
 ---
 - Co przedstawia obraz
-Na obrazie widzimy przekrój mózgu pozyskany w sekwencji T1-z kontrastem, oznaczony jako „VAL Predicted class: 0”. Obraz jest w skali szarości i pokryty maską segmentacyjną, gdzie różne odcienie wskazują na różne typy tkanek lub obszary patologiczne. Jasne, niemal białe pole w górnej części centralnej to najbardziej podejrzany obszar, mogący odpowiadać zmianie nowotworowej lub obszarowi z wysokim wzmocnieniem kontrastu.
+Na obrazie widzimy przekrój mózgu pozyskany w sekwencji T1-z kontrastem, oznaczony jako „VAL Predicted class: 0”. Obraz jest w skali szarości i pokryty maską segmentacyjną,
+gdzie różne odcienie wskazują na różne typy tkanek lub obszary patologiczne. Jasne, niemal białe pole w górnej części centralnej to najbardziej podejrzany obszar,
+ mogący odpowiadać zmianie nowotworowej lub obszarowi z wysokim wzmocnieniem kontrastu.
 
 - Osie obrazu
 Oś pozioma (X): wartości od 0 do 120 odpowiadają pikselom w kierunku lewej–prawej.
@@ -605,7 +618,8 @@ Obszary białe lub bardzo jasne: maska segmentacyjna rezonansu oraz potencjalne 
 Każdy piksel jest przypisany do jednej z warstw segmentacji, co ułatwia ilościową analizę objętości i kształtu.
 
 - Interpretacja i wnioski
-Obecność jasnego, kontrastującego obszaru wskazuje na potencjalne uszkodzenie lub guza. Jego wielkość i kształt mogą być mierzone w pikselach, a następnie przeliczane na wartości w milimetrach sześciennych. Taka segmentacja pozwala:
+Obecność jasnego, kontrastującego obszaru wskazuje na potencjalne uszkodzenie lub guza. Jego wielkość i kształt mogą być mierzone w pikselach,
+a następnie przeliczane na wartości w milimetrach sześciennych. Taka segmentacja pozwala:
 ocenić progresję zmiany między kolejnymi badaniami
 porównać efekty leczenia
 zbudować zbiór cech teksturalnych do klasyfikacji typów nowotworów
@@ -623,8 +637,6 @@ Te dane mogą stanowić wektor cech do dalszych analiz statystycznych lub uczeni
 ![Porównanie nowotworów](image/zd18.jpg)
 
 ---
-
-
 - Co przedstawia wykres?
 Ten histogram (wykres słupkowy) pokazuje, jak model klasyfikacyjny rozdzielił swoje predykcje pomiędzy trzy klasy:
 Klasa 0.00
