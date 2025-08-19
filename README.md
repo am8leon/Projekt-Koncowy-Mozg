@@ -152,25 +152,27 @@ Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały 
 ---
 # Raport klasyfikacji 
 raport klasyfikacji (classification report) dla modelu rozróżniającego trzy typy zmian mózgowych:
+- Rodzaj góza mózgu klasa :
+- Metryki dla każdej klasy: – Precision (precyzja) odsetek prawidłowych przewidywań danej klasy spośród wszystkich przewidywań tej klasy
+- Precision (precyzja odsetek poprawnie wykrytych próbek danej klasy spośród wszystkich rzeczywistych próbek tej klasy.
+- F1-score: średnia harmoniczna precyzji i recall, łącząca oba wskaźniki w jednym
+- Support: liczba prawdziwych  próbek danej klasy w zbiorze testowym.
+
+| Rodzaj góza mózgu klasa      | Precision (precyzja |
+| -------------------------    | --------------------|----------------|-----------------|----------------
+| brain_glioma                 | precision 1.00      | recall 0.99    | f1-score 1.00   | support 2014   |
+| brain_menin                  | precision 1.00      | recall 1.00    | f1-score 1.00   | support 2004   |             
+| brain_tumor                  | precision 1.00      | recall 1.00    | f1-score 1.00   | support 2048   |
+
+| Podsumowanie                 |                 
+|------------------------------|----------------|-------------|---------------|---------------|
+| Accuracy (dokładność ogólna) |       -        |      -      | f1-score 1.00 | support: 6066 |
+| Macro avg                    | precision 1.00 | recall 1.00 | f1-score 1.00 | support: 6066 |                        
+| Weighted avg                 | precision 1.00 | recall 1.00 | f1-score 1.00 | support: 6066 | 
+
 
 Interpretacja w prezentacji: „Raport pokazuje niemal idealne wyniki modelu – dla meningioma i guza mózgu precyzja i czułość są na poziomie 100%, 
 a dla glejaka mamy recall 99% przy pozostałych metrykach 100%. Oznacza to, że model praktycznie zawsze poprawnie klasyfikuje typ nowotworu.
-
-
-| Rodzaj góza mózgu klasa      | Metryki dla każdej klasy: – Precision (precyzja)|  Recall (czułość): odsetek poprawnie wykrytych próbek danej| F1-score: średnia harmoniczna precyzji   | Support: liczba prawdziwych           |
-|                              | odsetek prawidłowych przewidywań danej          |  klasy spośród wszystkich rzeczywistych próbek tej klasy.  | i recall, łącząca oba wskaźniki w jednym | próbek danej klasy w zbiorze testowym.|
-|                              | klasy spośród wszystkich przewidywań tej klasy  |                                                            |                                          |                                       |
-| -------------------------    | ------------------------------------------------|------------------------------------------------------------|------------------------------------------|---------------------------------------|
-| brain_glioma                 | precision 1.00                                  | recall 0.99                                                | f1-score 1.00                            | support 2014                          |
-| brain_menin                  | precision 1.00                                  | recall 1.00                                                | f1-score 1.00                            | support 2004                          |             
-| brain_tumor                  | precision 1.00                                  | recall 1.00                                                | f1-score 1.00                            | support 2048                          |
-| Podsumowanie :               | ------------------------------------------------| -----------------------------------------------------------|------------------------------------------|---------------------------------------|
-| Accuracy (dokładność ogólna) |                  -                              |                           -                                | f1-score 1.00                            | support: 6066                         |
-| Macro avg                    | precision 1.00                                  | recall 1.00                                                | f1-score 1.00                            | support: 6066                         |                        
-| Weighted avg                 | precision 1.00                                  | recall 1.00                                                | f1-score 1.00                            | support: 6066                         | 
-
-
-
 
 - **Wizualizacja:**
 
