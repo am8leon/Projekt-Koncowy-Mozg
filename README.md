@@ -479,7 +479,7 @@ ciemne pola poza przekątną → dużo pomyłek między konkretnymi klasami.
 
 ---
 
-Histogram  heatmapy macierzy pomyłek
+# Histogram  heatmapy macierzy pomyłek
 - Co przedstawia wykres?
 Heatmapa obrazuje macierz pomyłek (confusion matrix) modelu klasyfikującego badania mózgu na trzy typy schorzeń. Dzięki niej szybko ocenisz, jak często model poprawnie rozpoznaje każdą klasę oraz gdzie myli się między nimi.
 
@@ -676,7 +676,7 @@ Równomierny rozkład może świadczyć o dobrym wyważeniu modelu, ale warto sp
 
 
 ---
-#Wykre ROC Curve dla każdej klasy
+# Wykre ROC Curve dla każdej klasy
 - Co przedstawia wykres?
 Ten wykres to krzywa ROC (Receiver Operating Characteristic), która pokazuje, jak dobrze model rozróżnia między klasami 0, 1 i 2. Każda linia odpowiada jednej klasie, a wartość AUC (Area Under the Curve) mówi o skuteczności klasyfikacji.
 
