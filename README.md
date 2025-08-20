@@ -357,12 +357,12 @@ Słupki: liczba epok, ale w tym przypadku każdy słupek to punkt danych dokład
 # Wykres Macierzy Pomyłek
 
 - To macierz pomyłek (confusion matrix) dla naszego modelu „B_no_aug”.
-Oś pozioma (X): etykiety przewidywane przez model (predicted) – kolejno:
-• brain_glioma
-• brain_menin
-• brain_tumor
-Oś pionowa (Y): etykiety prawdziwe (true) – w tej samej kolejności:
-• brain_glioma
+- Oś pozioma (X): etykiety przewidywane przez model (predicted) – kolejno:
+- brain_glioma
+- brain_menin
+- brain_tumor
+- Oś pionowa (Y): etykiety prawdziwe (true) – w tej samej kolejności:
+- brain_glioma
 • brain_menin
 • brain_tumor
 W każdej komórce widzisz liczbę próbek o danej prawdziwej (wiersz) i przewidywanej (kolumna) klasie.
