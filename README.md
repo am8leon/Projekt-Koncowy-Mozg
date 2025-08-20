@@ -363,8 +363,8 @@ Słupki: liczba epok, ale w tym przypadku każdy słupek to punkt danych dokład
 - brain_tumor
 - Oś pionowa (Y): etykiety prawdziwe (true) – w tej samej kolejności:
 - brain_glioma
-• brain_menin
-• brain_tumor
+- brain_menin
+- brain_tumor
 W każdej komórce widzisz liczbę próbek o danej prawdziwej (wiersz) i przewidywanej (kolumna) klasie.
 – Komórki na przekątnej (np. w lewym górnym rogu 2001) to prawidłowe trafienia (true positives).
 – Komórki poza przekątną to błędy klasyfikacji (np. 7 przypadków glioma zaklasyfikowano jako menin).
