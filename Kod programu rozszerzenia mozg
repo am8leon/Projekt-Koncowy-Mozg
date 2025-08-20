@@ -219,6 +219,162 @@ mlflow.log_artifact("brats_preds.json")
 os.remove("brats_preds.json")
 if os.path.exists("best_model.h5"):
     os.remove("best_model.h5")
+# train_and_save_model.py
+!pip install mlflow==2.12.1 pandas==2.2.2 seaborn==0.13.2
+import os
+import mlflow
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.models import load_model
+from sklearn.metrics import classification_report, confusion_matrix
+from google.colab import drive
+
+drive.mount('/content/drive')
+# Stałe
+IMG_SIZE = (128, 128)
+BATCH_SIZE = 32
+EPOCHS = 10
+DATASET_PATH = "/content/drive/MyDrive/dataset"  # dostosuj jeśli masz inny folder
+MODEL_SAVE_PATH = "/content/drive/MyDrive/best_model_mri.h5"
+
+# Przygotowanie generatorów
+def create_generators():
+    datagen = ImageDataGenerator(rescale=1./255)
+    train = datagen.flow_from_directory(os.path.join(DATASET_PATH, "train"), target_size=IMG_SIZE, batch_size=BATCH_SIZE, class_mode='categorical')
+    val = datagen.flow_from_directory(os.path.join(DATASET_PATH, "validation"), target_size=IMG_SIZE, batch_size=BATCH_SIZE, class_mode='categorical')
+    test = datagen.flow_from_directory(os.path.join(DATASET_PATH, "test"), target_size=IMG_SIZE, batch_size=BATCH_SIZE, class_mode='categorical', shuffle=False)
+    return train, val, test
+
+# Budowa modelu
+def build_model():
+    model = Sequential([
+        Conv2D(32, (3,3), activation='relu', padding='same', input_shape=(128,128,3)),
+        MaxPooling2D((2,2)),
+        Conv2D(64, (3,3), activation='relu', padding='same'),
+        MaxPooling2D((2,2)),
+        Conv2D(128, (3,3), activation='relu', padding='same'),
+        MaxPooling2D((2,2)),
+        Flatten(),
+        Dense(128, activation='relu'),
+        Dropout(0.5),
+        Dense(3, activation='softmax')
+    ])
+    model.compile(optimizer=Adam(1e-3), loss='categorical_crossentropy', metrics=['accuracy'])
+    return model
+
+# Główna część treningowa
+train_gen, val_gen, test_gen = create_generators()
+model = build_model()
+
+mlflow.set_experiment("MRI_Training")
+
+with mlflow.start_run(run_name="Final_Training_Run"):
+    history = model.fit(train_gen, validation_data=val_gen, epochs=EPOCHS, verbose=2)
+    val_acc = max(history.history['val_accuracy'])
+    mlflow.log_metric("val_accuracy", val_acc)
+
+    # Zapisz model
+    model.save(MODEL_SAVE_PATH)
+    print(f"Model zapisany do: {MODEL_SAVE_PATH}")
+    mlflow.log_artifact(MODEL_SAVE_PATH)
+
+    # Ocena na zbiorze testowym
+    y_true = test_gen.classes
+    y_pred_probs = model.predict(test_gen)
+    y_pred = np.argmax(y_pred_probs, axis=1)
+
+    report = classification_report(y_true, y_pred, output_dict=True)
+    mlflow.log_metric("test_accuracy", report["accuracy"])
+
+    cm = confusion_matrix(y_true, y_pred)
+    plt.figure(figsize=(6, 6))
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=list(test_gen.class_indices), yticklabels=list(test_gen.class_indices))
+    plt.title("Macierz pomyłek")
+    plt.tight_layout()
+    plt.savefig("confusion_matrix.png")
+    mlflow.log_artifact("confusion_matrix.png")
+    plt.close()
+# evaluate_model_with_histograms.py
+!pip install seaborn==0.13.2
+import os
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.metrics import roc_curve, auc, classification_report, confusion_matrix
+from sklearn.preprocessing import label_binarize
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras import models
+import tensorflow as tf
+
+# Stałe
+IMG_SIZE = (128, 128)
+BATCH_SIZE = 32
+N_CLASSES = 3
+MODEL_PATH = "/content/drive/MyDrive/best_model_mri.h5"
+DATASET_PATH = "/content/drive/MyDrive/dataset"
+
+# Generatory
+datagen = ImageDataGenerator(rescale=1./255)
+test_gen = datagen.flow_from_directory(
+    os.path.join(DATASET_PATH, "test"),
+    target_size=IMG_SIZE,
+    batch_size=BATCH_SIZE,
+    class_mode="categorical",
+    shuffle=False
+)
+
+# Wczytaj model
+model = load_model(MODEL_PATH)
+print(" Model załadowany.")
+
+# Predykcje
+y_true = test_gen.classes
+y_pred_probs = model.predict(test_gen)
+y_pred = np.argmax(y_pred_probs, axis=1)
+
+# Histogram błędnych predykcji
+errors = y_true != y_pred
+plt.figure(figsize=(8, 5))
+sns.histplot(errors.astype(int), bins=2)
+plt.xticks([0, 1], ["Poprawne", "Błędne"])
+plt.title("Histogram błędnych predykcji")
+plt.show()
+
+# Histogram rozkładu klas
+plt.figure(figsize=(8, 5))
+sns.histplot(y_pred, bins=len(np.unique(y_true)))
+plt.title("Rozkład przewidywanych klas")
+plt.xlabel("Klasa")
+plt.ylabel("Liczba predykcji")
+plt.show()
+
+# ROC + AUC
+y_true_bin = label_binarize(y_true, classes=[0, 1, 2])
+fpr = dict()
+tpr = dict()
+roc_auc = dict()
+
+for i in range(N_CLASSES):
+    fpr[i], tpr[i], _ = roc_curve(y_true_bin[:, i], y_pred_probs[:, i])
+    roc_auc[i] = auc(fpr[i], tpr[i])
+
+plt.figure(figsize=(8, 6))
+for i in range(N_CLASSES):
+    plt.plot(fpr[i], tpr[i], label=f"Klasa {i} (AUC = {roc_auc[i]:.2f})")
+plt.plot([0, 1], [0, 1], "k--")
+plt.title("ROC Curve dla każdej klasy")
+plt.xlabel("False Positive Rate")
+plt.ylabel("True Positive Rate")
+plt.legend()
+plt.show()
+
 
 
 
