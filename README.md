@@ -356,7 +356,7 @@ Słupki: liczba epok, ale w tym przypadku każdy słupek to punkt danych dokład
 ---
 # Wykres Macierzy Pomyłek
 
-- To nie histogram, lecz macierz pomyłek (confusion matrix) dla naszego modelu „B_no_aug”.
+- To macierz pomyłek (confusion matrix) dla naszego modelu „B_no_aug”.
 Oś pozioma (X): etykiety przewidywane przez model (predicted) – kolejno:
 • brain_glioma
 • brain_menin
