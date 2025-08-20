@@ -1,7 +1,4 @@
 # Projekt-Koncowy Mózg 🧠
-Wykrywanie Nowotworów Mózgu za pomocą CNN
-Projekt klasyfikuje obrazy rezonansu magnetycznego (MRI) do jednej z trzech kategorii nowotworu mózgu przy użyciu konwolucyjnych sieci neuronowych (CNN) i biblioteki TensorFlow/Keras.
-
 ---
 
 # Agenda  
