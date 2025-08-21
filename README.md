@@ -1,4 +1,6 @@
-# Projekt-Koncowy Mózg 🧠
+# Projekt-Koncowy 🧠
+Automatyczna klasyfikacja guzów mózgu na podstawie obrazów MRI 
+z wykorzystaniem konwolucyjnych sieci neuronowych
 ---
 
 # Agenda  
@@ -95,11 +97,11 @@ Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały 
 
 ----
 # Dlaczego zastosowano te techniki?
-•	Convolutional Neural Network to sprawdzony standard w zadaniach analizy obrazów medycznych.
-•	Augmentacja i normalizacja poprawiają uogólnianie i stabilność uczenia.
-•	BatchNormalization i Adam przyspieszają zbieżność.
-•	Dropout to mocna regularyzacja przy ograniczonym zestawie obrazów.
-•	Porównanie wariantów pozwala dobrać najlepszą kombinację hiperparametrów i architektury.
+- •	Convolutional Neural Network to sprawdzony standard w zadaniach analizy obrazów medycznych.
+- •	Augmentacja i normalizacja poprawiają uogólnianie i stabilność uczenia.
+- •	BatchNormalization i Adam przyspieszają zbieżność.
+- •	Dropout to mocna regularyzacja przy ograniczonym zestawie obrazów.
+- •	Porównanie wariantów pozwala dobrać najlepszą kombinację hiperparametrów i architektury.
 
 ---
 - Na obrazku widzisz pięć skanów rezonansem magnetycznym (MRI) mózgu, każdy z nich oznaczony etykietą „0” lub „1”:
