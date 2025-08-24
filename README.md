@@ -606,6 +606,40 @@ Minimalna liczba błędów: niski słupek „Błędne” świadczy o skutecznoś
 ![Porównanie nowotworów](image/zd19.jpg)
 
 ---
+- Ten histogram (wykres słupkowy) pokazuje, jak model klasyfikacyjny rozdzielił swoje predykcje pomiędzy trzy klasy:
+Klasa 0.00
+Klasa 1.00
+Klasa 2.00
+Wizualizacja pozwala ocenić, czy model przewiduje klasy równomiernie, czy też faworyzuje którąś z nich.
+
+- Oś pozioma (X) – Klasa
+Przedstawia trzy możliwe klasy, które model może przypisać:
+0.00
+1.00
+2.00
+Oś zawiera również pomocnicze wartości pośrednie (np. 0.25, 0.50), ale tylko trzy słupki mają rzeczywiste wartości predykcji.
+
+- Oś pionowa (Y) – Liczba predykcji
+Pokazuje, ile razy dana klasa została przewidziana przez model.
+Skala sięga od 0 do 2000, z podziałką co 250.
+
+- Co oznaczają słupki?
+Słupek dla klasy 0.00: ok. 1900 predykcji
+Słupek dla klasy 1.00: ok. 2100 predykcji
+Słupek dla klasy 2.00: ok. 2000 predykcji
+Każdy słupek reprezentuje liczbę przypadków, w których model przypisał daną klasę jako wynik predykcji.
+
+- Wnioski z wykresu
+Model nie jest skrajnie niezrównoważony – wszystkie trzy klasy są przewidywane w podobnych ilościach.
+Klasa 1.00 jest najczęściej przewidywana, co może wskazywać na jej dominację w danych treningowych lub większą pewność modelu w jej rozpoznawaniu.
+Równomierny rozkład może świadczyć o dobrym wyważeniu modelu, ale warto sprawdzić, czy odpowiada rzeczywistej proporcji klas w danych.
+
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd20.jpg)
+
+---
 # Obraz przekroju mózgu pozyskany w sekwencji T1-z kontrastem
 
 - Co przedstawia obraz
@@ -644,40 +678,6 @@ Te dane mogą stanowić wektor cech do dalszych analiz statystycznych lub uczeni
 - **Wizualizacja:**
 
 ![Porównanie nowotworów](image/zd18.jpg)
-
----
-- Ten histogram (wykres słupkowy) pokazuje, jak model klasyfikacyjny rozdzielił swoje predykcje pomiędzy trzy klasy:
-Klasa 0.00
-Klasa 1.00
-Klasa 2.00
-Wizualizacja pozwala ocenić, czy model przewiduje klasy równomiernie, czy też faworyzuje którąś z nich.
-
-- Oś pozioma (X) – Klasa
-Przedstawia trzy możliwe klasy, które model może przypisać:
-0.00
-1.00
-2.00
-Oś zawiera również pomocnicze wartości pośrednie (np. 0.25, 0.50), ale tylko trzy słupki mają rzeczywiste wartości predykcji.
-
-- Oś pionowa (Y) – Liczba predykcji
-Pokazuje, ile razy dana klasa została przewidziana przez model.
-Skala sięga od 0 do 2000, z podziałką co 250.
-
-- Co oznaczają słupki?
-Słupek dla klasy 0.00: ok. 1900 predykcji
-Słupek dla klasy 1.00: ok. 2100 predykcji
-Słupek dla klasy 2.00: ok. 2000 predykcji
-Każdy słupek reprezentuje liczbę przypadków, w których model przypisał daną klasę jako wynik predykcji.
-
-- Wnioski z wykresu
-Model nie jest skrajnie niezrównoważony – wszystkie trzy klasy są przewidywane w podobnych ilościach.
-Klasa 1.00 jest najczęściej przewidywana, co może wskazywać na jej dominację w danych treningowych lub większą pewność modelu w jej rozpoznawaniu.
-Równomierny rozkład może świadczyć o dobrym wyważeniu modelu, ale warto sprawdzić, czy odpowiada rzeczywistej proporcji klas w danych.
-
-
-- **Wizualizacja:**
-
-![Porównanie nowotworów](image/zd20.jpg)
 
 ---
 # Wykre ROC Curve dla każdej klasy
