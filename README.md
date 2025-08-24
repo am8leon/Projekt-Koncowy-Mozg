@@ -578,6 +578,47 @@ Dzięki temu widać, gdzie model najczęściej trafia i gdzie się my
 ![Porównanie nowotworów](image/zd17.jpg)
 
 ---
+# Obraz przekroju mózgu pozyskany w sekwencji T1-z kontrastem
+
+- Co przedstawia obraz
+Na obrazie widzimy przekrój mózgu pozyskany w sekwencji T1-z kontrastem, oznaczony jako „VAL Predicted class: 0”.
+Obraz jest w skali szarości i pokryty maską segmentacyjną,
+gdzie różne odcienie wskazują na różne typy tkanek lub obszary patologiczne.
+Jasne, niemal białe pole w górnej części centralnej to najbardziej podejrzany obszar,
+ mogący odpowiadać zmianie nowotworowej lub obszarowi z wysokim wzmocnieniem kontrastu.
+
+- Osie obrazu
+Oś pozioma (X): wartości od 0 do 120 odpowiadają pikselom w kierunku lewej–prawej.
+Oś pionowa (Y): wartości od 0 do 120 odpowiadają pikselom w kierunku góra–dół.
+Skala pikseli jest jednorodna, co pozwala na bezpośrednie szacowanie odległości i powierzchni w obrębie przekroju.
+
+- Struktury i segmentacja
+Obszary o średniej intensywności (szare): zdrowe tkanki mózgowe, typowo istota biała i szara.
+Obszary ciemniejsze: przestrzenie płynowe (np. komory, płyn mózgowo-rdzeniowy).
+Obszary białe lub bardzo jasne: maska segmentacyjna rezonansu oraz potencjalne zmiany patologiczne.
+Każdy piksel jest przypisany do jednej z warstw segmentacji, co ułatwia ilościową analizę objętości i kształtu.
+
+- Interpretacja i wnioski
+Obecność jasnego, kontrastującego obszaru wskazuje na potencjalne uszkodzenie lub guza. Jego wielkość i kształt mogą być mierzone w pikselach,
+a następnie przeliczane na wartości w milimetrach sześciennych. Taka segmentacja pozwala:
+ocenić progresję zmiany między kolejnymi badaniami
+porównać efekty leczenia
+zbudować zbiór cech teksturalnych do klasyfikacji typów nowotworów
+
+- Jakie dane można wyciągnąć z tego zdjęcia
+Wolumen obszaru zmiany (liczba pikseli × rozdzielczość przestrzenna).
+Wskaźniki intensywności: średnia, odchylenie standardowe, asymetria.
+Cechy kształtu: obwód, współczynnik zaokrąglenia, elongacja.
+Teksturalne cechy radiomiczne: entropia, kontrast, homogeniczność.
+Te dane mogą stanowić wektor cech do dalszych analiz statystycznych lub uczenia maszynowego, ułatwiając diagnozę i prognozę przebiegu choroby.
+
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd18.jpg)
+
+
+---
 
 # Histogram błędnych predykcji
  - To histogram ilustrujący porównanie liczby poprawnych i błędnych predykcji modelu klasyfikacyjnego. Pokazuje, jak wiele przypadków model sklasyfikował prawidłowo, a ile przypadków skategoryzował niewłaściwie.
@@ -638,46 +679,6 @@ Równomierny rozkład może świadczyć o dobrym wyważeniu modelu, ale warto sp
 - **Wizualizacja:**
 
 ![Porównanie nowotworów](image/zd20.jpg)
-
----
-# Obraz przekroju mózgu pozyskany w sekwencji T1-z kontrastem
-
-- Co przedstawia obraz
-Na obrazie widzimy przekrój mózgu pozyskany w sekwencji T1-z kontrastem, oznaczony jako „VAL Predicted class: 0”.
-Obraz jest w skali szarości i pokryty maską segmentacyjną,
-gdzie różne odcienie wskazują na różne typy tkanek lub obszary patologiczne.
-Jasne, niemal białe pole w górnej części centralnej to najbardziej podejrzany obszar,
- mogący odpowiadać zmianie nowotworowej lub obszarowi z wysokim wzmocnieniem kontrastu.
-
-- Osie obrazu
-Oś pozioma (X): wartości od 0 do 120 odpowiadają pikselom w kierunku lewej–prawej.
-Oś pionowa (Y): wartości od 0 do 120 odpowiadają pikselom w kierunku góra–dół.
-Skala pikseli jest jednorodna, co pozwala na bezpośrednie szacowanie odległości i powierzchni w obrębie przekroju.
-
-- Struktury i segmentacja
-Obszary o średniej intensywności (szare): zdrowe tkanki mózgowe, typowo istota biała i szara.
-Obszary ciemniejsze: przestrzenie płynowe (np. komory, płyn mózgowo-rdzeniowy).
-Obszary białe lub bardzo jasne: maska segmentacyjna rezonansu oraz potencjalne zmiany patologiczne.
-Każdy piksel jest przypisany do jednej z warstw segmentacji, co ułatwia ilościową analizę objętości i kształtu.
-
-- Interpretacja i wnioski
-Obecność jasnego, kontrastującego obszaru wskazuje na potencjalne uszkodzenie lub guza. Jego wielkość i kształt mogą być mierzone w pikselach,
-a następnie przeliczane na wartości w milimetrach sześciennych. Taka segmentacja pozwala:
-ocenić progresję zmiany między kolejnymi badaniami
-porównać efekty leczenia
-zbudować zbiór cech teksturalnych do klasyfikacji typów nowotworów
-
-- Jakie dane można wyciągnąć z tego zdjęcia
-Wolumen obszaru zmiany (liczba pikseli × rozdzielczość przestrzenna).
-Wskaźniki intensywności: średnia, odchylenie standardowe, asymetria.
-Cechy kształtu: obwód, współczynnik zaokrąglenia, elongacja.
-Teksturalne cechy radiomiczne: entropia, kontrast, homogeniczność.
-Te dane mogą stanowić wektor cech do dalszych analiz statystycznych lub uczenia maszynowego, ułatwiając diagnozę i prognozę przebiegu choroby.
-
-
-- **Wizualizacja:**
-
-![Porównanie nowotworów](image/zd18.jpg)
 
 ---
 # Wykre ROC Curve dla każdej klasy
