@@ -200,20 +200,9 @@ ciemne pola poza przekątną → dużo pomyłek między konkretnymi klasami.
 # Histogram  heatmapy macierzy pomyłek
 - Co przedstawia wykres?
 Heatmapa obrazuje macierz pomyłek (confusion matrix) modelu klasyfikującego badania mózgu na trzy typy schorzeń. Dzięki niej szybko ocenisz, jak często model poprawnie rozpoznaje każdą klasę oraz gdzie myli się między nimi.
-
--  Osie wykresu
-Oś pozioma (X) pokazuje etykiety przypisane przez model (przewidywane klasy).
-Oś pionowa (Y) pokazuje rzeczywiste etykiety próbek (prawdziwe klasy).
-Dzięki temu w każdej komórce krzyżują się prawdziwa i przewidywana klasa.
-
--  Wartości w komórkach
-Każde pole zawiera liczbę przypadków o danej parze etykiet (rzeczywiste → przewidywane). Poniższa tabela zestawia wszystkie wartości:
-Prawdziwa \ Przewidywana	brain_glioma	brain_menin	brain_tumor
-brain_glioma	596	610	808
-brain_menin	535	621	848
-brain_tumor	574	585	889
+- Wartości w komórkach
+Każde pole zawiera liczbę przypadków o danej parze etykiet (rzeczywiste → przewidywane). Poniższa tabela zestawia wszystkie wartości prawdziwa i przewidywana	
 Liczby na przekątnej (596, 621, 889) to poprawne klasyfikacje. Pola poza przekątną to pomyłki między określonymi parami klas.
-
 -  Znaczenie kolorów
 Gradient od jasnoniebieskiego do ciemnoniebieskiego wskazuje liczbę przypadków w komórce:
 Jasny kolor oznacza mniejszą liczbę (ok. 535–610).
@@ -229,29 +218,12 @@ Intensywność barwy pozwala w mig zidentyfikować, gdzie model ma najwięcej tr
 # Szczegółowy opis wykresu: Macierz pomyłek (confusion matrix)
 -  Co przedstawia wykres?
 To heatmapa macierzy pomyłek klasyfikatora rozpoznającego trzy schorzenia mózgu:
-brain_glioma
-brain_menin
-brain_tumor
 Pozwala zobaczyć, ile próbek każdej prawdziwej klasy zostało poprawnie rozpoznanych, a ile przypisano błędnie do innych kategorii.
 
--  Osie wykresu
-Oś pozioma (X): przewidywane etykiety (predykcje modelu) – brain_glioma, brain_menin, brain_tumor
-Oś pionowa (Y): rzeczywiste etykiety (etykiety prawdziwe) – brain_glioma, brain_menin, brain_tumor
-Każda komórka leży na przecięciu wiersza (prawdziwa klasa) i kolumny (przewidywana klasa).
 
 -  Wartości w komórkach
 Wartość w każdym kwadracie to liczba próbek z danej pary:
 prawdziwa klasa → przewidywana klasa
-Konkretne liczby:
-brain_glioma → brain_glioma: 149
-brain_glioma → brain_menin: 239
-brain_glioma → brain_tumor: 1626
-brain_menin → brain_glioma: 134
-brain_menin → brain_menin: 221
-brain_menin → brain_tumor: 1649
-brain_tumor → brain_glioma: 136
-brain_tumor → brain_menin: 231
-brain_tumor → brain_tumor: 1681
 Liczby na przekątnej (149, 221, 1681) to poprawne klasyfikacje, pozostałe to pomyłki modelu.
 
 -  Znaczenie kolorów
@@ -267,22 +239,8 @@ obszary wymagające poprawy (ciemniejsze pola poza przekątną)
 
 ---
 # Historgram  macierzy pomyłek
--  Co przedstawia wykres
-Ta heatmapa pokazuje, jak model klasyfikujący typy nowotworów mózgu radzi sobie na zestawie treningowym. Każdy kwadrat to liczba przypadków, w których prawdziwa klasa (wiersz) została przypisana do klasy przewidywanej (kolumna).
-
--  Osie wykresu
-Oś pozioma (X): etykiety przewidywane przez model
-Oś pionowa (Y): etykiety rzeczywiste (prawdziwe)
-Kategorie na obu osiach to brain_glioma, brain_menin oraz brain_tumor.
-
--  Wartości w kwadratach
-Prawdziwa \ Przewidywana	brain_glioma	brain_menin	brain_tumor
-brain_glioma	529	505	980
-brain_menin	529	490	985
-brain_tumor	484	514	1050
-Komórki na przekątnej (529, 490, 1050) to poprawne klasyfikacje.
-Pozostałe liczby to błędne przewidywania modelu.
-
+-  Ta heatmapa pokazuje, jak model klasyfikujący typy nowotworów mózgu radzi sobie na zestawie treningowym. Każdy kwadrat to liczba przypadków, w których prawdziwa klasa (wiersz) została przypisana do klasy przewidywanej (kolumna).
+-  Wartości w kwadratach prawdziwa i przewidywana. Komórki na przekątnej (529, 490, 1050) to poprawne klasyfikacje.Pozostałe liczby to błędne przewidywania modelu.
 -  Znaczenie kolorów
 Gradient od jasnoniebieskiego do ciemnoniebieskiego odzwierciedla liczbę próbek:
 Jasny odcień: niewiele przypadków w danej kombinacji
@@ -295,18 +253,12 @@ Dzięki temu widać, gdzie model najczęściej trafia i gdzie się my
 
 ---
 # Obraz przekroju mózgu pozyskany w sekwencji T1-z kontrastem
-
 - Co przedstawia obraz
 Na obrazie widzimy przekrój mózgu pozyskany w sekwencji T1-z kontrastem, oznaczony jako „VAL Predicted class: 0”.
 Obraz jest w skali szarości i pokryty maską segmentacyjną,
 gdzie różne odcienie wskazują na różne typy tkanek lub obszary patologiczne.
 Jasne, niemal białe pole w górnej części centralnej to najbardziej podejrzany obszar,
  mogący odpowiadać zmianie nowotworowej lub obszarowi z wysokim wzmocnieniem kontrastu.
-
-- Osie obrazu
-Oś pozioma (X): wartości od 0 do 120 odpowiadają pikselom w kierunku lewej–prawej.
-Oś pionowa (Y): wartości od 0 do 120 odpowiadają pikselom w kierunku góra–dół.
-Skala pikseli jest jednorodna, co pozwala na bezpośrednie szacowanie odległości i powierzchni w obrębie przekroju.
 
 - Struktury i segmentacja
 Obszary o średniej intensywności (szare): zdrowe tkanki mózgowe, typowo istota biała i szara.
@@ -328,28 +280,21 @@ Cechy kształtu: obwód, współczynnik zaokrąglenia, elongacja.
 Teksturalne cechy radiomiczne: entropia, kontrast, homogeniczność.
 Te dane mogą stanowić wektor cech do dalszych analiz statystycznych lub uczenia maszynowego, ułatwiając diagnozę i prognozę przebiegu choroby.
 
-
 - **Wizualizacja:**
 
 ![Porównanie nowotworów](image/zd18.jpg)
 
-
 ---
-
 # Histogram błędnych predykcji
  - To histogram ilustrujący porównanie liczby poprawnych i błędnych predykcji modelu klasyfikacyjnego. Pokazuje, jak wiele przypadków model sklasyfikował prawidłowo, a ile przypadków skategoryzował niewłaściwie.
-
 - Oś pozioma (X) – Typ predykcji
 Dwie kategorie:
 Poprawne – liczba przypadków, w których model dokonał właściwej klasyfikacji
 Błędne – liczba przypadków, w których model pomylił się w klasyfikacji
-
 - Oś pionowa (Y) – Count
 Pokazuje liczbę przypadków (obserwacji) dla każdej kategorii X.
 Skala od 0 do 6 000, dostosowana tak, by uwzględnić zarówno dużą liczbę poprawnych, jak i relatywnie niewielką liczbę błędnych predykcji.
-
-- Co przedstawiają słupki?
-Wysokość słupka odpowiada liczbie obserwacji w danej kategorii:
+-Wysokość słupka odpowiada liczbie obserwacji w danej kategorii:
 Słupek „Poprawne” sięga prawie do 6 000, co oznacza, że model dokonał prawidłowej klasyfikacji w niemal wszystkich przypadkach.
 Słupek „Błędne” jest bardzo niski (kilkadziesiąt przypadków), co wskazuje na niewielki odsetek pomyłek.
 
@@ -363,22 +308,11 @@ Minimalna liczba błędów: niski słupek „Błędne” świadczy o skutecznoś
 ![Porównanie nowotworów](image/zd19.jpg)
 
 ---
-- Ten histogram (wykres słupkowy) pokazuje, jak model klasyfikacyjny rozdzielił swoje predykcje pomiędzy trzy klasy:
-Klasa 0.00
-Klasa 1.00
-Klasa 2.00
-Wizualizacja pozwala ocenić, czy model przewiduje klasy równomiernie, czy też faworyzuje którąś z nich.
-
-- Oś pozioma (X) – Klasa
-Przedstawia trzy możliwe klasy, które model może przypisać:
-0.00
-1.00
-2.00
-Oś zawiera również pomocnicze wartości pośrednie (np. 0.25, 0.50), ale tylko trzy słupki mają rzeczywiste wartości predykcji.
-
-- Oś pionowa (Y) – Liczba predykcji
-Pokazuje, ile razy dana klasa została przewidziana przez model.
-Skala sięga od 0 do 2000, z podziałką co 250.
+# Ten histogram (wykres słupkowy) pokazuje, jak model klasyfikacyjny rozdzielił swoje predykcje pomiędzy trzy klasy:
+- Klasa 0.00
+- Klasa 1.00
+- Klasa 2.00
+- Wizualizacja pozwala ocenić, czy model przewiduje klasy równomiernie, czy też faworyzuje którąś z nich.
 
 - Co oznaczają słupki?
 Słupek dla klasy 0.00: ok. 1900 predykcji
@@ -398,8 +332,7 @@ Równomierny rozkład może świadczyć o dobrym wyważeniu modelu, ale warto sp
 
 ---
 # Wykre ROC Curve dla każdej klasy
-- Co przedstawia wykres?
-Ten wykres to krzywa ROC (Receiver Operating Characteristic), która pokazuje, jak dobrze model rozróżnia między klasami 0, 1 i 2. Każda linia odpowiada jednej klasie, a wartość AUC (Area Under the Curve) mówi o skuteczności klasyfikacji.
+- Ten wykres to krzywa ROC (Receiver Operating Characteristic), która pokazuje, jak dobrze model rozróżnia między klasami 0, 1 i 2. Każda linia odpowiada jednej klasie, a wartość AUC (Area Under the Curve) mówi o skuteczności klasyfikacji.
 
 - Oś pozioma (False Positive Rate)
 Pokazuje odsetek negatywnych przykładów błędnie zaklasyfikowanych jako pozytywne
