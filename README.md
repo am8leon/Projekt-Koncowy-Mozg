@@ -14,11 +14,11 @@ z wykorzystaniem konwolucyjnych sieci neuronowych
 8. Podsumowanie i Rekomendacje  
 
 ---
-# 1. Cel stworzenia modelu
+# Cel stworzenia modelu
 Celem projektu było opracowanie modelu głębokiego uczenia (CNN), który automatycznie klasyfikuje obrazy MRI mózgu na trzy typy guzów: glioma, meningioma i guzy przysadki.
 Model ma wspomóc diagnostykę radiologiczną poprzez przyspieszenie i zwiększenie dokładności wykrywania oraz klasyfikacji nowotworów.
 ---
-# 2. Dane i wstępne przetwarzanie
+# Dane i wstępne przetwarzanie
 Dane podzielone zostały na zbiory: train, validation, test w strukturze katalogowej.
 Obrazy były skalowane do rozmiaru 128x128 pikseli i przeskalowane wartościami rescale=1./255.
 Wykorzystano augmentację danych (obrót, przesunięcia, zoom, odbicia), co zwiększa różnorodność zbioru treningowego i ogranicza przeuczenie.
@@ -95,75 +95,11 @@ Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały 
 
 
 ---
-# Podsumowanie modelu tabela  szczegółowy spis warstw sieci konwolucyjnej wraz z rozmiarami wyjść i liczbą parametrów każdej z nich:
-
-
-|Nazwa warstwy (typ)            |Kształt wyjściowy     | Parametry                                                         |
-| ----------------------------- | ---------------------| ----------------------------------------------------------------- |
-| conv2d (Conv2D)               | (None, 126, 126, 32) | 896 Pierwsza warstwa konwolucyjna z 32 filtrami                   |  
-| max_pooling2d (MaxPooling2D)  | (None, 63, 63, 32)   | 0 Redukuje wymiary połowę przez max‐pooling                       | 
-| conv2d_1 (Conv2D)             | (None, 30, 30, 64)   | 18 496 Druga konwolucja z 64 filtrami                             | 
-| max_pooling2d_1 (MaxPooling2D)| (None, 30, 30, 64)   | 0 Pooling zachowujący kształt (np. ze względu na padding)         | 
-| conv2d_2 (Conv2D)             | (None, 28, 28, 128)  | 73 856 Trzecia konwolucja z 128 filtrami                          | 
-| max_pooling2d_2 (MaxPooling2D)| (None, 14, 14, 128)  | 0 Kolejne zmniejszenie wymiarów.                                  |
-| flatten (Flatten)             | (None, 25 088)       | 0 Spłaszczenie wielowymiarowej kostki do wektora                  |
-| dense (Dense)                 | (None, 128)          | 3 211 392 Pełne połączenie do 128 neuronów.                       |
-| dropout (Dropout)             | (None, 128)          | 0 Losowe wyłączanie części neuronów w trakcie treningu            |
-| dense_1 (Dense)               | (None, 3)            | 387 Warstwa wyjściowa z 3 neuronami (np. klasyfikacja na 3 klasy) | 
-
-- Pod tabelą znajduje się podsumowanie danych:
-- Całkowita liczba parametrów: 3 305 027
-- – Parametry trenowalne: 3 305 027
-- – Parametry nietrenowalne: 0 
-
-
-
-- **Wizualizacja:**
-
-![Tabela podsumowane modelu](image/zd2.jpg)
-
-
----
-# Raport klasyfikacji 
-- Raport pokazuje niemal idealne wyniki modelu – dla meningioma i guza mózgu precyzja i czułość są na poziomie 100%, 
-a dla glejaka mamy recall 99% przy pozostałych metrykach 100%. Oznacza to, że model praktycznie zawsze poprawnie klasyfikuje typ nowotworu.
-
-
-| Rodzaj góza mózgu klasa      | Precision (precyzja | Recall (czułość)| F1-score        |Support         |
-| -----------------------------| --------------------|-----------------|-----------------|----------------|
-| brain_glioma                 | precision 1.00      | recall 0.99     | f1-score 1.00   | support 2014   |
-| brain_menin                  | precision 1.00      | recall 1.00     | f1-score 1.00   | support 2004   |             
-| brain_tumor                  | precision 1.00      | recall 1.00     | f1-score 1.00   | support 2048   |
-
-
-| Podsumowanie                 |                |             |               |               |
-|------------------------------|----------------|-------------|---------------|---------------|
-| Accuracy (dokładność ogólna) |       -        |      -      | f1-score 1.00 | support: 6066 |
-| Macro avg                    | precision 1.00 | recall 1.00 | f1-score 1.00 | support: 6066 |                        
-| Weighted avg                 | precision 1.00 | recall 1.00 | f1-score 1.00 | support: 6066 | 
-
-
----
-# 3. Eksploracyjna analiza danych
-Wyświetlono przykładowe obrazy z etykietami.
-- Stworzono histogramy:
-- Skuteczności modelu (przybliżona rozkładowo normalnie).
-- Parametrów guza (intensywność, wielkość, położenie, rodzaj).
-- Czynników operacyjności (rozmiar, lokalizacja, zaawansowanie).
-- Analiza błędów modelu (z pomocą Grad-CAM i histogramów błędnych predykcji).
-- Rozkład klas został przeanalizowany wizualnie dla lepszego zrozumienia balansu danych.
-
----
 
 # Histogram Skuteczności modelu
 - Wykres dokładności treningu i walidacji
 
 - Wykres ilustruje postęp w nauce modelu oraz porównuje jego wydajność na danych treningowych i walidacyjnych.
-- Oś pozioma (X) – Epoki Każdy punkt na osi X to kolejna epoka treningu, czyli pełne przejście przez cały zestaw treningowy (1, 2, …, 10).
-- Oś pionowa (Y) – Dokładność Pokazuje, jaki odsetek przykładów model sklasyfikował prawidłowo (zakres od 0,55 do 0,85, czyli 55–85 %).
-- Linie na wykresie 
-• Niebieska linia – dokładność na zbiorze treningowym. Rosnący trend oznacza, że model coraz lepiej „zapamiętuje” dane treningowe. 
-• Pomarańczowa linia – dokładność na zbiorze walidacyjnym (testowym). Dzięki niej widzimy, jak model radzi sobie z danymi, których nie widział podczas treningu.
 - Co z tego wynika?
 – Jeśli obie linie rosną równolegle i niewiele się od siebie różnią, model dobrze generalizuje.
 – Jeśli niebieska rośnie szybciej niż pomarańczowa (duży rozjazd), może występować przeuczenie (overfitting).
@@ -174,14 +110,9 @@ Wyświetlono przykładowe obrazy z etykietami.
 ![Skutecznosc wykrywania raka mózgu](image/zd4.jpg)
 
 ---
-# 4. Wyniki modelu bez rozszerzeń (baseline)
-
-# Porównanie validation accuraci
+# Wyniki modelu bez rozszerzeń (baseline) Porównanie validation accuraci
 
 - Ten histogram pokazuje rozkład dokładności modelu dla 10 epok treningu, z dodatkowymi liniami ilustrującymi trend.
-- Oś X: numer epoki (1–10). • Oś Y: wartość dokładności (Accuracy), czyli odsetek poprawnych przewidywań.
-Słupki: liczba epok, ale w tym przypadku każdy słupek to punkt danych dokładność w konkretnej epoce.
-- OŚ Y: dokładność modelu.
 - Linie: Niebieska linia: dokładność na zbiorze treningowym w kolejnych epokach. Rosnący kształt oznacza, że model uczy się coraz lepiej dopasowywać do danych treningowych. 
  Pomarańczowa linia: dokładność na zbiorze walidacyjnym (testowym). Porównując ją z niebieską, widzimy, jak model generalizuje na nowych danych. oraz podobny przebieg obu linii oznacza dobrą generalizację, większa rozbieżność to przeuczenie.”
 
@@ -193,14 +124,6 @@ Słupki: liczba epok, ale w tym przypadku każdy słupek to punkt danych dokład
 # Wykres Macierzy Pomyłek
 
 - To macierz pomyłek (confusion matrix) dla naszego modelu „B_no_aug”.
-- Oś pozioma (X): etykiety przewidywane przez model (predicted) – kolejno:
-- brain_glioma
-- brain_menin
-- brain_tumor
-- Oś pionowa (Y): etykiety prawdziwe (true) – w tej samej kolejności:
-- brain_glioma
-- brain_menin
-- brain_tumor
 W każdej komórce widzisz liczbę próbek o danej prawdziwej (wiersz) i przewidywanej (kolumna) klasie.
 – Komórki na przekątnej (np. w lewym górnym rogu 2001) to prawidłowe trafienia (true positives).
 – Komórki poza przekątną to błędy klasyfikacji (np. 7 przypadków glioma zaklasyfikowano jako menin).
@@ -227,34 +150,16 @@ Zintegrowano z MLFLOW do śledzenia metryk.
 # Histogram Macierz pomyłek (confusion matrix)
 
 -  Co przedstawia wykres?
-To macierz pomyłek dla modelu klasyfikującego obrazy na trzy kategorie:
-• brain_glioma
-• brain_menin
-• brain_tumor
-Pozwala ocenić, jak często model poprawnie rozpoznaje każdą klasę i gdzie popełnia błędy.
-
--  Oś pozioma (X) – Przewidywana klasa
-Kolumny to klasy przypisane przez model:
-• brain_glioma
-• brain_menin
-• brain_tumor
-Każda kolumna pokazuje, ile próbek zostało zaklasyfikowanych jako dana etykieta.
-
--  Oś pionowa (Y) – Prawdziwa klasa
-Wiersze to rzeczywiste etykiety w zbiorze testowym:
-• brain_glioma
-• brain_menin
-• brain_tumor
-Każdy wiersz wskazuje, z której klasy pochodziły próbki.
-
+- To macierz pomyłek dla modelu klasyfikującego obrazy na trzy kategorie:
+- Pozwala ocenić, jak często model poprawnie rozpoznaje każdą klasę i gdzie popełnia błędy.
+- Każda kolumna pokazuje, ile próbek zostało zaklasyfikowanych jako dana etykieta.
+- Każdy wiersz wskazuje, z której klasy pochodziły próbki.
 - Co przedstawiają kwadraty i liczby
 W każdym kwadracie znajduje się liczba próbek, które mają daną parę (prawdziwa klasa → przewidywana klasa).
-
 - Przykładowe wartości:
 W kwadracie na przecięciu wiersza brain_glioma i kolumny brain_glioma jest 522 – tyle przypadków glejaka poprawnie sklasyfikowano.
 W przecięciu brain_glioma → brain_menin mamy 752 – tyle glejaków model uznał błędnie za oponiaki.
 Analogicznie, np. brain_tumor → brain_tumor = 778 to prawidłowe rozpoznania guzów.
-
 - Co oznaczają kolory?
 Skala koloru od jasnobłękitnego (niskie wartości) do ciemnoniebieskiego (wysokie wartości).
 Im ciemniejszy kwadrat, tym więcej próbek trafiło do tej kombinacji prawdziwej vs. przewidywanej klasy.
@@ -270,36 +175,13 @@ Kolory ułatwiają szybką identyfikację, gdzie model radzi sobie najlepiej (ci
 Heatmapa macierzy pomyłek (confusion matrix)
 - Co przedstawia wykres?
 To heatmapa macierzy pomyłek dla modelu klasyfikującego obrazy mózgu na trzy kategorie:
-• brain_glioma
-• brain_menin
-• brain_tumor
+- brain_glioma
+- brain_menin
+- brain_tumor
 Pozwala ocenić, jak często model poprawnie identyfikuje każdą klasę oraz gdzie najczęściej popełnia błędy.
-
-- Oś pozioma (X) – Przewidywane etykiety
-Kolumny odpowiadają klasom, które model przypisał próbkom:
-• brain_glioma
-• brain_menin
-• brain_tumor
-Każda kolumna pokazuje, ile przykładów zostało zaklasyfikowanych jako dana kategoria.
-
--  Oś pionowa (Y) – Rzeczywiste etykiety
-Wiersze odpowiadają faktycznym etykietom w zbiorze testowym:
-• brain_glioma
-• brain_menin
-• brain_tumor
-Każdy wiersz to zbiór próbek rzeczywiście należących do tej klasy.
-
 -  Wartości w komórkach
 W każdym kwadracie znajduje się liczba próbek o określonej parze (prawdziwa klasa → przewidywana klasa).
-- brain_glioma → brain_glioma: 677
-- brain_glioma → brain_menin: 660
-- brain_glioma → brain_tumor: 677
-- brain_menin → brain_glioma: 679
-- brain_menin → brain_menin: 659
-- brain_menin → brain_tumor: 666
-- brain_tumor → brain_glioma: 671
-- brain_tumor → brain_menin: 677
-- brain_tumor → brain_tumor: 700
+
 Kwadraty sumują się do całkowitej liczby próbek testowych i pokazują zarówno poprawne klasyfikacje (diagonalne), jak i pomyłki (poza przekątną).
 
 -  Kolory – co oznaczają
