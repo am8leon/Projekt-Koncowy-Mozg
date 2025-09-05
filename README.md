@@ -18,36 +18,12 @@ z wykorzystaniem konwolucyjnych sieci neuronowych
 Celem projektu było opracowanie modelu głębokiego uczenia (CNN), który automatycznie klasyfikuje obrazy MRI mózgu na trzy typy guzów: glioma, meningioma i guzy przysadki.
 Model ma wspomóc diagnostykę radiologiczną poprzez przyspieszenie i zwiększenie dokładności wykrywania oraz klasyfikacji nowotworów.
 ---
-
-# Uruchomienie projektu
-. Montowanie Dysku Google
-- Kod:  
-  ```python
-  from google.colab import drive
-  drive.mount('/content/drive')
----
 # 2. Dane i wstępne przetwarzanie
 Dane podzielone zostały na zbiory: train, validation, test w strukturze katalogowej.
 Obrazy były skalowane do rozmiaru 128x128 pikseli i przeskalowane wartościami rescale=1./255.
 Wykorzystano augmentację danych (obrót, przesunięcia, zoom, odbicia), co zwiększa różnorodność zbioru treningowego i ogranicza przeuczenie.
 
 ---
-# Przygotowanie danych
-Dane treningowe: z augmentacją
-Dane walidacyjne i testowe: tylko reskalowanie
-- Kod:  
-  ```python
-  ImageDataGenerator(rescale=1./255, ...)
-
----
-# Przygotowanie danych
-Dane treningowe: z augmentacją
-Dane walidacyjne i testowe: tylko reskalowanie
-- Kod:  
-  ```python
-  ImageDataGenerator(rescale=1./255, ...)
-  
-----
 # Budowa modelu CNN
 Model składa się z 3 warstw konwolucyjnych, poolingów, warstwy Dropout i gęstej warstwy wyjściowej:
 
@@ -104,12 +80,7 @@ Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały 
 - Porównanie wariantów pozwala dobrać najlepszą kombinację hiperparametrów i architektury.
 
 ---
-- Na obrazku widzisz pięć skanów rezonansem magnetycznym (MRI) mózgu, każdy z nich oznaczony etykietą „0” lub „1”:
-- Różne płaszczyzny cięcia – Część skanów to przekroje osiowe (widok z góry na dół mózgu), jeden to przekrój strzałkowy (bok mózgu).
-- Etykiety binarne – „0” prawdopodobnie oznacza brak zmiany (zdrowy mózg), – „1” oznacza obecność patologii (np. guz, zmiana ogniskowa).
-- Rozmieszczenie etykiet – Pierwszy i piąty obrazek mają etykietę „0” – brak wykrytej zmiany,
-- środkowe trzy są oznaczone „1” – tu występuje zmiana, którą model (lub radiolog) oznaczył jako istotną.
-- Cel prezentacji – Takie przykłady służą do zobrazowania różnicy między zdrowymi i chorymi skanami w zadaniu automatycznej klasyfikacji czy wspomagania diagnostyki.
+-  Cel Takie przykłady służą do zobrazowania różnicy między zdrowymi i chorymi skanami w zadaniu automatycznej klasyfikacji czy wspomagania diagnostyki.
 
 - Klasy gózów mózgu
 - brain_glioma – Zawiera obrazy guzów glejowych, które powstają z komórek glejowych w mózgu. Mogą mieć różny stopień złośliwości.
@@ -153,15 +124,7 @@ Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały 
 
 ---
 # Raport klasyfikacji 
-- raport klasyfikacji (classification report) dla modelu rozróżniającego trzy typy zmian mózgowych:
-- Rodzaj góza mózgu klasa :
-- Metryki dla każdej klasy: 
-- Precision (precyzja odsetek poprawnie wykrytych próbek danej klasy spośród wszystkich rzeczywistych próbek tej klasy.
-- Recall (czułość): odsetek poprawnie wykrytych próbek danej klasy spośród wszystkich rzeczywistych próbek tej klasy
-- F1-score: średnia harmoniczna precyzji i recall, łącząca oba wskaźniki w jednym
-- Support: liczba prawdziwych  próbek danej klasy w zbiorze testowym.
-
-- Interpretacja w prezentacji: „Raport pokazuje niemal idealne wyniki modelu – dla meningioma i guza mózgu precyzja i czułość są na poziomie 100%, 
+- Raport pokazuje niemal idealne wyniki modelu – dla meningioma i guza mózgu precyzja i czułość są na poziomie 100%, 
 a dla glejaka mamy recall 99% przy pozostałych metrykach 100%. Oznacza to, że model praktycznie zawsze poprawnie klasyfikuje typ nowotworu.
 
 
@@ -177,11 +140,6 @@ a dla glejaka mamy recall 99% przy pozostałych metrykach 100%. Oznacza to, że 
 | Accuracy (dokładność ogólna) |       -        |      -      | f1-score 1.00 | support: 6066 |
 | Macro avg                    | precision 1.00 | recall 1.00 | f1-score 1.00 | support: 6066 |                        
 | Weighted avg                 | precision 1.00 | recall 1.00 | f1-score 1.00 | support: 6066 | 
-
-
-- **Wizualizacja:**
-
-![Raport klasyfikacji modelu](image/zd12.jpg)
 
 
 ---
