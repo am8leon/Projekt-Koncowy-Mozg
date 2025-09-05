@@ -14,29 +14,17 @@ z wykorzystaniem konwolucyjnych sieci neuronowych
 8. Podsumowanie i Rekomendacje  
 
 ---
-# Cel stworzenia modelu
+# 1. Cel stworzenia modelu
 Celem projektu było opracowanie modelu głębokiego uczenia (CNN), który automatycznie klasyfikuje obrazy MRI mózgu na trzy typy guzów: glioma, meningioma i guzy przysadki.
 Model ma wspomóc diagnostykę radiologiczną poprzez przyspieszenie i zwiększenie dokładności wykrywania oraz klasyfikacji nowotworów.
 ---
-# Dane i wstępne przetwarzanie
+# 2. Dane i wstępne przetwarzanie
 Dane podzielone zostały na zbiory: train, validation, test w strukturze katalogowej.
 Obrazy były skalowane do rozmiaru 128x128 pikseli i przeskalowane wartościami rescale=1./255.
 Wykorzystano augmentację danych (obrót, przesunięcia, zoom, odbicia), co zwiększa różnorodność zbioru treningowego i ogranicza przeuczenie.
 
 ---
-# Budowa modelu CNN
-Model składa się z 3 warstw konwolucyjnych, poolingów, warstwy Dropout i gęstej warstwy wyjściowej:
-
-- Kod:  
-  ```python
-  model = Sequential([
-    Conv2D(32, (3, 3), activation='relu', input_shape=(128, 128, 3)),
-    MaxPooling2D(2, 2),
-    ...
-    Dense(3, activation='softmax')
-  ])
-
----
+# 3. Eksploracyjna analiza danyc
 # Trening modelu
 Model trenuje przez 10 epok z wykorzystaniem funkcji strat categorical_crossentropy i optymalizatora Adam.
 
@@ -72,7 +60,7 @@ Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały 
 – Dlaczego: pozwala zobaczyć, które klasy są mylone i jak model radzi sobie z różnymi typami guzów.
 
 ----
-# Dlaczego zastosowano te techniki?
+# Dlaczego zastosowano te techniki
 - Convolutional Neural Network to sprawdzony standard w zadaniach analizy obrazów medycznych.
 - Augmentacja i normalizacja poprawiają uogólnianie i stabilność uczenia.
 - BatchNormalization i Adam przyspieszają zbieżność.
@@ -80,7 +68,7 @@ Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały 
 - Porównanie wariantów pozwala dobrać najlepszą kombinację hiperparametrów i architektury.
 
 ---
-# Przykłady obrazów uzywanych przez model 
+# Przykłady obrazów używanych przez model 
 - Takie przykłady służą do zobrazowania różnicy między zdrowymi i chorymi skanami w zadaniu automatycznej klasyfikacji czy wspomagania diagnostyki.
 
 - Klasy gózów mózgu
@@ -110,6 +98,7 @@ Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały 
 ![Skutecznosc wykrywania raka mózgu](image/zd4.jpg)
 
 ---
+# 4. Wyniki modelu bez zroszeżeń
 # Wyniki modelu bez rozszerzeń (baseline) Porównanie validation accuraci
 
 - Ten histogram pokazuje rozkład dokładności modelu dla 10 epok treningu, z dodatkowymi liniami ilustrującymi trend.
@@ -136,6 +125,7 @@ Ciemniejszy kolor oznacza większą liczbę przypadków, a pasek kolorów z boku
 ---
 
 # 5. Wyniki modelu z rozszerzeniami 
+
 Przeprowadzono serię eksperymentów z różnymi wariantami modelu:
 Dropout: lepsze generalizowanie (redukcja przeuczenia).
 Batch Normalization: stabilniejsze uczenie.
