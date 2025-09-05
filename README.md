@@ -24,7 +24,7 @@ Obrazy były skalowane do rozmiaru 128x128 pikseli i przeskalowane wartościami 
 Wykorzystano augmentację danych (obrót, przesunięcia, zoom, odbicia), co zwiększa różnorodność zbioru treningowego i ogranicza przeuczenie.
 
 ---
-# 3. Eksploracyjna analiza danyc
+# 3. Eksploracyjna analiza danych
 # Trening modelu
 Model trenuje przez 10 epok z wykorzystaniem funkcji strat categorical_crossentropy i optymalizatora Adam.
 
