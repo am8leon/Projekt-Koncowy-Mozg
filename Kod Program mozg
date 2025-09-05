@@ -19,7 +19,7 @@ from tensorflow.keras.layers import (
 from sklearn.metrics import confusion_matrix, classification_report
 
 
-#  1. Montowanie Dysku Google i ustawienie ścieżki do danych
+#   Montowanie Dysku Google i ustawienie ścieżki do danych
 drive.mount('/content/drive')
 
 # Ścieżka do folderu z danymi na Dysku Google
@@ -30,7 +30,7 @@ if os.path.exists(dataset_path):
 else:
     print("Folder nie istnieje, sprawdź ścieżkę:", dataset_path)
 
-#  2. Przygotowanie danych
+# Przygotowanie danych
 
 # Generator danych dla treningu – z augmentacją
 train_datagen = ImageDataGenerator(
@@ -80,7 +80,7 @@ for i in range(5):
     axes[i].set_title(f'Label: {label_index}')
 plt.show()
 
-# 3. Definicja modelu CNN
+# Definicja modelu CNN
 
 def create_cnn_model():
     model = Sequential([
@@ -111,7 +111,7 @@ model.summary()
 
 history = model.fit(train_data, validation_data=val_data, epochs=10)
 
-# 5. Wizualizacja wyników
+# Wizualizacja wyników
 # Wykres dokładności treningowej i walidacyjnej
 plt.figure(figsize=(10, 5))
 epochs = range(1, len(history.history['accuracy']) + 1)  # Numeracja epok od 1 do 10
@@ -135,15 +135,6 @@ sns.histplot(accuracy_scores, bins=15, kde=True)
 plt.xlabel("Skuteczność modelu")
 plt.ylabel("Liczba przypadków")
 plt.title("Histogram skuteczności wykrywania raka mózgu")
-plt.show()
-
-# Histogramy parametrów guza
-fig, axes = plt.subplots(2, 2, figsize=(12, 10))
-titles = ["Intensywność zmian", "Wielkość nowotworu", "Położenie guza", "Rodzaj nowotworu","Stopień zaawansowania"]
-for i, ax in enumerate(axes.flatten()):
-    sns.histplot(tumor_parameters[:, i], bins=15, kde=True, ax=ax)
-    ax.set_title(titles[i])
-plt.tight_layout()
 plt.show()
 
 # 2. Przygotowanie generatorów
@@ -176,7 +167,7 @@ def create_generators(datagen):
     )
     return train, val, test
 
-# 3. Funkcja budująca model
+# Funkcja budująca model
 def build_model(variant='baseline', lr=1e-3):
     layers = []
     # 3x Conv→Pool
@@ -199,7 +190,7 @@ def build_model(variant='baseline', lr=1e-3):
     )
     return model
 
-# 4. Definicja eksperymentów
+# Definicja eksperymentów
 experiments = [
     # (nazwa, datagen, model_variant, learning_rate)
     ("A_basic_aug",   aug_datagen,        'baseline',         1e-3),
@@ -211,7 +202,7 @@ experiments = [
 
 results = {}
 
-# 5. Pętla trenowania
+# Pętla trenowania
 for name, datagen, variant, lr in experiments:
     print(f"\n--- Startujemy eksperyment: {name} ---")
     train_gen, val_gen, test_gen = create_generators(datagen)
@@ -229,7 +220,7 @@ for name, datagen, variant, lr in experiments:
         'test_gen': test_gen
     }
 
-# 6. Porównawcze wykresy accuracy & val_accuracy
+# Porównawcze wykresy accuracy & val_accuracy
 plt.figure(figsize=(12, 6))
 for name, res in results.items():
     epochs = range(1, len(res['history']['accuracy']) + 1)
@@ -240,14 +231,14 @@ plt.ylabel("Val Accuracy")
 plt.legend()
 plt.show()
 
-# 7. Wybieramy najlepszy model na podstawie max val_accuracy
+# Wybieramy najlepszy model na podstawie max val_accuracy
 best_name, best_info = max(
     results.items(),
     key=lambda kv: max(kv[1]['history']['val_accuracy'])
 )
 print(f"\nNajlepszy wariant: {best_name}")
 
-# 8. Ewaluacja na zbiorze testowym + macierz pomyłek
+# Ewaluacja na zbiorze testowym + macierz pomyłek
 best_model = best_info['model']
 test_gen = best_info['test_gen']
 test_steps = test_gen.samples // test_gen.batch_size + 1
@@ -257,7 +248,7 @@ y_true = test_gen.classes
 labels = list(test_gen.class_indices.keys())
 
 
-# 8a. Macierz pomyłek
+# Macierz pomyłek
 cm = confusion_matrix(y_true, y_pred)
 plt.figure(figsize=(6,6))
 sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
@@ -267,7 +258,7 @@ plt.ylabel("True")
 plt.title(f"Confusion Matrix: {best_name}")
 plt.show()
 
-# 8b. Raport klasyfikacji
+# Raport klasyfikacji
 print("\nClassification Report:\n")
 print(classification_report(y_true, y_pred, target_names=labels))
 
