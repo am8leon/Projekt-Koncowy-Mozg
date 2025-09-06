@@ -359,6 +359,21 @@ Linia pokazuje, że z czasem model poprawiał swoje wyniki, z drobnym spadkiem w
 ![Porównanie nowotworów](image/zd3o.jpg)
 
 ---
+# Wykres krzywe strat 
+- Ten wykres pokazuje, jak zmieniała się wartość straty (loss) w trakcie uczenia modelu. Strata to miara błędu — im mniejsza, tym lepiej model dopasowuje się do danych. Wykres przedstawia zarówno wyniki na danych treningowych, jak i na danych walidacyjnych, dzięki czemu możemy ocenić, czy model uczy się w sposób prawidłowy i czy potrafi generalizować do nowych danych.
+
+- Znaczenie linii
+Niebieska linia – „Strata trening”: pokazuje, jak zmieniała się strata na danych, na których model był trenowany. Widać wyraźny trend spadkowy, co oznacza, że model coraz lepiej dopasowuje się do danych treningowych.
+
+- Pomarańczowa linia – „Strata walidacja”: przedstawia stratę na danych walidacyjnych, czyli takich, których model nie widział podczas uczenia. Jej przebieg jest bardziej falujący, ale również ogólnie maleje, co sugeruje, że model poprawia swoje wyniki także na nowych danych.
+
+- Na tym wykresie widzimy, jak zmieniała się wartość błędu modelu w trakcie treningu. Oś pozioma to kolejne epoki, a oś pionowa to wartość straty. Niebieska linia pokazuje błąd na danych treningowych, a pomarańczowa – na danych walidacyjnych. Obie linie ogólnie opadają, co oznacza, że model uczy się coraz lepiej, choć w przypadku walidacji widać większe wahania.”
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd4o.jpg)
+
+---
 # 6. Wizualizacje
 W projekcie zaimplementowano liczne wizualizacje:
 Krzywe dokładności (accuracy, val_accuracy) dla każdego eksperymentu.
