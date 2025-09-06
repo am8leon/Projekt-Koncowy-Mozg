@@ -33,27 +33,12 @@ Model trenuje przez 10 epok z wykorzystaniem funkcji strat categorical_crossentr
   history = model.fit(train_data, validation_data=val_data, epochs=10)
 
 ---
-# Eksperymenty
-Przeprowadzono kilka wariantów eksperymentów z różnymi parametrami:
 
-| Nazwa eksperymentu | Augmentacja | Wariant modelu     | Learning Rate |
-| ------------------ | ----------- | ------------------ | ------------|
-| A_basic_aug      | TAK           | baseline            | 1e-3         |
-| B_no_aug         | TAK           | baseline            | 1e-3         |
-| C_dropout        | TAK           | dropout             | 1e-3         |
-| D_batchnorm      | TAK           | batch normalization | 1e-3         |
-| E_lr_low         | TAK           | baseline            | 1e-4         |
-
----
 # Porównanie modeli
 Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały zwizualizowane na wspólnym wykresie.
 
 ---
-# Ewaluacja najlepszego modelu
-- Macierz pomyłek (confusion matrix)
-- Raport klasyfikacji (precision, recall, f1-score)
 
----
 # Ewaluacja najlepszej wersji
 - Wybór najlepszego wariantu – Na podstawie maksymalnej wartości val_accuracy.
 - Testowanie na zbiorze testowym – Predykcje → macierz pomyłek (confusion_matrix) + raport klasyfikacji (precision, recall, f1-score). 
@@ -139,11 +124,9 @@ Zintegrowano z MLFLOW do śledzenia metryk.
 ---
 # Histogram Macierz pomyłek (confusion matrix)
 
--  Co przedstawia wykres?
-- To macierz pomyłek dla modelu klasyfikującego obrazy na trzy kategorie:
-- Pozwala ocenić, jak często model poprawnie rozpoznaje każdą klasę i gdzie popełnia błędy.
-- Każda kolumna pokazuje, ile próbek zostało zaklasyfikowanych jako dana etykieta.
-- Każdy wiersz wskazuje, z której klasy pochodziły próbki.
+-  Co przedstawia wykres? To macierz pomyłek dla modelu klasyfikującego obrazy na trzy kategorie
+- Pozwala ocenić, jak często model poprawnie rozpoznaje każdą klasę i gdzie popełnia błędy.Każda kolumna pokazuje, ile próbek zostało zaklasyfikowanych jako dana etykieta.
+Każdy wiersz wskazuje, z której klasy pochodziły próbki.
 - Co przedstawiają kwadraty i liczby
 W każdym kwadracie znajduje się liczba próbek, które mają daną parę (prawdziwa klasa → przewidywana klasa).
 - Przykładowe wartości:
@@ -160,18 +143,11 @@ Kolory ułatwiają szybką identyfikację, gdzie model radzi sobie najlepiej (ci
 ![Porównanie nowotworów](image/zd13.jpg)
 
 ---
-# Macierz pomyłek (confusion matrix)
-
-Heatmapa macierzy pomyłek (confusion matrix)
-- Co przedstawia wykres?
-To heatmapa macierzy pomyłek dla modelu klasyfikującego obrazy mózgu na trzy kategorie:
-- brain_glioma
-- brain_menin
-- brain_tumor
+# Heatmapa macierzy pomyłek (confusion matrix)
+- To heatmapa macierzy pomyłek dla modelu klasyfikującego obrazy mózgu na trzy kategorie
 Pozwala ocenić, jak często model poprawnie identyfikuje każdą klasę oraz gdzie najczęściej popełnia błędy.
 -  Wartości w komórkach
 W każdym kwadracie znajduje się liczba próbek o określonej parze (prawdziwa klasa → przewidywana klasa).
-
 Kwadraty sumują się do całkowitej liczby próbek testowych i pokazują zarówno poprawne klasyfikacje (diagonalne), jak i pomyłki (poza przekątną).
 
 -  Kolory – co oznaczają
@@ -186,7 +162,6 @@ ciemne pola poza przekątną → dużo pomyłek między konkretnymi klasami.
 ![Porównanie nowotworów](image/zd14.jpg)
 
 ---
-
 # Histogram  heatmapy macierzy pomyłek
 - Co przedstawia wykres?
 Heatmapa obrazuje macierz pomyłek (confusion matrix) modelu klasyfikującego badania mózgu na trzy typy schorzeń. Dzięki niej szybko ocenisz, jak często model poprawnie rozpoznaje każdą klasę oraz gdzie myli się między nimi.
@@ -277,18 +252,10 @@ Te dane mogą stanowić wektor cech do dalszych analiz statystycznych lub uczeni
 ---
 # Histogram błędnych predykcji
  - To histogram ilustrujący porównanie liczby poprawnych i błędnych predykcji modelu klasyfikacyjnego. Pokazuje, jak wiele przypadków model sklasyfikował prawidłowo, a ile przypadków skategoryzował niewłaściwie.
-- Oś pozioma (X) – Typ predykcji
-Dwie kategorie:
-Poprawne – liczba przypadków, w których model dokonał właściwej klasyfikacji
-Błędne – liczba przypadków, w których model pomylił się w klasyfikacji
-- Oś pionowa (Y) – Count
-Pokazuje liczbę przypadków (obserwacji) dla każdej kategorii X.
-Skala od 0 do 6 000, dostosowana tak, by uwzględnić zarówno dużą liczbę poprawnych, jak i relatywnie niewielką liczbę błędnych predykcji.
--Wysokość słupka odpowiada liczbie obserwacji w danej kategorii:
-Słupek „Poprawne” sięga prawie do 6 000, co oznacza, że model dokonał prawidłowej klasyfikacji w niemal wszystkich przypadkach.
+ - Słupek „Poprawne” sięga prawie do 6 000, co oznacza, że model dokonał prawidłowej klasyfikacji w niemal wszystkich przypadkach.
 Słupek „Błędne” jest bardzo niski (kilkadziesiąt przypadków), co wskazuje na niewielki odsetek pomyłek.
 
-- Interpretacja kluczowa
+- Interpretacja wyników
 Dominacja poprawnych predykcji: model osiąga bardzo wysoką dokładność, co jest widoczne poprzez zdecydowaną przewagę słupka „Poprawne”.
 Minimalna liczba błędów: niski słupek „Błędne” świadczy o skuteczności modelu i jego niezawodności w typowych scenariuszach.
 
