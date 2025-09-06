@@ -391,6 +391,24 @@ oznaczają, że model bardzo dobrze rozpoznaje wszystkie typy zmian w mózgu, pr
 ![Porównanie nowotworów](image/zd5o.jpg)
 
 ---
+#  Przykłady  klasyfikacji mózgu
+
+- Na tym zestawieniu widzimy sześć obrazów z rezonansu magnetycznego mózgu, ułożonych w dwóch rzędach po trzy zdjęcia. Każdy obraz przedstawia przekrój mózgu pacjenta i jest opisany dwoma etykietami:
+„Prawidłowa” – czyli faktyczna diagnoza (klasa, do której należy dany przypadek).
+„Pred” – czyli przewidywana przez model diagnoza.
+
+- Co pokazuje to zdjęcie
+Każdy obraz jest przykładem pojedynczego przypadku, w którym model próbował rozpoznać typ zmiany w mózgu.
+Porównanie „Prawidłowa” i „Pred” pozwala zobaczyć, czy model zaklasyfikował obraz poprawnie, czy popełnił błąd.
+W tym przykładzie widać zarówno przypadki poprawnej klasyfikacji (gdy obie etykiety są takie same), jak i błędnej (gdy etykiety się różnią).
+Jak to można powiedzieć na prezentacji
+
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd6o.jpg)
+
+---
 # 6. Wizualizacje
 W projekcie zaimplementowano liczne wizualizacje:
 Krzywe dokładności (accuracy, val_accuracy) dla każdego eksperymentu.
