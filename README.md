@@ -334,7 +334,6 @@ Jaśniejsze pola oznaczają rzadsze przypadki.
 
 - Rodzaj danych w kwadratach
 W każdym polu znajduje się liczba całkowita – to liczba próbek (np. obrazów MRI), które wpadły do tej konkretnej kategorii rzeczywista–przewidziana.
-
 Dane te są wynikiem testu modelu na zestawie danych, którego model wcześniej nie widział.
 
 
@@ -342,6 +341,22 @@ Dane te są wynikiem testu modelu na zestawie danych, którego model wcześniej 
 - **Wizualizacja:**
 
 ![Porównanie nowotworów](image/zd2o.jpg)
+
+---
+# Wykres F1 na walidacji podczas treningu
+- Wykres liniowy pokazuje, jak zmieniała się skuteczność modelu w trakcie jego uczenia. Mierzymy ją za pomocą wskaźnika Macro F1 na zbiorze walidacyjnym, czyli na danych, których model nie widział podczas treningu, ale które służą do sprawdzania, czy model faktycznie się poprawia.
+- Znaczenie linii na wykresie
+Linia pokazuje, jak zmieniała się wartość Macro F1 w kolejnych epokach.
+Widać ogólny trend wzrostowy — model uczy się coraz lepiej, choć w połowie treningu (około 5. epoki) następuje chwilowy spadek, a następnie ponowny wzrost i osiągnięcie najwyższych wartości w końcowych epokach.
+Taki przebieg jest normalny — chwilowe spadki mogą wynikać z tego, że model „szuka” najlepszego sposobu dopasowania się do danych.
+
+- Na tym wykresie widzimy, jak zmieniała się skuteczność naszego modelu w trakcie treningu. 
+Oś pozioma to kolejne epoki, czyli etapy uczenia, a oś pionowa to wynik Macro F1 na danych walidacyjnych. 
+Linia pokazuje, że z czasem model poprawiał swoje wyniki, z drobnym spadkiem w połowie, po czym osiągnął najwyższą skuteczność pod koniec treningu.
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd3o.jpg)
 
 ---
 # 6. Wizualizacje
