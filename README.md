@@ -68,7 +68,8 @@ Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały 
 
 
 ---
-
+# Wyniki model opartego na metryce accuracy
+---
 # Histogram Skuteczności modelu
 - Wykres dokładności treningu i walidacji
 
@@ -314,6 +315,33 @@ Brak kompromisów między czułością (TPR) a specyficznością (1 – FPR).
 - **Wizualizacja:**
 
 ![Porównanie nowotworów](image/zd21.jpg)
+
+---
+# Wyniki modelu opartego o metrykę Optuna
+---
+# Heatmapa Macierz pomyłek (test)
+- Ta heatmapa to macierz pomyłek  która pokazuje, jak dobrze model klasyfikacyjny rozpoznaje trzy rodzaje zmian w mózgu: glioma, meningioma i inne guzy mózgu. Jest to narzędzie do oceny jakości działania modelu — pozwala zobaczyć, ile przypadków zostało sklasyfikowanych poprawnie, a ile błędnie.
+
+- Znaczenie poszczególnych kwadratów
+Każdy kwadrat pokazuje liczbę przypadków, które należały do danej klasy rzeczywistej (oś pionowa) i zostały zaklasyfikowane jako dana klasa przewidziana (oś pozioma).
+Kwadraty na przekątnej (od lewego górnego rogu do prawego dolnego) to poprawne klasyfikacje — im większe liczby w tych polach, tym lepiej działa model.
+Kwadraty poza przekątną to pomyłki modelu — pokazują, ile przypadków zostało źle zaklasyfikowanych i na co zostały „zamienione”.
+
+- Znaczenie kolorów
+Kolor jest tym ciemniejszy, im większa liczba przypadków w danym kwadracie.
+Najciemniejsze pola oznaczają najczęściej występujące kombinacje rzeczywistej i przewidzianej klasy.
+Jaśniejsze pola oznaczają rzadsze przypadki.
+
+- Rodzaj danych w kwadratach
+W każdym polu znajduje się liczba całkowita – to liczba próbek (np. obrazów MRI), które wpadły do tej konkretnej kategorii rzeczywista–przewidziana.
+
+Dane te są wynikiem testu modelu na zestawie danych, którego model wcześniej nie widział.
+
+
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd2o.jpg)
 
 ---
 # 6. Wizualizacje
