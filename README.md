@@ -374,6 +374,23 @@ Niebieska linia – „Strata trening”: pokazuje, jak zmieniała się strata n
 ![Porównanie nowotworów](image/zd4o.jpg)
 
 ---
+# Wykres słupkowy F1 dla poszczególnych klas (Test)
+- Ten wykres słupkowy pokazuje, jak dobrze model klasyfikacyjny rozpoznaje poszczególne typy zmian w mózgu. 
+Miarą skuteczności jest tutaj F1 score — wskaźnik, który łączy w sobie precyzję i czułość modelu. Wartość F1 mieści się w przedziale od 0 do 1, gdzie 1 oznacza perfekcyjną skuteczność.
+
+- Znaczenie słupków
+Każdy słupek odpowiada jednej klasie i pokazuje, jak dobrze model radzi sobie z jej rozpoznawaniem.
+Wysokość słupka to wartość F1 — im wyższy słupek, tym lepsza skuteczność modelu dla danej klasy.
+W tym przypadku wszystkie słupki są bardzo wysokie, bliskie wartości 1, co oznacza, że model osiąga bardzo wysoką skuteczność w rozpoznawaniu wszystkich trzech typów zmian.
+
+- Na tym wykresie widzimy skuteczność modelu dla każdej z trzech klas. Oś pozioma to nazwy klas, a oś pionowa to wartość wskaźnika F1. Wysokie słupki, bliskie wartości 1, 
+oznaczają, że model bardzo dobrze rozpoznaje wszystkie typy zmian w mózgu, praktycznie bez większych pomyłek.”
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd5o.jpg)
+
+---
 # 6. Wizualizacje
 W projekcie zaimplementowano liczne wizualizacje:
 Krzywe dokładności (accuracy, val_accuracy) dla każdego eksperymentu.
