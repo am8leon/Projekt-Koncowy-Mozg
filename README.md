@@ -399,9 +399,12 @@ oznaczają, że model bardzo dobrze rozpoznaje wszystkie typy zmian w mózgu, pr
 
 - Co pokazuje to zdjęcie
 Każdy obraz jest przykładem pojedynczego przypadku, w którym model próbował rozpoznać typ zmiany w mózgu.
-Porównanie „Prawidłowa” i „Pred” pozwala zobaczyć, czy model zaklasyfikował obraz poprawnie, czy popełnił błąd.
+Porównanie „Prawidłowa” i „Przewidywana” pozwala zobaczyć, czy model zaklasyfikował obraz poprawnie, czy popełnił błąd.
 W tym przykładzie widać zarówno przypadki poprawnej klasyfikacji (gdy obie etykiety są takie same), jak i błędnej (gdy etykiety się różnią).
-Jak to można powiedzieć na prezentacji
+
+- Tutaj mamy przykłady obrazów MRI mózgu wraz z opisem prawidłowej diagnozy i diagnozy przewidzianej przez nasz model. 
+Dzięki temu możemy wizualnie ocenić, w których przypadkach model działa poprawnie, a w których się myli.
+To pozwala lepiej zrozumieć, jakie typy zmian w mózgu są dla modelu łatwe do rozpoznania, a które sprawiają mu trudność.
 
 
 - **Wizualizacja:**
