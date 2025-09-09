@@ -7,8 +7,8 @@ z wykorzystaniem konwolucyjnych sieci neuronowych
 1. Cel stworzenia modelu
 2. Dane i wstępne przetwarzanie
 3. Eksploracyjna analiza danych
-4. Wyniki modelu bez zroszeżeń
-5. Wyniki modelu z roszerzeniami
+4. Wyniki modelu opartego o metrykę Accuracy
+5. Wyniki modelu opartego o metrykę Optuna
 6. Wizualizacje
 7. Kluczowe wnioski
 8. Podsumowanie i Rekomendacje  
@@ -33,18 +33,6 @@ Model trenuje przez 10 epok z wykorzystaniem funkcji strat categorical_crossentr
   history = model.fit(train_data, validation_data=val_data, epochs=10)
 
 ---
-
-# Porównanie modeli
-Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały zwizualizowane na wspólnym wykresie.
-
----
-
-# Ewaluacja najlepszej wersji
-- Wybór najlepszego wariantu – Na podstawie maksymalnej wartości val_accuracy.
-- Testowanie na zbiorze testowym – Predykcje → macierz pomyłek (confusion_matrix) + raport klasyfikacji (precision, recall, f1-score). 
-– Dlaczego: pozwala zobaczyć, które klasy są mylone i jak model radzi sobie z różnymi typami guzów.
-
-----
 # Dlaczego zastosowano te techniki
 - Convolutional Neural Network to sprawdzony standard w zadaniach analizy obrazów medycznych.
 - Augmentacja i normalizacja poprawiają uogólnianie i stabilność uczenia.
@@ -55,20 +43,17 @@ Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały 
 ---
 # Przykłady obrazów używanych przez model 
 - Takie przykłady służą do zobrazowania różnicy między zdrowymi i chorymi skanami w zadaniu automatycznej klasyfikacji czy wspomagania diagnostyki.
-
 - Klasy gózów mózgu
 - brain_glioma – Zawiera obrazy guzów glejowych, które powstają z komórek glejowych w mózgu. Mogą mieć różny stopień złośliwości.
 - brain_menin – Zawiera obrazy meningiomów, czyli nowotworów wywodzących się z opon mózgowych. Często są łagodne, ale ich położenie może powodować poważne komplikacje.
 - brain_tumor – Prawdopodobnie folder zawiera mieszane przypadki różnych nowotworów mózgu, bez podziału na konkretny typ.
 
-
 - **Wizualizacja:**
 
 ![Obrazy Gozów Mózgu](image/zd1.jpg)
 
-
 ---
-# Wyniki model opartego na metryce accuracy
+# 4. Wyniki modelu opartego o metrykę Accuracy
 ---
 # Histogram Skuteczności modelu
 - Wykres dokładności treningu i walidacji
@@ -84,8 +69,7 @@ Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały 
 ![Skutecznosc wykrywania raka mózgu](image/zd4.jpg)
 
 ---
-# 4. Wyniki modelu bez zroszeżeń
-# Wyniki modelu bez rozszerzeń (baseline) Porównanie validation accuraci
+ Wyniki modelu Porównanie validation accuraci
 
 - Ten histogram pokazuje rozkład dokładności modelu dla 10 epok treningu, z dodatkowymi liniami ilustrującymi trend.
 - Linie: Niebieska linia: dokładność na zbiorze treningowym w kolejnych epokach. Rosnący kształt oznacza, że model uczy się coraz lepiej dopasowywać do danych treningowych. 
@@ -94,7 +78,7 @@ Każdy model był oceniany na podstawie wartości val_accuracy. Wyniki zostały 
 - **Wizualizacja:**
 
 ![Porównanie nowotworów](image/zd10.jpg)
-
+F
 ---
 # Wykres Macierzy Pomyłek
 
@@ -107,20 +91,6 @@ Ciemniejszy kolor oznacza większą liczbę przypadków, a pasek kolorów z boku
 - **Wizualizacja:**
 
 ![Porównanie nowotworów](image/zd11.jpg)
-
----
-
-# 5. Wyniki modelu z rozszerzeniami 
-
-Przeprowadzono serię eksperymentów z różnymi wariantami modelu:
-Dropout: lepsze generalizowanie (redukcja przeuczenia).
-Batch Normalization: stabilniejsze uczenie.
-Niższe learning rate (1e-4): wolniejsze, ale potencjalnie dokładniejsze uczenie.
-Bez augmentacji: widocznie gorsze wyniki – potwierdza wartość augmentacji.
-- Najlepszy model:
-Eksperyment D_batchnorm osiągnął najwyższy val_accuracy.
-Model zapisany, oceniony na testowym zbiorze danych.
-Zintegrowano z MLFLOW do śledzenia metryk.
 
 ---
 # Histogram Macierz pomyłek (confusion matrix)
@@ -211,7 +181,7 @@ obszary wymagające poprawy (ciemniejsze pola poza przekątną)
 Gradient od jasnoniebieskiego do ciemnoniebieskiego odzwierciedla liczbę próbek:
 Jasny odcień: niewiele przypadków w danej kombinacji
 Ciemny odcień: dużo przypadków
-Dzięki temu widać, gdzie model najczęściej trafia i gdzie się my
+
 
 - **Wizualizacja:**
 
@@ -251,72 +221,7 @@ Te dane mogą stanowić wektor cech do dalszych analiz statystycznych lub uczeni
 ![Porównanie nowotworów](image/zd18.jpg)
 
 ---
-# Histogram błędnych predykcji
- - To histogram ilustrujący porównanie liczby poprawnych i błędnych predykcji modelu klasyfikacyjnego. Pokazuje, jak wiele przypadków model sklasyfikował prawidłowo, a ile przypadków skategoryzował niewłaściwie.
- - Słupek „Poprawne” sięga prawie do 6 000, co oznacza, że model dokonał prawidłowej klasyfikacji w niemal wszystkich przypadkach.
-Słupek „Błędne” jest bardzo niski (kilkadziesiąt przypadków), co wskazuje na niewielki odsetek pomyłek.
 
-- Interpretacja wyników
-Dominacja poprawnych predykcji: model osiąga bardzo wysoką dokładność, co jest widoczne poprzez zdecydowaną przewagę słupka „Poprawne”.
-Minimalna liczba błędów: niski słupek „Błędne” świadczy o skuteczności modelu i jego niezawodności w typowych scenariuszach.
-
-
-- **Wizualizacja:**
-
-![Porównanie nowotworów](image/zd19.jpg)
-
----
-# Ten histogram (wykres słupkowy) pokazuje, jak model klasyfikacyjny rozdzielił swoje predykcje pomiędzy trzy klasy:
-- Klasa 0.00
-- Klasa 1.00
-- Klasa 2.00
-- Wizualizacja pozwala ocenić, czy model przewiduje klasy równomiernie, czy też faworyzuje którąś z nich.
-
-- Co oznaczają słupki?
-Słupek dla klasy 0.00: ok. 1900 predykcji
-Słupek dla klasy 1.00: ok. 2100 predykcji
-Słupek dla klasy 2.00: ok. 2000 predykcji
-Każdy słupek reprezentuje liczbę przypadków, w których model przypisał daną klasę jako wynik predykcji.
-
-- Wnioski z wykresu
-Model nie jest skrajnie niezrównoważony – wszystkie trzy klasy są przewidywane w podobnych ilościach.
-Klasa 1.00 jest najczęściej przewidywana, co może wskazywać na jej dominację w danych treningowych lub większą pewność modelu w jej rozpoznawaniu.
-Równomierny rozkład może świadczyć o dobrym wyważeniu modelu, ale warto sprawdzić, czy odpowiada rzeczywistej proporcji klas w danych.
-
-
-- **Wizualizacja:**
-
-![Porównanie nowotworów](image/zd20.jpg)
-
----
-# Wykre ROC Curve dla każdej klasy
-- Ten wykres to krzywa ROC (Receiver Operating Characteristic), która pokazuje, jak dobrze model rozróżnia między klasami 0, 1 i 2. Każda linia odpowiada jednej klasie, a wartość AUC (Area Under the Curve) mówi o skuteczności klasyfikacji.
-
-- Oś pozioma (False Positive Rate)
-Pokazuje odsetek negatywnych przykładów błędnie zaklasyfikowanych jako pozytywne
-Skala od 0.0 do 1.0
-Im bliżej 0, tym mniej fałszywych alarmów
-
-- Oś pionowa (True Positive Rate)
-Pokazuje odsetek pozytywnych przykładów poprawnie rozpoznanych
-Skala od 0.0 do 1.0
-Im bliżej 1, tym więcej prawidłowych wykryć
-
-- Linie i ich kolory
-Klasa 0 (niebieska linia) – AUC = 1.00
-Klasa 1 (pomarańczowa linia) – AUC = 1.00
-Klasa 2 (zielona linia) – AUC = 1.00
-Wszystkie linie biegną wzdłuż krawędzi od (0,0) do (0,1) i dalej do (1,1), co oznacza perfekcyjną separację klas.
-
-- Co oznaczają wartości AUC?
-AUC = 1.00 dla każdej klasy wskazuje na idealny model, który nigdy nie myli pozytywów z negatywami.
-Brak kompromisów między czułością (TPR) a specyficznością (1 – FPR).
-
-- **Wizualizacja:**
-
-![Porównanie nowotworów](image/zd21.jpg)
-
----
 # Wyniki modelu opartego o metrykę Optuna
 ---
 # Heatmapa Macierz pomyłek (test)
