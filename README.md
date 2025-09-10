@@ -9,9 +9,10 @@ z wykorzystaniem konwolucyjnych sieci neuronowych
 3. Zastosowane techniki 
 4. Wyniki modelu opartego o metrykę Accuracy
 5. Wyniki modelu opartego o metrykę Optuna
-6. Wizualizacje
-7. Kluczowe wnioski
-8. Podsumowanie i Rekomendacje  
+6. Wyniki modelu na dodatkowym zbiorze danych metryka optuna
+7. Wizualizacje
+8. Kluczowe wnioski
+9. Podsumowanie i Rekomendacje  
 
 ---
 # 1. Cel stworzenia modelu
@@ -27,7 +28,7 @@ Model trenuje przez 10 epok z wykorzystaniem funkcji strat categorical_crossentr
   history = model.fit(train_data, validation_data=val_data, epochs=10)
 
 ---
-# 3. Dlaczego zastosowano te techniki
+# 3. Zastosowane techniki
 - Convolutional Neural Network to sprawdzony standard w zadaniach analizy obrazów medycznych.
 - Augmentacja i normalizacja poprawiają uogólnianie i stabilność uczenia.
 - BatchNormalization i Adam przyspieszają zbieżność.
@@ -157,7 +158,7 @@ Niebieska linia – „Strata trening”: pokazuje, jak zmieniała się strata n
 ![Porównanie nowotworów](image/zd4o.jpg)
 
 ---
-# Wykres słupkowy F1 dla poszczególnych klas (Test)
+
 - Ten wykres słupkowy pokazuje, jak dobrze model klasyfikacyjny rozpoznaje poszczególne typy zmian w mózgu. 
 Miarą skuteczności jest tutaj F1 score — wskaźnik, który łączy w sobie precyzję i czułość modelu. Wartość F1 mieści się w przedziale od 0 do 1, gdzie 1 oznacza perfekcyjną skuteczność.
 
@@ -185,7 +186,14 @@ To pozwala lepiej zrozumieć, jakie typy zmian w mózgu są dla modelu łatwe do
 ![Porównanie nowotworów](image/zd6o.jpg)
 
 ---
-# 6. Wizualizacje
+# 6.Wyniki modelu na dodatkowym zbiorze danych metryka optuna
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd1or.jpg)
+
+---
+# 7. Wizualizacje
 W projekcie zaimplementowano liczne wizualizacje:
 Krzywe dokładności (accuracy, val_accuracy) dla każdego eksperymentu.
 Macierz pomyłek (confusion matrix) dla najlepszego modelu.
@@ -194,7 +202,7 @@ ROC Curve + AUC dla każdej klasy.
 Histogramy: skuteczności, błędnych predykcji, rozkładu klas.
 
 ---
-# 7. Kluczowe wnioski
+# 9. Kluczowe wnioski
 Augmentacja danych znacząco poprawia skuteczność modeli.
 Batch Normalization + Dropout wspierają stabilność i dokładność.
 Największą skuteczność osiągnięto na modelach z rozszerzeniami, przy learning rate = 1e-3.
@@ -202,7 +210,7 @@ Grad-CAM potwierdza, że model uczy się na właściwych strukturach anatomiczny
 System działa dobrze przy małych rozmiarach danych i może być łatwo wdrożony.
 
 ---
-# 8. Podsumowanie i rekomendacje
+# 9. Podsumowanie i rekomendacje
 Projekt z sukcesem stworzył dokładny i dobrze uogólniający model CNN do klasyfikacji guzów mózgu na podstawie obrazów MRI. System został:
 Przetestowany na rzeczywistych danych (BraTS),
 Wsparty narzędziami śledzenia eksperymentów (MLflow),
