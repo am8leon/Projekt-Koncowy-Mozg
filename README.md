@@ -55,82 +55,6 @@ Model trenuje przez 10 epok z wykorzystaniem funkcji strat categorical_crossentr
 ---
 # 4. Wyniki modelu opartego o metrykę Accuracy
 ---
-# Histogram Skuteczności modelu
-- Wykres dokładności treningu i walidacji
-
-- Wykres ilustruje postęp w nauce modelu oraz porównuje jego wydajność na danych treningowych i walidacyjnych.
-- Co z tego wynika?
-– Jeśli obie linie rosną równolegle i niewiele się od siebie różnią, model dobrze generalizuje.
-– Jeśli niebieska rośnie szybciej niż pomarańczowa (duży rozjazd), może występować przeuczenie (overfitting).
-
-
-- **Wizualizacja:**
-
-![Skutecznosc wykrywania raka mózgu](image/zd4.jpg)
-
----
- Wyniki modelu Porównanie validation accuraci
-
-- Ten histogram pokazuje rozkład dokładności modelu dla 10 epok treningu, z dodatkowymi liniami ilustrującymi trend.
-- Linie: Niebieska linia: dokładność na zbiorze treningowym w kolejnych epokach. Rosnący kształt oznacza, że model uczy się coraz lepiej dopasowywać do danych treningowych. 
- Pomarańczowa linia: dokładność na zbiorze walidacyjnym (testowym). Porównując ją z niebieską, widzimy, jak model generalizuje na nowych danych. oraz podobny przebieg obu linii oznacza dobrą generalizację, większa rozbieżność to przeuczenie.”
-
-- **Wizualizacja:**
-
-![Porównanie nowotworów](image/zd10.jpg)
-F
----
-# Wykres Macierzy Pomyłek
-
-- To macierz pomyłek (confusion matrix) dla naszego modelu „B_no_aug”.
-W każdej komórce widzisz liczbę próbek o danej prawdziwej (wiersz) i przewidywanej (kolumna) klasie.
-– Komórki na przekątnej (np. w lewym górnym rogu 2001) to prawidłowe trafienia (true positives).
-– Komórki poza przekątną to błędy klasyfikacji (np. 7 przypadków glioma zaklasyfikowano jako menin).
-Ciemniejszy kolor oznacza większą liczbę przypadków, a pasek kolorów z boku pokazuje skalę od 0 do ~2000.
-
-- **Wizualizacja:**
-
-![Porównanie nowotworów](image/zd11.jpg)
-
----
-# Histogram Macierz pomyłek (confusion matrix)
-
--  Co przedstawia wykres? To macierz pomyłek dla modelu klasyfikującego obrazy na trzy kategorie
-- Pozwala ocenić, jak często model poprawnie rozpoznaje każdą klasę i gdzie popełnia błędy.Każda kolumna pokazuje, ile próbek zostało zaklasyfikowanych jako dana etykieta.
-Każdy wiersz wskazuje, z której klasy pochodziły próbki.
-- Co przedstawiają kwadraty i liczby
-W każdym kwadracie znajduje się liczba próbek, które mają daną parę (prawdziwa klasa → przewidywana klasa).
-- Przykładowe wartości:
-W kwadracie na przecięciu wiersza brain_glioma i kolumny brain_glioma jest 522 – tyle przypadków glejaka poprawnie sklasyfikowano.
-W przecięciu brain_glioma → brain_menin mamy 752 – tyle glejaków model uznał błędnie za oponiaki.
-Analogicznie, np. brain_tumor → brain_tumor = 778 to prawidłowe rozpoznania guzów.
-- Co oznaczają kolory?
-Skala koloru od jasnobłękitnego (niskie wartości) do ciemnoniebieskiego (wysokie wartości).
-Im ciemniejszy kwadrat, tym więcej próbek trafiło do tej kombinacji prawdziwej vs. przewidywanej klasy.
-Kolory ułatwiają szybką identyfikację, gdzie model radzi sobie najlepiej (ciemne pola na przekątnej) i gdzie są największe pomyłki (poza przekątną).
-
-- **Wizualizacja:**
-
-![Porównanie nowotworów](image/zd13.jpg)
-
----
-# Heatmapa macierzy pomyłek (confusion matrix)
-- To heatmapa macierzy pomyłek dla modelu klasyfikującego obrazy mózgu na trzy kategorie
-Pozwala ocenić, jak często model poprawnie identyfikuje każdą klasę oraz gdzie najczęściej popełnia błędy.
--  Wartości w komórkach
-W każdym kwadracie znajduje się liczba próbek o określonej parze (prawdziwa klasa → przewidywana klasa).
-Kwadraty sumują się do całkowitej liczby próbek testowych i pokazują zarówno poprawne klasyfikacje (diagonalne), jak i pomyłki (poza przekątną).
-
--  Kolory – co oznaczają
-Skala kolorów biegnie od jasnoniebieskiego (niższe liczby, ok. 660) do ciemnoniebieskiego (wyższe liczby, ok. 700).
-Im ciemniejszy kwadrat, tym więcej przykładów trafiło do tej kategorii.
-Kolory ułatwiają szybkie zlokalizowanie mocnych i słabych punktów modelu:
-ciemne pola na przekątnej → dużo poprawnych rozpoznań,
-ciemne pola poza przekątną → dużo pomyłek między konkretnymi klasami.
-
-- **Wizualizacja:**
-
-![Porównanie nowotworów](image/zd14.jpg)
 
 ---
 # Histogram  heatmapy macierzy pomyłek
@@ -151,43 +75,6 @@ Intensywność barwy pozwala w mig zidentyfikować, gdzie model ma najwięcej tr
 
 ---
 
-# Szczegółowy opis wykresu: Macierz pomyłek (confusion matrix)
--  Co przedstawia wykres?
-To heatmapa macierzy pomyłek klasyfikatora rozpoznającego trzy schorzenia mózgu:
-Pozwala zobaczyć, ile próbek każdej prawdziwej klasy zostało poprawnie rozpoznanych, a ile przypisano błędnie do innych kategorii.
-
-
--  Wartości w komórkach
-Wartość w każdym kwadracie to liczba próbek z danej pary:
-prawdziwa klasa → przewidywana klasa
-Liczby na przekątnej (149, 221, 1681) to poprawne klasyfikacje, pozostałe to pomyłki modelu.
-
--  Znaczenie kolorów
-Gradient od jasnoniebieskiego (niższe wartości) do ciemnoniebieskiego (wyższe wartości).
-Im ciemniejszy odcień, tym więcej próbek znalazło się w tej kombinacji prawdziwej vs. przewidywanej klasy.
-Pozwala szybko zidentyfikować:
-mocne strony modelu (ciemne pola na przekątnej)
-obszary wymagające poprawy (ciemniejsze pola poza przekątną)
-
-- **Wizualizacja:**
-
-![Porównanie nowotworów](image/zd16.jpg)
-
----
-# Historgram  macierzy pomyłek
--  Ta heatmapa pokazuje, jak model klasyfikujący typy nowotworów mózgu radzi sobie na zestawie treningowym. Każdy kwadrat to liczba przypadków, w których prawdziwa klasa (wiersz) została przypisana do klasy przewidywanej (kolumna).
--  Wartości w kwadratach prawdziwa i przewidywana. Komórki na przekątnej (529, 490, 1050) to poprawne klasyfikacje.Pozostałe liczby to błędne przewidywania modelu.
--  Znaczenie kolorów
-Gradient od jasnoniebieskiego do ciemnoniebieskiego odzwierciedla liczbę próbek:
-Jasny odcień: niewiele przypadków w danej kombinacji
-Ciemny odcień: dużo przypadków
-
-
-- **Wizualizacja:**
-
-![Porównanie nowotworów](image/zd17.jpg)
-
----
 # Obraz przekroju mózgu pozyskany w sekwencji T1-z kontrastem
 - Co przedstawia obraz
 Na obrazie widzimy przekrój mózgu pozyskany w sekwencji T1-z kontrastem, oznaczony jako „VAL Predicted class: 0”.
@@ -297,17 +184,7 @@ oznaczają, że model bardzo dobrze rozpoznaje wszystkie typy zmian w mózgu, pr
 
 ---
 #  Przykłady  klasyfikacji mózgu
-
-- Na tym zestawieniu widzimy sześć obrazów z rezonansu magnetycznego mózgu, ułożonych w dwóch rzędach po trzy zdjęcia. Każdy obraz przedstawia przekrój mózgu pacjenta i jest opisany dwoma etykietami:
-„Prawidłowa” – czyli faktyczna diagnoza (klasa, do której należy dany przypadek).
-„Pred” – czyli przewidywana przez model diagnoza.
-
-- Co pokazuje to zdjęcie
-Każdy obraz jest przykładem pojedynczego przypadku, w którym model próbował rozpoznać typ zmiany w mózgu.
-Porównanie „Prawidłowa” i „Przewidywana” pozwala zobaczyć, czy model zaklasyfikował obraz poprawnie, czy popełnił błąd.
-W tym przykładzie widać zarówno przypadki poprawnej klasyfikacji (gdy obie etykiety są takie same), jak i błędnej (gdy etykiety się różnią).
-
-- Tutaj mamy przykłady obrazów MRI mózgu wraz z opisem prawidłowej diagnozy i diagnozy przewidzianej przez nasz model. 
+- Tutaj mamy przykłady obrazów MRI mózgu wraz z opisem prawidłowej diagnozy i diagnozy przewidzianej przez model. 
 Dzięki temu możemy wizualnie ocenić, w których przypadkach model działa poprawnie, a w których się myli.
 To pozwala lepiej zrozumieć, jakie typy zmian w mózgu są dla modelu łatwe do rozpoznania, a które sprawiają mu trudność.
 
