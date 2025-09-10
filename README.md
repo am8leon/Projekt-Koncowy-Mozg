@@ -5,8 +5,8 @@ z wykorzystaniem konwolucyjnych sieci neuronowych
 
 # Agenda  
 1. Cel stworzenia modelu
-2. Dane i wstępne przetwarzanie
-3. Eksploracyjna analiza danych
+2. Eksploracyjna analiza danych
+3. Zastosowane techniki 
 4. Wyniki modelu opartego o metrykę Accuracy
 5. Wyniki modelu opartego o metrykę Optuna
 6. Wizualizacje
@@ -18,13 +18,7 @@ z wykorzystaniem konwolucyjnych sieci neuronowych
 Celem projektu było opracowanie modelu głębokiego uczenia (CNN), który automatycznie klasyfikuje obrazy MRI mózgu na trzy typy guzów: glioma, meningioma i guzy przysadki.
 Model ma wspomóc diagnostykę radiologiczną poprzez przyspieszenie i zwiększenie dokładności wykrywania oraz klasyfikacji nowotworów.
 ---
-# 2. Dane i wstępne przetwarzanie
-Dane podzielone zostały na zbiory: train, validation, test w strukturze katalogowej.
-Obrazy były skalowane do rozmiaru 128x128 pikseli i przeskalowane wartościami rescale=1./255.
-Wykorzystano augmentację danych (obrót, przesunięcia, zoom, odbicia), co zwiększa różnorodność zbioru treningowego i ogranicza przeuczenie.
-
----
-# 3. Eksploracyjna analiza danych
+# 2 . Eksploracyjna analiza danych
 # Trening modelu
 Model trenuje przez 10 epok z wykorzystaniem funkcji strat categorical_crossentropy i optymalizatora Adam.
 
@@ -33,7 +27,7 @@ Model trenuje przez 10 epok z wykorzystaniem funkcji strat categorical_crossentr
   history = model.fit(train_data, validation_data=val_data, epochs=10)
 
 ---
-# Dlaczego zastosowano te techniki
+# 3. Dlaczego zastosowano te techniki
 - Convolutional Neural Network to sprawdzony standard w zadaniach analizy obrazów medycznych.
 - Augmentacja i normalizacja poprawiają uogólnianie i stabilność uczenia.
 - BatchNormalization i Adam przyspieszają zbieżność.
@@ -54,9 +48,6 @@ Model trenuje przez 10 epok z wykorzystaniem funkcji strat categorical_crossentr
 
 ---
 # 4. Wyniki modelu opartego o metrykę Accuracy
----
-
----
 # Histogram  heatmapy macierzy pomyłek
 - Co przedstawia wykres?
 Heatmapa obrazuje macierz pomyłek (confusion matrix) modelu klasyfikującego badania mózgu na trzy typy schorzeń. Dzięki niej szybko ocenisz, jak często model poprawnie rozpoznaje każdą klasę oraz gdzie myli się między nimi.
@@ -109,7 +100,7 @@ Te dane mogą stanowić wektor cech do dalszych analiz statystycznych lub uczeni
 
 ---
 
-# Wyniki modelu opartego o metrykę Optuna
+# 5 Wyniki modelu opartego o metrykę Optuna
 ---
 # Heatmapa Macierz pomyłek (test)
 - Ta heatmapa to macierz pomyłek  która pokazuje, jak dobrze model klasyfikacyjny rozpoznaje trzy rodzaje zmian w mózgu: glioma, meningioma i inne guzy mózgu. Jest to narzędzie do oceny jakości działania modelu — pozwala zobaczyć, ile przypadków zostało sklasyfikowanych poprawnie, a ile błędnie.
