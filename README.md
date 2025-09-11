@@ -23,10 +23,6 @@ Model ma wspomóc diagnostykę radiologiczną poprzez przyspieszenie i zwiększe
 # Trening modelu
 Model trenuje przez 10 epok z wykorzystaniem funkcji strat categorical_crossentropy i optymalizatora Adam.
 
-- Kod:  
-  ```python
-  history = model.fit(train_data, validation_data=val_data, epochs=10)
-
 ---
 # 3. Zastosowane techniki
 - Convolutional Neural Network to sprawdzony standard w zadaniach analizy obrazów medycznych.
@@ -119,8 +115,6 @@ Jaśniejsze pola oznaczają rzadsze przypadki.
 - Rodzaj danych w kwadratach
 W każdym polu znajduje się liczba całkowita – to liczba próbek (np. obrazów MRI), które wpadły do tej konkretnej kategorii rzeczywista–przewidziana.
 Dane te są wynikiem testu modelu na zestawie danych, którego model wcześniej nie widział.
-
-
 
 - **Wizualizacja:**
 
