@@ -5,26 +5,19 @@ z wykorzystaniem konwolucyjnych sieci neuronowych
 
 # Agenda  
 1. Cel stworzenia modelu
-2. Eksploracyjna analiza danych
-3. Zastosowane techniki 
-4. Wyniki modelu opartego o metrykę Accuracy
-5. Wyniki modelu opartego o metrykę Optuna
-6. Wyniki modelu na dodatkowym zbiorze danych metryka optuna
-7. Wizualizacje
-8. Kluczowe wnioski
-9. Podsumowanie i Rekomendacje  
+2. Zastosowane techniki 
+4. Wyniki modelu opartego o metrykę Optuna
+5. Wyniki modelu na dodatkowym zbiorze danych metryka optuna
+6. Wizualizacje
+7. Kluczowe wnioski
+8. Podsumowanie i Rekomendacje  
 
 ---
 # 1. Cel stworzenia modelu
 Celem projektu było opracowanie modelu głębokiego uczenia (CNN), który automatycznie klasyfikuje obrazy MRI mózgu na trzy typy guzów: glioma, meningioma i guzy przysadki.
 Model ma wspomóc diagnostykę radiologiczną poprzez przyspieszenie i zwiększenie dokładności wykrywania oraz klasyfikacji nowotworów.
 ---
-# 2 . Eksploracyjna analiza danych
-# Trening modelu
-Model trenuje przez 10 epok z wykorzystaniem funkcji strat categorical_crossentropy i optymalizatora Adam.
-
----
-# 3. Zastosowane techniki
+# 2. Zastosowane techniki
 - Convolutional Neural Network to sprawdzony standard w zadaniach analizy obrazów medycznych.
 - Augmentacja i normalizacja poprawiają uogólnianie i stabilność uczenia.
 - BatchNormalization i Adam przyspieszają zbieżność.
@@ -42,62 +35,8 @@ Model trenuje przez 10 epok z wykorzystaniem funkcji strat categorical_crossentr
 - **Wizualizacja:**
 
 ![Obrazy Gozów Mózgu](image/zd1.jpg)
-
 ---
-# 4. Wyniki modelu opartego o metrykę Accuracy
-# Histogram  heatmapy macierzy pomyłek
-- Co przedstawia wykres?
-Heatmapa obrazuje macierz pomyłek (confusion matrix) modelu klasyfikującego badania mózgu na trzy typy schorzeń. Dzięki niej szybko ocenisz, jak często model poprawnie rozpoznaje każdą klasę oraz gdzie myli się między nimi.
-- Wartości w komórkach
-Każde pole zawiera liczbę przypadków o danej parze etykiet (rzeczywiste → przewidywane). Poniższa tabela zestawia wszystkie wartości prawdziwa i przewidywana	
-Liczby na przekątnej (596, 621, 889) to poprawne klasyfikacje. Pola poza przekątną to pomyłki między określonymi parami klas.
--  Znaczenie kolorów
-Gradient od jasnoniebieskiego do ciemnoniebieskiego wskazuje liczbę przypadków w komórce:
-Jasny kolor oznacza mniejszą liczbę (ok. 535–610).
-Ciemniejszy kolor oznacza wyższą liczbę (ok. 808–889).
-Intensywność barwy pozwala w mig zidentyfikować, gdzie model ma najwięcej trafień (ciemne pola na przekątnej) i gdzie popełnia najwięcej błędów (ciemne pola poza przekątną).
-
-- **Wizualizacja:**
-
-![Porównanie nowotworów](image/zd15.jpg)
-
----
-
-# Obraz przekroju mózgu pozyskany w sekwencji T1-z kontrastem
-- Co przedstawia obraz
-Na obrazie widzimy przekrój mózgu pozyskany w sekwencji T1-z kontrastem, oznaczony jako „VAL Predicted class: 0”.
-Obraz jest w skali szarości i pokryty maską segmentacyjną,
-gdzie różne odcienie wskazują na różne typy tkanek lub obszary patologiczne.
-Jasne, niemal białe pole w górnej części centralnej to najbardziej podejrzany obszar,
- mogący odpowiadać zmianie nowotworowej lub obszarowi z wysokim wzmocnieniem kontrastu.
-
-- Struktury i segmentacja
-Obszary o średniej intensywności (szare): zdrowe tkanki mózgowe, typowo istota biała i szara.
-Obszary ciemniejsze: przestrzenie płynowe (np. komory, płyn mózgowo-rdzeniowy).
-Obszary białe lub bardzo jasne: maska segmentacyjna rezonansu oraz potencjalne zmiany patologiczne.
-Każdy piksel jest przypisany do jednej z warstw segmentacji, co ułatwia ilościową analizę objętości i kształtu.
-
-- Interpretacja i wnioski
-Obecność jasnego, kontrastującego obszaru wskazuje na potencjalne uszkodzenie lub guza. Jego wielkość i kształt mogą być mierzone w pikselach,
-a następnie przeliczane na wartości w milimetrach sześciennych. Taka segmentacja pozwala:
-ocenić progresję zmiany między kolejnymi badaniami
-porównać efekty leczenia
-zbudować zbiór cech teksturalnych do klasyfikacji typów nowotworów
-
-- Jakie dane można wyciągnąć z tego zdjęcia
-Wolumen obszaru zmiany (liczba pikseli × rozdzielczość przestrzenna).
-Wskaźniki intensywności: średnia, odchylenie standardowe, asymetria.
-Cechy kształtu: obwód, współczynnik zaokrąglenia, elongacja.
-Teksturalne cechy radiomiczne: entropia, kontrast, homogeniczność.
-Te dane mogą stanowić wektor cech do dalszych analiz statystycznych lub uczenia maszynowego, ułatwiając diagnozę i prognozę przebiegu choroby.
-
-- **Wizualizacja:**
-
-![Porównanie nowotworów](image/zd18.jpg)
-
----
-
-# 5 Wyniki modelu opartego o metrykę Optuna
+#  Wyniki modelu opartego o metrykę Optuna
 ---
 # Heatmapa Macierz pomyłek (test)
 - Ta heatmapa to macierz pomyłek  która pokazuje, jak dobrze model klasyfikacyjny rozpoznaje trzy rodzaje zmian w mózgu: glioma, meningioma i inne guzy mózgu. Jest to narzędzie do oceny jakości działania modelu — pozwala zobaczyć, ile przypadków zostało sklasyfikowanych poprawnie, a ile błędnie.
@@ -187,7 +126,7 @@ To pozwala lepiej zrozumieć, jakie typy zmian w mózgu są dla modelu łatwe do
 ![Porównanie nowotworów](image/zd1or.jpg)
 
 ---
-# 7. Wizualizacje
+# . Wizualizacje
 W projekcie zaimplementowano liczne wizualizacje:
 Krzywe dokładności (accuracy, val_accuracy) dla każdego eksperymentu.
 Macierz pomyłek (confusion matrix) dla najlepszego modelu.
@@ -196,7 +135,7 @@ ROC Curve + AUC dla każdej klasy.
 Histogramy: skuteczności, błędnych predykcji, rozkładu klas.
 
 ---
-# 9. Kluczowe wnioski
+# . Kluczowe wnioski
 Augmentacja danych znacząco poprawia skuteczność modeli.
 Batch Normalization + Dropout wspierają stabilność i dokładność.
 Największą skuteczność osiągnięto na modelach z rozszerzeniami, przy learning rate = 1e-3.
@@ -204,7 +143,7 @@ Grad-CAM potwierdza, że model uczy się na właściwych strukturach anatomiczny
 System działa dobrze przy małych rozmiarach danych i może być łatwo wdrożony.
 
 ---
-# 9. Podsumowanie i rekomendacje
+# . Podsumowanie i rekomendacje
 Projekt z sukcesem stworzył dokładny i dobrze uogólniający model CNN do klasyfikacji guzów mózgu na podstawie obrazów MRI. System został:
 Przetestowany na rzeczywistych danych (BraTS),
 Wsparty narzędziami śledzenia eksperymentów (MLflow),
