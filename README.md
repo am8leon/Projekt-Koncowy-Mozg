@@ -54,6 +54,14 @@ Niebieska linia – „Strata trening”: pokazuje, jak zmieniała się strata n
 ![Porównanie nowotworów](image/zd1.jpg)
 
 ---
+# Wykres dokładność modelu 
+
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd2.jpg)
+
+---
 # Heatmapa Macierz pomyłek (test)
 - Ta heatmapa to macierz pomyłek  która pokazuje, jak dobrze model klasyfikacyjny rozpoznaje trzy rodzaje zmian w mózgu: glioma, meningioma i inne guzy mózgu. Jest to narzędzie do oceny jakości działania modelu — pozwala zobaczyć, ile przypadków zostało sklasyfikowanych poprawnie, a ile błędnie.
 
