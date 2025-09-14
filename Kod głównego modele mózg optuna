@@ -20,7 +20,7 @@ import optuna
 from google.colab import drive
 from tqdm.notebook import tqdm
 
-# Constants
+# Stałe
 SEED = 42
 N_TRIALS = 5
 EPOCHS = 10
@@ -34,7 +34,7 @@ dataset_path = '/content/drive/MyDrive/dataset'
 if not os.path.exists(dataset_path):
     raise FileNotFoundError(f"Folder nie istnieje: {dataset_path}")
 
-# Data Generators
+# Generatory danych
 img_size = (96, 96)
 batch_size = 16
 num_classes = 3
@@ -72,7 +72,7 @@ test_data = val_test_datagen.flow_from_directory(
     shuffle=False
 )
 
-# data preview
+# Podgląd danych
 images, labels = next(train_data)
 fig, axes = plt.subplots(1, 5, figsize=(15, 5))
 for i in range(5):
@@ -155,7 +155,7 @@ class TQDMProgressBar(tf.keras.callbacks.Callback):
 
 
 
-# Optuna's Objective Function
+# === 7. Funkcja celu Optuny ===
 def objective(trial):
     tf.keras.backend.clear_session()
     model = build_model(trial)
@@ -201,7 +201,7 @@ history = final_model.fit(
     verbose=0
 )
 
-# Test evaluation (report and error matrix)
+# Ewaluacja na teście (raport i macierz pomyłek)
 test_data.reset()
 y_true_test = test_data.classes
 y_pred_test = final_model.predict(test_data, verbose=0)
@@ -221,7 +221,7 @@ plt.title('Macierz pomyłek (TEST)')
 plt.tight_layout()
 plt.show()
 
-# F1 graph on revalidation (final training)
+# Wykres F1 na walidacji (finalny trening)
 plt.figure(figsize=(8,4))
 plt.plot(range(1, len(final_f1_cb.f1_history)+1), final_f1_cb.f1_history, marker='o')
 plt.xlabel('Epoka')
@@ -230,7 +230,7 @@ plt.title('F1 na walidacji podczas treningu')
 plt.grid(True, alpha=0.3)
 plt.show()
 
-# Loss curves
+# Krzywe strat
 plt.figure(figsize=(10,5))
 plt.plot(history.history['loss'], label='Strata - trening')
 plt.plot(history.history['val_loss'], label='Strata - walidacja')
@@ -242,7 +242,7 @@ plt.grid(True, alpha=0.3)
 plt.show()
 
 plt.figure(figsize=(10,5))
-epochs = range(1, len(history.history['loss']) + 1)  
+epochs = range(1, len(history.history['loss']) + 1)  # liczba epok = długość listy strat
 plt.plot(epochs, history.history['loss'], label='Strata - trening')
 plt.plot(epochs, history.history['val_loss'], label='Strata - walidacja')
 plt.xlabel('Epoka')
@@ -252,7 +252,7 @@ plt.legend()
 plt.grid(True, alpha=0.3)
 plt.show()
 
-# F1 comparison for classes on the test set
+# Porównanie F1 dla klas na zbiorze testowym
 f1_per_class = f1_score(y_true_test, y_pred_labels_test, average=None)
 plt.figure(figsize=(6,4))
 sns.barplot(x=target_names, y=f1_per_class)
@@ -261,7 +261,7 @@ plt.ylabel('F1')
 plt.title('F1 dla poszczególnych klas (TEST)')
 plt.show()
 
-# Examples of misclassifications
+# Przykłady błędnych klasyfikacji
 misclassified_idx = np.where(y_true_test != y_pred_labels_test)[0]
 plt.figure(figsize=(12,6))
 for i, idx in enumerate(misclassified_idx[:6]):
