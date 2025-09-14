@@ -62,6 +62,22 @@ Niebieska linia – „Strata trening”: pokazuje, jak zmieniała się strata n
 ![Porównanie nowotworów](image/zd2.jpg)
 
 ---
+# Wykres F1 na walidacji podczas treningu
+- Wykres liniowy pokazuje, jak zmieniała się skuteczność modelu w trakcie jego uczenia. Mierzymy ją za pomocą wskaźnika Macro F1 na zbiorze walidacyjnym, czyli na danych, których model nie widział podczas treningu, ale które służą do sprawdzania, czy model faktycznie się poprawia.
+- Znaczenie linii na wykresie
+Linia pokazuje, jak zmieniała się wartość Macro F1 w kolejnych epokach.
+Widać ogólny trend wzrostowy — model uczy się coraz lepiej, choć w połowie treningu (około 5. epoki) następuje chwilowy spadek, a następnie ponowny wzrost i osiągnięcie najwyższych wartości w końcowych epokach.
+Taki przebieg jest normalny — chwilowe spadki mogą wynikać z tego, że model „szuka” najlepszego sposobu dopasowania się do danych.
+
+- Na tym wykresie widzimy, jak zmieniała się skuteczność naszego modelu w trakcie treningu. 
+Oś pozioma to kolejne epoki, czyli etapy uczenia, a oś pionowa to wynik Macro F1 na danych walidacyjnych. 
+Linia pokazuje, że z czasem model poprawiał swoje wyniki, z drobnym spadkiem w połowie, po czym osiągnął najwyższą skuteczność pod koniec treningu.
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd3.jpg)
+
+---
 # Heatmapa Macierz pomyłek (test)
 - Ta heatmapa to macierz pomyłek  która pokazuje, jak dobrze model klasyfikacyjny rozpoznaje trzy rodzaje zmian w mózgu: glioma, meningioma i inne guzy mózgu. Jest to narzędzie do oceny jakości działania modelu — pozwala zobaczyć, ile przypadków zostało sklasyfikowanych poprawnie, a ile błędnie.
 
@@ -81,23 +97,7 @@ Dane te są wynikiem testu modelu na zestawie danych, którego model wcześniej 
 
 - **Wizualizacja:**
 
-![Porównanie nowotworów](image/zd2o.jpg)
-
----
-# Wykres F1 na walidacji podczas treningu
-- Wykres liniowy pokazuje, jak zmieniała się skuteczność modelu w trakcie jego uczenia. Mierzymy ją za pomocą wskaźnika Macro F1 na zbiorze walidacyjnym, czyli na danych, których model nie widział podczas treningu, ale które służą do sprawdzania, czy model faktycznie się poprawia.
-- Znaczenie linii na wykresie
-Linia pokazuje, jak zmieniała się wartość Macro F1 w kolejnych epokach.
-Widać ogólny trend wzrostowy — model uczy się coraz lepiej, choć w połowie treningu (około 5. epoki) następuje chwilowy spadek, a następnie ponowny wzrost i osiągnięcie najwyższych wartości w końcowych epokach.
-Taki przebieg jest normalny — chwilowe spadki mogą wynikać z tego, że model „szuka” najlepszego sposobu dopasowania się do danych.
-
-- Na tym wykresie widzimy, jak zmieniała się skuteczność naszego modelu w trakcie treningu. 
-Oś pozioma to kolejne epoki, czyli etapy uczenia, a oś pionowa to wynik Macro F1 na danych walidacyjnych. 
-Linia pokazuje, że z czasem model poprawiał swoje wyniki, z drobnym spadkiem w połowie, po czym osiągnął najwyższą skuteczność pod koniec treningu.
-
-- **Wizualizacja:**
-
-![Porównanie nowotworów](image/zd3o.jpg)
+![Porównanie nowotworów](image/zd5.jpg)
 
 ---
 
