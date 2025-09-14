@@ -205,7 +205,7 @@ class MRITrainer:
         model = self._compile(model, lr, optimizer_name)
 
         with mlflow.start_run(nested=True):
-            val_loss = self._fit_with_progress(model, trial) 
+            val_loss = self._fit_with_progress(model, trial)
             y_pred = model.predict(self.val_gen, verbose=0).argmax(axis=1)
             y_true = self.val_gen.classes
             score = accuracy_score(y_true, y_pred) if self.cfg.optimize_for == "accuracy" else f1_score(y_true, y_pred, average="weighted")
