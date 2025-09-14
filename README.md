@@ -126,14 +126,14 @@ To pozwala lepiej zrozumieć, jakie typy zmian w mózgu są dla modelu łatwe do
 
 - **Wizualizacja:**
 
-![Porównanie nowotworów](image/zd6o.jpg)
+![Porównanie nowotworów](image/zd8.jpg)
 
 ---
 # 6.Wyniki modelu na dodatkowym zbiorze danych metryka optuna
 
 - **Wizualizacja:**
 
-![Porównanie nowotworów](image/zd1or.jpg)
+![Porównanie nowotworów](image/zd9or.jpg)
 
 ---
 # . Wizualizacje
