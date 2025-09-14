@@ -51,7 +51,7 @@ Niebieska linia – „Strata trening”: pokazuje, jak zmieniała się strata n
 
 - **Wizualizacja:**
 
-![Porównanie nowotworów](image/zd4o.jpg)
+![Porównanie nowotworów](image/zd1.jpg)
 
 ---
 # Heatmapa Macierz pomyłek (test)
