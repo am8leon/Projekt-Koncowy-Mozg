@@ -100,6 +100,7 @@ Dane te są wynikiem testu modelu na zestawie danych, którego model wcześniej 
 ![Porównanie nowotworów](image/zd5.jpg)
 
 ---
+# Wykres F1 dla posczególnych klas test
 
 - Ten wykres słupkowy pokazuje, jak dobrze model klasyfikacyjny rozpoznaje poszczególne typy zmian w mózgu. 
 Miarą skuteczności jest tutaj F1 score — wskaźnik, który łączy w sobie precyzję i czułość modelu. Wartość F1 mieści się w przedziale od 0 do 1, gdzie 1 oznacza perfekcyjną skuteczność.
@@ -114,7 +115,7 @@ oznaczają, że model bardzo dobrze rozpoznaje wszystkie typy zmian w mózgu, pr
 
 - **Wizualizacja:**
 
-![Porównanie nowotworów](image/zd5o.jpg)
+![Porównanie nowotworów](image/zd4.jpg)
 
 ---
 #  Przykłady  klasyfikacji mózgu
