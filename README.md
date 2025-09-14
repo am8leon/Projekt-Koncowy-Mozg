@@ -133,7 +133,7 @@ To pozwala lepiej zrozumieć, jakie typy zmian w mózgu są dla modelu łatwe do
 
 - **Wizualizacja:**
 
-![Porównanie nowotworów](image/zd9or.jpg)
+![Porównanie nowotworów](image/zd9ro.jpg)
 
 ---
 # . Wizualizacje
