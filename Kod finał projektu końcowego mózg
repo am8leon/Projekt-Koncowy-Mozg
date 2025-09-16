@@ -46,7 +46,7 @@ class Config(BaseSettings):
     # Uczenie
     n_trials: int = 2
     img_size: Tuple[int, int] = (96, 96)
-    batch_size: int = 32
+    batch_size: int = 8
     epochs: int = 5
     seed: int = 42
     max_runtime_seconds: int = 2 * 60 * 60  # 2h buforu, realnie krócej
@@ -66,13 +66,7 @@ class Config(BaseSettings):
         "t1ce":  "/content/drive/MyDrive/dataset/BraTS20_Validation_124_t1ce.nii",
         "t2":    "/content/drive/MyDrive/dataset/BraTS20_Validation_124_t2.nii",
     }
-    brats_validation_paths_fallback: Dict[str, str] = {
-        "flair": "/content/drive/MyDrive/brats/BraTS20_Validation_124_flair.nii",
-        "t1":    "/content/drive/MyDrive/brats/BraTS20_Validation_124_t1.nii",
-        "t1ce":  "/content/drive/MyDrive/brats/BraTS20_Validation_124_t1ce.nii",
-        "t2":    "/content/drive/MyDrive/brats/BraTS20_Validation_124_t2.nii",
-    }
-
+  
     # Artefakty
     model_save_path: str = "/content/drive/MyDrive/best_model_optuna.h5"
     best_params_path: str = "/content/drive/MyDrive/best_params_optuna.json"
@@ -305,17 +299,17 @@ def compute_gradcam_heatmap(model, img_array, last_conv_layer_name, class_index=
     if x.dtype != tf.float32:
         x = tf.cast(x, tf.float32)
 
-    # --- [NOWE] Wymuś inicjalizację modelu, jeśli nie był jeszcze wywołany ---
+    # inicjalizację modelu, jeśli nie był jeszcze wywołany 
     try:
         _ = model.output
     except AttributeError:
         dummy_input = tf.zeros((1,) + tuple(x.shape[1:]))
         _ = model(dummy_input, training=False)
 
-    # Pobierz warstwę konwolucyjną
+    # Pobieranie warstwy konwolucyjnej
     conv_layer = model.get_layer(last_conv_layer_name)
 
-    # Zbuduj model do Grad-CAM
+    # budowanie  model do Grad-CAM
     grad_model = tf.keras.models.Model([model.inputs], [conv_layer.output, model.output])
 
     with tf.GradientTape() as tape:
@@ -472,14 +466,13 @@ mlflow.start_run(run_name="final_model")
 
 history = fit_with_callbacks(final_model, train_gen, val_gen, cfg.epochs, class_weight_dict, cfg.max_runtime_seconds)
 
-# Wymuszenie inicjalizacji
+# finałowa  inicjalizacji
 _ = final_model.predict(val_gen, steps=1, verbose=0)
 
 # 3) Grad‑CAM (na walidacji, kilka próbek)
 save_gradcam_overlays(final_model, val_gen, n_samples=cfg.gradcam_samples, out_dir="./gradcam_out", img_size=cfg.img_size)
 
 # 4) Wykresy strat i accuracy z pełnymi tickami epok
-# Zadbam o to, by była linia: plt.xticks(epochs)
 epochs_range = range(1, len(history.history['loss']) + 1)
 epochs = list(epochs_range)  # zmienna 'epochs' do widoczności wszystkich epok na osi
 
