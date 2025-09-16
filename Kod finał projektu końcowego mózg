@@ -1,0 +1,573 @@
+# Instalacje (Colab). Możesz spiąć w jedną komórkę.
+!pip install -q "pydantic>=2.0" "pydantic-settings>=2.0" optuna mlflow tqdm seaborn scikit-learn nibabel pandas chardet tensorflow matplotlib opencv-python numpy
+
+# - TqdmCallback bierzemy z tqdm.keras (obecne w pakiecie tqdm).
+# Importy
+import os, math, time, json, random
+from pathlib import Path
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+import tensorflow as tf
+from tensorflow.keras import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, BatchNormalization, Flatten, Dense, Dropout, Input
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.optimizers import Adam, RMSprop
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau, Callback
+from tqdm.keras import TqdmCallback
+
+from sklearn.metrics import (
+    precision_recall_fscore_support,
+    confusion_matrix,
+    classification_report,
+    f1_score,
+    accuracy_score,
+)
+from sklearn.utils.class_weight import compute_class_weight
+
+import mlflow
+import mlflow.tensorflow
+import optuna
+
+from pydantic_settings import BaseSettings, SettingsConfigDict
+from typing import Tuple, Optional, Dict
+
+# Montowanie Dysku Google (Colab)
+from google.colab import drive
+drive.mount('/content/drive', force_remount=True)
+
+# Konfiguracja projektu (Pydantic v2)
+class Config(BaseSettings):
+    # Tryb
+    mode: str = "optuna"
+    optimize_for: str = "f1"  # 'f1' lub 'accuracy'
+
+    # Uczenie
+    n_trials: int = 2
+    img_size: Tuple[int, int] = (96, 96)
+    batch_size: int = 32
+    epochs: int = 5
+    seed: int = 42
+    max_runtime_seconds: int = 2 * 60 * 60  # 2h buforu, realnie krócej
+
+    # Dane (foldery train/validation/test)
+    primary_dataset_path: str = "/content/drive/MyDrive/dataset"
+    fallback_dataset_path: str = "/content/drive/MyDrive/dataset_fallback"
+
+    # Zewnętrzny zbiór (opcjonalny)
+    external_dataset_dir: Optional[str] = None
+    ext_max_samples: int = 1000
+
+    # Walidacja BraTS – dwie lokalizacje (fallback)
+    brats_validation_paths_primary: Dict[str, str] = {
+        "flair": "/content/drive/MyDrive/dataset/BraTS20_Validation_124_flair.nii",
+        "t1":    "/content/drive/MyDrive/dataset/BraTS20_Validation_124_t1.nii",
+        "t1ce":  "/content/drive/MyDrive/dataset/BraTS20_Validation_124_t1ce.nii",
+        "t2":    "/content/drive/MyDrive/dataset/BraTS20_Validation_124_t2.nii",
+    }
+    brats_validation_paths_fallback: Dict[str, str] = {
+        "flair": "/content/drive/MyDrive/brats/BraTS20_Validation_124_flair.nii",
+        "t1":    "/content/drive/MyDrive/brats/BraTS20_Validation_124_t1.nii",
+        "t1ce":  "/content/drive/MyDrive/brats/BraTS20_Validation_124_t1ce.nii",
+        "t2":    "/content/drive/MyDrive/brats/BraTS20_Validation_124_t2.nii",
+    }
+
+    # Artefakty
+    model_save_path: str = "/content/drive/MyDrive/best_model_optuna.h5"
+    best_params_path: str = "/content/drive/MyDrive/best_params_optuna.json"
+    req_path: str = "/content/drive/MyDrive/dataset/requirements2.txt"
+
+    # MLflow
+    mlflow_experiment: str = "brain_mri"
+    mlflow_dir: str = "/content/mlruns"
+
+    # Grad-CAM
+    gradcam_samples: int = 4
+
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+
+cfg = Config()
+
+# AMP – ustaw przed budowaniem modelu
+tf.keras.mixed_precision.set_global_policy('mixed_float16')
+
+# Reproducowalność
+def set_seeds(seed: int = 42):
+    random.seed(seed)
+    np.random.seed(seed)
+    tf.random.set_seed(seed)
+
+set_seeds(cfg.seed)
+
+# MLflow setup (lokalny backend plikowy)
+os.makedirs(cfg.mlflow_dir, exist_ok=True)
+mlflow.set_tracking_uri(f"file:{cfg.mlflow_dir}")
+mlflow.set_experiment(cfg.mlflow_experiment)
+mlflow.tensorflow.autolog(log_models=False)  # lekkie autologowanie
+
+# Generatory danych z bezpiecznym fallbackiem ścieżek
+def _safe_flow(datagen, path, name, cfg: Config):
+    if not os.path.exists(path) or not os.listdir(path):
+        raise FileNotFoundError(f"Brak danych w katalogu {path} ({name})")
+    return datagen.flow_from_directory(
+        path,
+        target_size=cfg.img_size,
+        batch_size=cfg.batch_size,
+        class_mode="categorical",
+        shuffle=(name == "train"),
+        seed=cfg.seed,
+    )
+
+def create_generators(cfg: Config, augmentation: bool = True):
+    dataset_path = cfg.primary_dataset_path if os.path.exists(cfg.primary_dataset_path) else cfg.fallback_dataset_path
+
+    train_datagen = ImageDataGenerator(
+        rescale=1.0/255,
+        rotation_range=20 if augmentation else 0,
+        width_shift_range=0.2 if augmentation else 0,
+        height_shift_range=0.2 if augmentation else 0,
+        shear_range=0.1 if augmentation else 0,
+        zoom_range=0.1 if augmentation else 0,
+        horizontal_flip=augmentation,
+    )
+    eval_datagen = ImageDataGenerator(rescale=1.0/255)
+
+    train = _safe_flow(train_datagen, os.path.join(dataset_path, "train"), "train", cfg)
+    val   = _safe_flow(eval_datagen,   os.path.join(dataset_path, "validation"), "validation", cfg)
+    test  = _safe_flow(eval_datagen,   os.path.join(dataset_path, "test"), "test", cfg)
+    return train, val, test
+
+train_gen, val_gen, test_gen = create_generators(cfg, augmentation=True)
+class_indices = train_gen.class_indices
+idx_to_class = {v: k for k, v in class_indices.items()}
+
+# Wagi klas
+class_weights = compute_class_weight(
+    class_weight='balanced',
+    classes=np.unique(train_gen.classes),
+    y=train_gen.classes
+)
+class_weight_dict = {int(i): float(w) for i, w in enumerate(class_weights)}
+print("class_weight:", class_weight_dict)
+
+# Opcjonalny zewnętrzny zbiór (folderowy)
+def try_create_external_generator(cfg: Config):
+    if not cfg.external_dataset_dir or not os.path.exists(cfg.external_dataset_dir):
+        return None, None
+    datagen = ImageDataGenerator(rescale=1.0/255)
+    gen = datagen.flow_from_directory(
+        cfg.external_dataset_dir,
+        target_size=cfg.img_size,
+        batch_size=cfg.batch_size,
+        class_mode='categorical',
+        shuffle=False
+    )
+    steps = None
+    if gen.n > cfg.ext_max_samples:
+        steps = math.ceil(cfg.ext_max_samples / cfg.batch_size)
+    return gen, steps
+
+ext_gen, ext_steps = try_create_external_generator(cfg)
+
+# Podgląd kilku obrazów
+images, labels = next(train_gen)
+fig, axes = plt.subplots(1, 5, figsize=(15, 5))
+for i in range(5):
+    axes[i].imshow(images[i])
+    axes[i].axis('off')
+    axes[i].set_title(f'Label: {idx_to_class[np.argmax(labels[i])]}')
+plt.tight_layout()
+plt.show()
+
+# Model budowany przez Optunę
+def build_model_optuna(trial, img_size: Tuple[int, int], n_classes: int):
+    n_conv_blocks = trial.suggest_int("n_conv_blocks", 2, 3)
+    base_filters = trial.suggest_categorical("base_filters", [16, 32, 64])
+    kernel_size = trial.suggest_categorical("kernel_size", [3, 5])
+    dense_units = trial.suggest_categorical("dense_units", [64, 128, 256])
+    dropout_rate = trial.suggest_float("dropout_rate", 0.2, 0.6)
+    lr = trial.suggest_float("lr", 1e-5, 1e-3, log=True)  # bezpiecznie z AMP
+    optimizer_name = trial.suggest_categorical("optimizer", ["adam", "rmsprop"])
+    use_batchnorm = trial.suggest_categorical("batchnorm", [True, False])
+
+    model = Sequential(name="cnn_optuna")
+    model.add(Input(shape=(*img_size, 3)))
+    for i in range(n_conv_blocks):
+        filters = base_filters * (2 ** i)
+        model.add(Conv2D(filters, (kernel_size, kernel_size), activation="relu", padding="same"))
+        if use_batchnorm:
+            model.add(BatchNormalization())
+        model.add(MaxPooling2D((2, 2)))
+    model.add(Flatten())
+    model.add(Dense(dense_units, activation="relu"))
+    model.add(Dropout(dropout_rate))
+    model.add(Dense(n_classes, activation="softmax", dtype="float32"))  # metryki stabilne przy AMP
+    return model, lr, optimizer_name
+
+def compile_model(model, lr, optimizer_name):
+    opt = Adam(learning_rate=lr) if optimizer_name == "adam" else RMSprop(learning_rate=lr)
+    model.compile(optimizer=opt, loss="categorical_crossentropy",
+                  metrics=[tf.keras.metrics.CategoricalAccuracy(name="accuracy")])
+    return model
+
+
+
+class TimeLimitCallback(Callback):
+    def __init__(self, max_seconds: int):
+        super().__init__()
+        self.max_seconds = max_seconds
+        self.start_time = None
+    def on_train_begin(self, logs=None):
+        self.start_time = time.time()
+    def on_epoch_end(self, epoch, logs=None):
+        elapsed = time.time() - self.start_time
+        if elapsed > self.max_seconds:
+            self.model.stop_training = True
+            print(f"\n[TimeLimit] Stop after {elapsed/3600:.2f} h (limit {self.max_runtime_seconds/3600:.2f} h).")
+
+def fit_with_callbacks(model, train_gen, val_gen, epochs, class_weight_dict, max_runtime_seconds):
+    callbacks = [
+        EarlyStopping(monitor='val_loss', patience=3, restore_best_weights=True),
+        ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=2, min_lr=1e-6, verbose=1),
+        TimeLimitCallback(max_seconds=max_runtime_seconds - 600),  # bufor 10 min
+        TqdmCallback(verbose=1)  # pasek postępu epok i batchy
+    ]
+    hist = model.fit(
+        train_gen,
+        validation_data=val_gen,
+        epochs=epochs,
+        class_weight=class_weight_dict,
+        verbose=0,  # tqdm przejmuje wyświetlanie
+        callbacks=callbacks
+    )
+    return hist
+
+
+# Jeśli jakiś run jest otwarty, zamknij go
+if mlflow.active_run() is not None:
+    mlflow.end_run()
+
+# Funkcja celu dla Optuny
+def objective(trial):
+    with mlflow.start_run(run_name=f"trial_{trial.number}", nested=True):
+        # 1) Zbuduj model z hiperparametrami Optuny
+        model, lr, optimizer_name = build_model_optuna(trial, cfg.img_size, train_gen.num_classes)
+        model = compile_model(model, lr, optimizer_name)
+
+        # 2) Trenuj model
+        history = fit_with_callbacks(
+            model,
+            train_gen,
+            val_gen,
+            cfg.epochs,
+            class_weight_dict,
+            cfg.max_runtime_seconds
+        )
+
+        # 3) Ewaluacja na walidacji
+        val_metrics = evaluate_generator_metrics(model, val_gen, name="val", log_to_mlflow=False)
+        val_f1 = val_metrics["f1"] if cfg.optimize_for == "f1" else val_metrics["acc"]
+
+        # 4) Logowanie do MLflow
+        mlflow.log_params(trial.params)
+        for k, v in val_metrics.items():
+            if k != "cm":  # nie logujemy macierzy jako liczby
+                mlflow.log_metric(f"val_{k}", v)
+
+        return val_f1
+
+
+# Run nadrzędny dla całego procesu Optuna
+with mlflow.start_run(run_name="optuna_tuning"):
+    study = optuna.create_study(direction="maximize")
+    study.optimize(objective, n_trials=cfg.n_trials)
+
+    # Logowanie najlepszych wyników
+    mlflow.log_params(study.best_params)
+    mlflow.log_metric("best_accuracy", study.best_value)
+
+print("Najlepsze parametry:", study.best_params)
+print("Najlepsza dokładność:", study.best_value)
+
+# Grad-CAM
+def get_last_conv_layer_name(model):
+    for layer in reversed(model.layers):
+        if isinstance(layer, tf.keras.layers.Conv2D):
+            return layer.name
+    raise ValueError("No Conv2D layer found for Grad-CAM.")
+
+def compute_gradcam_heatmap(model, img_array, last_conv_layer_name, class_index=None):
+    import numpy as np
+    import tensorflow as tf
+
+    x = tf.convert_to_tensor(img_array)
+    if x.dtype != tf.float32:
+        x = tf.cast(x, tf.float32)
+
+    # --- [NOWE] Wymuś inicjalizację modelu, jeśli nie był jeszcze wywołany ---
+    try:
+        _ = model.output
+    except AttributeError:
+        dummy_input = tf.zeros((1,) + tuple(x.shape[1:]))
+        _ = model(dummy_input, training=False)
+
+    # Pobierz warstwę konwolucyjną
+    conv_layer = model.get_layer(last_conv_layer_name)
+
+    # Zbuduj model do Grad-CAM
+    grad_model = tf.keras.models.Model([model.inputs], [conv_layer.output, model.output])
+
+    with tf.GradientTape() as tape:
+        conv_outputs, predictions = grad_model(x, training=False)
+        if class_index is None:
+            class_index = tf.argmax(predictions[0])
+        class_channel = predictions[:, class_index]
+
+    grads = tape.gradient(class_channel, conv_outputs)
+    grads = tf.where(tf.math.is_finite(grads), grads, tf.zeros_like(grads))
+
+    conv_outputs = conv_outputs[0]
+    pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
+    heatmap = tf.reduce_sum(pooled_grads * conv_outputs, axis=-1)
+    heatmap = tf.maximum(heatmap, 0)
+    maxv = tf.reduce_max(heatmap)
+    heatmap = heatmap / (maxv + 1e-8)
+    return heatmap.numpy()
+
+def save_gradcam_overlays(model, generator, n_samples=4, out_dir="./gradcam_out", img_size=None):
+    import cv2, os
+    os.makedirs(out_dir, exist_ok=True)
+
+    try:
+        last_conv = get_last_conv_layer_name(model)
+    except ValueError as e:
+        print(f"[Grad-CAM] {e}")
+        return
+
+    generator.reset()
+    try:
+        batch_x, _ = next(generator)
+    except StopIteration:
+        print("[Grad-CAM] Generator jest pusty.")
+        return
+
+    for i in range(min(n_samples, len(batch_x))):
+        base_img = batch_x[i].astype(np.float32)
+        x = np.expand_dims(base_img, axis=0)
+        heat = compute_gradcam_heatmap(model, x, last_conv)
+
+        heat_uint = (heat * 255).astype(np.uint8)
+        heat_rgb = np.stack([heat_uint, np.zeros_like(heat_uint), np.zeros_like(heat_uint)], axis=-1)
+        target_size = img_size if img_size else (base_img.shape[1], base_img.shape[0])
+        heat_rgb = cv2.resize(heat_rgb, target_size, interpolation=cv2.INTER_LINEAR)
+
+        base_255 = np.clip(base_img * 255.0, 0, 255).astype(np.uint8)
+        overlay = np.clip(0.7 * base_255 + 0.3 * heat_rgb, 0, 255).astype(np.uint8)
+        plt.imsave(os.path.join(out_dir, f"gradcam_{i}.png"), overlay)
+
+    try:
+        mlflow.log_artifacts(out_dir, artifact_path="gradcam")
+    except Exception:
+        pass
+
+# Metryki i wykresy
+def plot_confusion_matrix(cm, class_labels, title="Confusion matrix", fname=None):
+    plt.figure(figsize=(6, 6))
+    sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=class_labels, yticklabels=class_labels)
+    plt.title(title)
+    plt.xlabel("Predicted")
+    plt.ylabel("True")
+    plt.tight_layout()
+    if fname:
+        plt.savefig(fname)
+    plt.show()
+    plt.close()
+
+def evaluate_generator_metrics(model, generator, steps=None, name="val", class_names=None, log_to_mlflow=True):
+    generator.reset()
+    if steps is None:
+        y_true = generator.classes
+        y_pred_probs = model.predict(generator, verbose=0)
+    else:
+        y_pred_probs, y_true_all = [], []
+        for i, (bx, by) in enumerate(generator):
+            y_pred_probs.append(model.predict(bx, verbose=0))
+            y_true_all.append(np.argmax(by, axis=1))
+            if (i + 1) >= steps:
+                break
+        y_pred_probs = np.vstack(y_pred_probs)
+        y_true = np.concatenate(y_true_all)
+
+    y_pred = np.argmax(y_pred_probs, axis=1)
+    acc = float((y_pred == y_true).mean())
+    precision, recall, f1, _ = precision_recall_fscore_support(y_true, y_pred, average="macro", zero_division=0)
+    cm = confusion_matrix(y_true, y_pred)
+
+    if class_names is None and hasattr(generator, "class_indices"):
+        class_names = [k for k, _ in sorted(generator.class_indices.items(), key=lambda x: x[1])]
+    labels = class_names or list(range(cm.shape[0]))
+
+    print(f"[{name}] acc={acc:.4f} precision={precision:.4f} recall={recall:.4f} f1={f1:.4f}")
+    cm_path = f"{name}_cm.png"
+    plot_confusion_matrix(cm, class_labels=labels, title=f"Confusion matrix ({name})", fname=cm_path)
+
+    if log_to_mlflow:
+        mlflow.log_metric(f"{name}_acc", acc)
+        mlflow.log_metric(f"{name}_precision", float(precision))
+        mlflow.log_metric(f"{name}_recall", float(recall))
+        mlflow.log_metric(f"{name}_f1", float(f1))
+        if os.path.exists(cm_path):
+            mlflow.log_artifact(cm_path, artifact_path="reports")
+
+    return {"acc": acc, "precision": float(precision), "recall": float(recall), "f1": float(f1), "cm": cm}
+def resolve_brats_paths(cfg: Config):
+    resolved = {}
+    for mod in ["flair", "t1", "t1ce", "t2"]:
+        candidates = [
+            cfg.brats_validation_paths_primary.get(mod, ""),
+            cfg.brats_validation_paths_fallback.get(mod, "")
+        ]
+        for p in candidates:
+            if p and Path(p).exists():
+                resolved[mod] = str(Path(p))
+                break
+        if mod not in resolved:
+            print(f"[WARN] Nie znaleziono pliku dla modalności: {mod}")
+    return resolved
+
+def load_brats_middle_slices(brats_paths: Dict[str, str], img_size: Tuple[int, int]):
+    import nibabel as nib
+    import cv2
+    slices = []
+    for name, path in brats_paths.items():
+        if not os.path.exists(path):
+            print(f"[Info] NIfTI not found: {path}")
+            continue
+        vol = nib.load(path).get_fdata()
+        mid = vol.shape[2] // 2
+        sl = vol[:, :, mid]
+        sl = (sl - sl.min()) / (sl.max() - sl.min() + 1e-8)
+        sl = (sl * 255).astype(np.uint8)
+        sl = cv2.resize(sl, img_size, interpolation=cv2.INTER_LINEAR)
+        sl_rgb = np.stack([sl, sl, sl], axis=-1).astype(np.float32) / 255.0
+        slices.append((name, sl_rgb))
+    return slices
+# 1) Optuna tuning (nadrzędny run)
+mlflow.start_run(run_name="optuna_tuning")
+study = optuna.create_study(direction="maximize")
+study.optimize(objective, n_trials=cfg.n_trials)
+mlflow.log_params(study.best_params)
+mlflow.log_metric("best_val_score", float(study.best_value))
+mlflow.end_run()
+
+print("Best trial:", study.best_params, "score:", study.best_value)
+
+# 2) Finalny model na najlepszych parametrach
+best_trial = optuna.trial.FixedTrial(study.best_params)
+final_model, lr, opt_name = build_model_optuna(best_trial, cfg.img_size, train_gen.num_classes)
+final_model = compile_model(final_model, lr, opt_name)
+
+mlflow.start_run(run_name="final_model")
+
+history = fit_with_callbacks(final_model, train_gen, val_gen, cfg.epochs, class_weight_dict, cfg.max_runtime_seconds)
+
+# Wymuszenie inicjalizacji
+_ = final_model.predict(val_gen, steps=1, verbose=0)
+
+# 3) Grad‑CAM (na walidacji, kilka próbek)
+save_gradcam_overlays(final_model, val_gen, n_samples=cfg.gradcam_samples, out_dir="./gradcam_out", img_size=cfg.img_size)
+
+# 4) Wykresy strat i accuracy z pełnymi tickami epok
+# Zadbam o to, by była linia: plt.xticks(epochs)
+epochs_range = range(1, len(history.history['loss']) + 1)
+epochs = list(epochs_range)  # zmienna 'epochs' do widoczności wszystkich epok na osi
+
+plt.figure(figsize=(10,5))
+plt.plot(epochs_range, history.history['loss'], label='Train loss')
+plt.plot(epochs_range, history.history['val_loss'], label='Val loss')
+plt.xlabel('Epoka'); plt.ylabel('Strata'); plt.title('Krzywe strat')
+plt.xticks(epochs)  # Ustawienie xticks na wszystkie epoki
+plt.legend(); plt.grid(True, alpha=0.3); plt.tight_layout(); plt.show()
+
+if 'accuracy' in history.history and 'val_accuracy' in history.history:
+    epochs_range_acc = range(1, len(history.history['accuracy']) + 1)
+    epochs = list(epochs_range_acc)  # ponownie ustawiamy 'epochs' dla tej osi
+    plt.figure(figsize=(10,5))
+    plt.plot(epochs_range_acc, history.history['accuracy'], label='Train acc')
+    plt.plot(epochs_range_acc, history.history['val_accuracy'], label='Val acc')
+    plt.xlabel('Epoka'); plt.ylabel('Accuracy'); plt.title('Dokładność modelu')
+    plt.xticks(epochs)  # Ustawienie xticks na wszystkie epoki
+    plt.legend(); plt.grid(True, alpha=0.3); plt.tight_layout(); plt.show()
+
+# 5) Zapis i logowanie modelu
+final_model.save(cfg.model_save_path)
+if os.path.exists(cfg.model_save_path):
+    mlflow.log_artifact(cfg.model_save_path)
+
+# 6) Walidacja i test – metryki + macierz pomyłek
+val_metrics = evaluate_generator_metrics(
+    final_model, val_gen, name="validation",
+    class_names=[idx_to_class[i] for i in range(train_gen.num_classes)]
+)
+test_metrics = evaluate_generator_metrics(
+    final_model, test_gen, name="test",
+    class_names=[idx_to_class[i] for i in range(train_gen.num_classes)]
+)
+
+# 7) Zewnętrzny zbiór lub BraTS middle-slices + Grad-CAM (jakościowo)
+if cfg.external_dataset_dir and ext_gen is not None:
+    ext_class_names = [k for k, _ in sorted(ext_gen.class_indices.items(), key=lambda x: x[1])]
+    _ = evaluate_generator_metrics(final_model, ext_gen, steps=ext_steps, name="external", class_names=ext_class_names)
+else:
+    brats_val_files = resolve_brats_paths(cfg)
+    brats_slices = load_brats_middle_slices(brats_val_files, cfg.img_size)
+    if len(brats_slices) > 0:
+        os.makedirs("./gradcam_brats", exist_ok=True)
+        last_conv = get_last_conv_layer_name(final_model)
+        import cv2
+        for i in range(min(4, len(brats_slices))):
+            _, img = brats_slices[i]
+            x = np.expand_dims(img.astype(np.float32), axis=0)
+            heat = compute_gradcam_heatmap(final_model, x, last_conv)
+            heat_uint = (heat * 255).astype(np.uint8)
+            heat_rgb = np.stack([heat_uint, np.zeros_like(heat_uint), np.zeros_like(heat_uint)], axis=-1)
+            heat_rgb = cv2.resize(heat_rgb, cfg.img_size, interpolation=cv2.INTER_LINEAR)
+            base = (np.clip(img, 0, 1) * 255).astype(np.uint8)
+            overlay = np.clip(0.7 * base + 0.3 * heat_rgb, 0, 255).astype(np.uint8)
+            plt.imsave(f"./gradcam_brats/brats_gradcam_{i}.png", overlay)
+        try:
+            mlflow.log_artifacts("./gradcam_brats", artifact_path="gradcam_brats")
+        except Exception:
+            pass
+    else:
+        print("Brak danych BraTS do jakościowej walidacji.")
+
+mlflow.end_run()
+
+# Predykcje na teście do statystyk
+test_probs = final_model.predict(test_gen, verbose=0)
+test_pred = np.argmax(test_probs, axis=1)
+test_true = test_gen.classes
+class_names = [idx_to_class[i] for i in range(train_gen.num_classes)]
+
+# Histogram liczby próbek per przewidziana klasa
+plt.figure(figsize=(8,4))
+counts = np.bincount(test_pred, minlength=len(class_names))
+sns.barplot(x=class_names, y=counts)
+plt.title("Rozkład przewidzianych klas (test)")
+plt.ylabel("Liczba próbek"); plt.xlabel("Klasa")
+plt.tight_layout(); plt.show()
+
+# Histogram pewności prawidłowych vs błędnych predykcji
+max_conf = test_probs.max(axis=1)
+correct_mask = (test_pred == test_true)
+
+plt.figure(figsize=(10,4))
+plt.subplot(1,2,1)
+sns.histplot(max_conf[correct_mask], bins=20, color="green", kde=False)
+plt.title("Pewność (poprawne)"); plt.xlabel("Prawdopodobieństwo"); plt.ylabel("Liczba")
+plt.subplot(1,2,2)
+sns.histplot(max_conf[~correct_mask], bins=20, color="red", kde=False)
+plt.title("Pewność (błędne)"); plt.xlabel("Prawdopodobieństwo"); plt.ylabel("Liczba")
+plt.tight_layout(); plt.show()
