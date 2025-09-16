@@ -39,43 +39,53 @@ Model ma wspomóc diagnostykę radiologiczną poprzez przyspieszenie i zwiększe
 ---
 #  Wyniki modelu opartego o metrykę Optuna
 ---
-# Wykres krzywe strat 
-- Ten wykres pokazuje, jak zmieniała się wartość straty (loss) w trakcie uczenia modelu. Strata to miara błędu — im mniejsza, tym lepiej model dopasowuje się do danych. Wykres przedstawia zarówno wyniki na danych treningowych, jak i na danych walidacyjnych, dzięki czemu możemy ocenić, czy model uczy się w sposób prawidłowy i czy potrafi generalizować do nowych danych.
 
-- Znaczenie linii
-Niebieska linia – „Strata trening”: pokazuje, jak zmieniała się strata na danych, na których model był trenowany. Widać wyraźny trend spadkowy, co oznacza, że model coraz lepiej dopasowuje się do danych treningowych.
-
-- Pomarańczowa linia – „Strata walidacja”: przedstawia stratę na danych walidacyjnych, czyli takich, których model nie widział podczas uczenia. Jej przebieg jest bardziej falujący, ale również ogólnie maleje, co sugeruje, że model poprawia swoje wyniki także na nowych danych.
-
-- Na tym wykresie widzimy, jak zmieniała się wartość błędu modelu w trakcie treningu. Oś pozioma to kolejne epoki, a oś pionowa to wartość straty. Niebieska linia pokazuje błąd na danych treningowych, a pomarańczowa – na danych walidacyjnych. Obie linie ogólnie opadają, co oznacza, że model uczy się coraz lepiej, choć w przypadku walidacji widać większe wahania.”
-
-- **Wizualizacja:**
-
-![Porównanie nowotworów](image/zd1.jpg)
-
----
 # Wykres dokładność modelu 
+
+
 
 
 - **Wizualizacja:**
 
 ![Porównanie nowotworów](image/zd2.jpg)
 
----
-# Wykres F1 na walidacji podczas treningu
-- Wykres liniowy pokazuje, jak zmieniała się skuteczność modelu w trakcie jego uczenia. Mierzymy ją za pomocą wskaźnika Macro F1 na zbiorze walidacyjnym, czyli na danych, których model nie widział podczas treningu, ale które służą do sprawdzania, czy model faktycznie się poprawia.
-- Znaczenie linii na wykresie
-Linia pokazuje, jak zmieniała się wartość Macro F1 w kolejnych epokach.
-Widać ogólny trend wzrostowy — model uczy się coraz lepiej, choć w połowie treningu (około 5. epoki) następuje chwilowy spadek, a następnie ponowny wzrost i osiągnięcie najwyższych wartości w końcowych epokach.
-Taki przebieg jest normalny — chwilowe spadki mogą wynikać z tego, że model „szuka” najlepszego sposobu dopasowania się do danych.
 
-- Na tym wykresie widzimy, jak zmieniała się skuteczność naszego modelu w trakcie treningu. 
-Oś pozioma to kolejne epoki, czyli etapy uczenia, a oś pionowa to wynik Macro F1 na danych walidacyjnych. 
-Linia pokazuje, że z czasem model poprawiał swoje wyniki, z drobnym spadkiem w połowie, po czym osiągnął najwyższą skuteczność pod koniec treningu.
+---
+# Wykres krzywe strat 
+
+- Na wykresie przedstawiono przebieg straty (loss) modelu uczenia maszynowego w trakcie treningu.
+- Obie krzywe mają tendencję spadkową, co oznacza, że model uczy się i poprawia swoje wyniki w kolejnych epokach.
+- 🔵 Niebieska linia pokazuje stratę na zbiorze treningowym (Train loss) – czyli jak dobrze model uczy się na danych, które zna.
+- 🟠 Pomarańczowa linia pokazuje stratę na zbiorze walidacyjnym (Val loss) – czyli jak dobrze model radzi sobie na nowych danych, których wcześniej nie widział.
 
 - **Wizualizacja:**
 
+![Porównanie nowotworów](image/zd1.jpg)
+
+
+---
+# Wykres F1 na walidacji podczas treningu
+- Na wykresie przedstawiono, jak zmieniała się miara F1 (dokładniej: makro F1) modelu w trakcie procesu uczenia.
+- 🔵 Niebieska linia przedstawia przebieg wartości F1 w kolejnych epokach – czyli jak zmieniała się skuteczność modelu w trakcie uczenia.
+- ⚪ Punkty naniesione na linię oznaczają konkretne wartości F1 w danej epoce – dzięki nim łatwo można odczytać i porównać wyniki między poszczególnymi etapami treningu.
+- Opis wykresu F1 na walidacji podczas treningu: Na wykresie przedstawiono, jak zmieniała się miara F1 (dokładniej: makro F1) modelu w trakcie procesu uczenia.
+- Widać lekkie wahania (np. spadek w epoce 5), ale ogólny trend jest wzrostowy, a od około 6. epoki wartości stabilizują się na wysokim poziomie.
+- To sugeruje, że model osiągnął dobrą jakość i potrafi skutecznie klasyfikować dane walidacyjne.
+  
+- **Wizualizacja:**
+
 ![Porównanie nowotworów](image/zd3.jpg)
+
+---
+# Wykres F1 dla poszczególnych klas test
+- Opis histogramu F1 dla poszczególnych klas (TEST): Na wykresie przedstawiono wyniki modelu w postaci miary F1 dla trzech różnych klas diagnozowanych na obrazach mózgu.
+- Im wyższa wartość, tym lepiej model radzi sobie z poprawnym rozpoznawaniem danej klasy.
+- Słupki pokazują wartości F1 uzyskane przez model dla każdej z klas.
+- W tym przypadku wszystkie słupki sięgają wysoko, co oznacza, że model osiągnął bardzo dobre wyniki w rozpoznawaniu każdej z trzech klas.
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd4.jpg)
 
 ---
 # Heatmapa Macierz pomyłek (test)
@@ -98,24 +108,6 @@ Dane te są wynikiem testu modelu na zestawie danych, którego model wcześniej 
 - **Wizualizacja:**
 
 ![Porównanie nowotworów](image/zd5.jpg)
-
----
-# Wykres F1 dla poszczególnych klas test
-
-- Ten wykres słupkowy pokazuje, jak dobrze model klasyfikacyjny rozpoznaje poszczególne typy zmian w mózgu. 
-Miarą skuteczności jest tutaj F1 score — wskaźnik, który łączy w sobie precyzję i czułość modelu. Wartość F1 mieści się w przedziale od 0 do 1, gdzie 1 oznacza perfekcyjną skuteczność.
-
-- Znaczenie słupków
-Każdy słupek odpowiada jednej klasie i pokazuje, jak dobrze model radzi sobie z jej rozpoznawaniem.
-Wysokość słupka to wartość F1 — im wyższy słupek, tym lepsza skuteczność modelu dla danej klasy.
-W tym przypadku wszystkie słupki są bardzo wysokie, bliskie wartości 1, co oznacza, że model osiąga bardzo wysoką skuteczność w rozpoznawaniu wszystkich trzech typów zmian.
-
-- Na tym wykresie widzimy skuteczność modelu dla każdej z trzech klas. Oś pozioma to nazwy klas, a oś pionowa to wartość wskaźnika F1. Wysokie słupki, bliskie wartości 1, 
-oznaczają, że model bardzo dobrze rozpoznaje wszystkie typy zmian w mózgu, praktycznie bez większych pomyłek.”
-
-- **Wizualizacja:**
-
-![Porównanie nowotworów](image/zd4.jpg)
 
 ---
 #  Przykłady  klasyfikacji mózgu
