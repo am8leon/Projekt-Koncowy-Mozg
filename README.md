@@ -136,16 +136,7 @@ To pozwala lepiej zrozumieć, jakie typy zmian w mózgu są dla modelu łatwe do
 ![Porównanie nowotworów](image/zd9ro.jpg)
 
 ---
-# . Wizualizacje
-W projekcie zaimplementowano liczne wizualizacje:
-Krzywe dokładności (accuracy, val_accuracy) dla każdego eksperymentu.
-Macierz pomyłek (confusion matrix) dla najlepszego modelu.
-Grad-CAM – interpretacja obszarów obrazu decydujących o klasyfikacji.
-ROC Curve + AUC dla każdej klasy.
-Histogramy: skuteczności, błędnych predykcji, rozkładu klas.
-
----
-# . Kluczowe wnioski
+# Kluczowe wnioski
 Augmentacja danych znacząco poprawia skuteczność modeli.
 Batch Normalization + Dropout wspierają stabilność i dokładność.
 Największą skuteczność osiągnięto na modelach z rozszerzeniami, przy learning rate = 1e-3.
@@ -153,7 +144,7 @@ Grad-CAM potwierdza, że model uczy się na właściwych strukturach anatomiczny
 System działa dobrze przy małych rozmiarach danych i może być łatwo wdrożony.
 
 ---
-# . Podsumowanie i rekomendacje
+# Podsumowanie i rekomendacje
 Projekt z sukcesem stworzył dokładny i dobrze uogólniający model CNN do klasyfikacji guzów mózgu na podstawie obrazów MRI. System został:
 Przetestowany na rzeczywistych danych (BraTS),
 Wsparty narzędziami śledzenia eksperymentów (MLflow),
