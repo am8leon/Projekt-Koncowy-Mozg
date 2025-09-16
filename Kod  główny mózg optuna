@@ -401,16 +401,6 @@ if USE_EXT_DIR and ext_gen is not None:
 else:
     print("Brak folderowego zbioru zewnętrznego (dataset_ext). Pomijam ewaluację external.")
 
-# Notatka o ograniczeniach accuracy
-note_path = os.path.join(cfg.out_dir, "notes_accuracy.txt")
-with open(note_path, "w") as f:
-    f.write("Uwaga: accuracy bywa mylące przy niezbalansowanych klasach. Raportuję także makro F1, precision i recall.")
-mlflow.log_artifact(note_path, artifact_path="notes")
-
-# requirements.txt
-!pip freeze > "{cfg.requirements_path}"
-mlflow.log_artifact(cfg.requirements_path, artifact_path="requirements")
-
 mlflow.end_run()
 
-print("\nDONE — trening zakończony. Artefakty, wykresy i metryki zapisane.")
+print("\nDONE — trening zakończony")
