@@ -50,7 +50,7 @@ class Config(BaseSettings):
 
     out_dir: str = "/content/outputs"
     model_save_path: str = "/content/drive/MyDrive/best_model_optuna.h5"
-    requirements_path: str = "/content/drive/MyDrive/requirements_project.txt"
+   
 
 cfg = Config()
 os.makedirs(cfg.out_dir, exist_ok=True)
