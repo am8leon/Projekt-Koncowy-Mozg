@@ -66,8 +66,8 @@ Model ma wspomóc diagnostykę radiologiczną poprzez przyspieszenie i zwiększe
 ---
 # Wykres F1 na walidacji podczas treningu
 - Na wykresie przedstawiono, jak zmieniała się miara F1 (dokładniej: makro F1) modelu w trakcie procesu uczenia.
-- 🔵 Niebieska linia przedstawia przebieg wartości F1 w kolejnych epokach – czyli jak zmieniała się skuteczność modelu w trakcie uczenia.
-- ⚪ Punkty naniesione na linię oznaczają konkretne wartości F1 w danej epoce – dzięki nim łatwo można odczytać i porównać wyniki między poszczególnymi etapami treningu.
+- Niebieska linia przedstawia przebieg wartości F1 w kolejnych epokach – czyli jak zmieniała się skuteczność modelu w trakcie uczenia.
+- 🔵 Punkty naniesione na linię oznaczają konkretne wartości F1 w danej epoce – dzięki nim łatwo można odczytać i porównać wyniki między poszczególnymi etapami treningu.
 - Opis wykresu F1 na walidacji podczas treningu: Na wykresie przedstawiono, jak zmieniała się miara F1 (dokładniej: makro F1) modelu w trakcie procesu uczenia.
 - Widać lekkie wahania (np. spadek w epoce 5), ale ogólny trend jest wzrostowy, a od około 6. epoki wartości stabilizują się na wysokim poziomie.
 - To sugeruje, że model osiągnął dobrą jakość i potrafi skutecznie klasyfikować dane walidacyjne.
@@ -89,21 +89,9 @@ Model ma wspomóc diagnostykę radiologiczną poprzez przyspieszenie i zwiększe
 
 ---
 # Heatmapa Macierz pomyłek (test)
-- Ta heatmapa to macierz pomyłek  która pokazuje, jak dobrze model klasyfikacyjny rozpoznaje trzy rodzaje zmian w mózgu: glioma, meningioma i inne guzy mózgu. Jest to narzędzie do oceny jakości działania modelu — pozwala zobaczyć, ile przypadków zostało sklasyfikowanych poprawnie, a ile błędnie.
-
-- Znaczenie poszczególnych kwadratów
-Każdy kwadrat pokazuje liczbę przypadków, które należały do danej klasy rzeczywistej (oś pionowa) i zostały zaklasyfikowane jako dana klasa przewidziana (oś pozioma).
-Kwadraty na przekątnej (od lewego górnego rogu do prawego dolnego) to poprawne klasyfikacje — im większe liczby w tych polach, tym lepiej działa model.
-Kwadraty poza przekątną to pomyłki modelu — pokazują, ile przypadków zostało źle zaklasyfikowanych i na co zostały „zamienione”.
-
-- Znaczenie kolorów
-Kolor jest tym ciemniejszy, im większa liczba przypadków w danym kwadracie.
-Najciemniejsze pola oznaczają najczęściej występujące kombinacje rzeczywistej i przewidzianej klasy.
-Jaśniejsze pola oznaczają rzadsze przypadki.
-
-- Rodzaj danych w kwadratach
-W każdym polu znajduje się liczba całkowita – to liczba próbek (np. obrazów MRI), które wpadły do tej konkretnej kategorii rzeczywista–przewidziana.
-Dane te są wynikiem testu modelu na zestawie danych, którego model wcześniej nie widział.
+- Opis heatmapy – macierz pomyłek (Confusion Matrix): Na wykresie przedstawiono macierz pomyłek, która pokazuje, jak model klasyfikacyjny poradził sobie z rozpoznawaniem trzech klas obrazów mózgu.
+- Kolory kwadratów odzwierciedlają liczebność przypadków – im ciemniejszy kolor, tym więcej przykładów znajduje się w danej komórce.
+- Wartości liczbowe w każdym kwadracie pokazują dokładną liczbę przypadków, np. ile obrazów z klasy brain_glioma zostało poprawnie rozpoznanych jako brain_glioma, a ile błędnie zaklasyfikowanych do innych klas.
 
 - **Wizualizacja:**
 
@@ -111,9 +99,11 @@ Dane te są wynikiem testu modelu na zestawie danych, którego model wcześniej 
 
 ---
 #  Przykłady  klasyfikacji mózgu
-- Tutaj mamy przykłady obrazów MRI mózgu wraz z opisem prawidłowej diagnozy i diagnozy przewidzianej przez model. 
-Dzięki temu możemy wizualnie ocenić, w których przypadkach model działa poprawnie, a w których się myli.
-To pozwala lepiej zrozumieć, jakie typy zmian w mózgu są dla modelu łatwe do rozpoznania, a które sprawiają mu trudność.
+- Opis przykładowych błędnych klasyfikacji: Na tym slajdzie przedstawiono obrazy MRI mózgu, które zostały niepoprawnie sklasyfikowane przez model.
+- Każdy obraz ma dwie etykiety:
+- „Prawidłowa” – czyli faktyczna, poprawna diagnoza (rzeczywista klasa).
+- „Pred” – czyli przewidywanie modelu (klasa, którą model błędnie przypisał).
+- W tym przykładzie wszystkie pokazane obrazy należą do klasy „brain_glioma”, ale model zaklasyfikował je jako „brain_menin”.
 
 
 - **Wizualizacja:**
@@ -122,6 +112,10 @@ To pozwala lepiej zrozumieć, jakie typy zmian w mózgu są dla modelu łatwe do
 
 ---
 # 6.Wyniki modelu na dodatkowym zbiorze danych metryka optuna
+-  Na Heatmapie  przedstawiono macierz pomyłek, która pokazuje, jak model klasyfikacyjny radzi sobie z rozpoznawaniem trzech klas obrazów mózgu: brain_glioma, brain_menin oraz brain_tumor.
+- Kolory kwadratów odzwierciedlają liczebność przypadków – im ciemniejszy kolor, tym więcej przykładów znajduje się w danej komórce. 
+- Wartości liczbowe w każdym kwadracie pokazują dokładną liczbę przypadków, np. ile obrazów z klasy brain_glioma zostało poprawnie rozpoznanych jako brain_glioma, a ile błędnie zaklasyfikowanych do innych klas.
+
 
 - **Wizualizacja:**
 
