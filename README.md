@@ -152,9 +152,9 @@ Wartości liczbowe w każdym polu wskazują dokładną liczbę przypadków, np. 
 
 ---
 # Heatmapa macierz pomyłek 
--  Na Heatmapie  przedstawiono macierz pomyłek, która pokazuje, jak model klasyfikacyjny radzi sobie z rozpoznawaniem trzech klas obrazów mózgu: brain_glioma, brain_menin oraz brain_tumor.
-- Kolory kwadratów odzwierciedlają liczebność przypadków – im ciemniejszy kolor, tym więcej przykładów znajduje się w danej komórce. 
-- Wartości liczbowe w każdym kwadracie pokazują dokładną liczbę przypadków, np. ile obrazów z klasy brain_glioma zostało poprawnie rozpoznanych jako brain_glioma, a ile błędnie zaklasyfikowanych do innych klas.
+- Opis heatmapy – macierz pomyłek (Confusion Matrix): Na wykresie przedstawiono macierz pomyłek, która pokazuje, jak model klasyfikacyjny radzi sobie z rozpoznawaniem trzech typów guzów mózgu: brain_glioma, brain_menin oraz brain_tumor.
+- Kolory kwadratów odzwierciedlają liczebność przypadków – im ciemniejszy kolor, tym więcej przykładów znajduje się w danej komórce.
+- Wartości liczbowe w każdym polu pokazują dokładną liczbę przypadków, np. ile obrazów z klasy glioma zostało poprawnie rozpoznanych jako glioma, a ile błędnie zaklasyfikowanych do innych klas.
 
 
 - **Wizualizacja:**
