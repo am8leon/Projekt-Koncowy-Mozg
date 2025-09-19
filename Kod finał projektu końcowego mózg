@@ -515,10 +515,20 @@ try:
     mlflow.end_run()
 except Exception:
     pass
+# Heatmapa macierz pomyłek
+def plot_confusion_matrix(cm, class_labels, title="Macierz pomyłek", fname=None):
+    plt.figure(figsize=(6, 6))
+    sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=class_labels, yticklabels=class_labels)
+    plt.title(title)
+    plt.xlabel("Przewidziane")
+    plt.ylabel("Rzeczywiste")
+    plt.tight_layout()
+    if fname:
+        plt.savefig(fname)
+    plt.show()
+    plt.close()
 
-# ============================================
 # Histogram pewności poprawnych vs błędnych predykcji
-# ============================================
 max_conf = test_probs.max(axis=1)
 correct_mask = (test_pred == test_true)
 
