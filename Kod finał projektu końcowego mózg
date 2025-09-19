@@ -353,7 +353,6 @@ def evaluate_dataset_metrics(model, dataset, name="val", class_names=None, log_t
 import os, numpy as np, tensorflow as tf, matplotlib.pyplot as plt, cv2
 
 # Implementacja GRAD-CAM
-
 def make_gradcam_heatmap(img_array, model, last_conv_layer_name):
     grad_model = tf.keras.models.Model([model.inputs], [model.get_layer(last_conv_layer_name).output, model.output])
     with tf.GradientTape() as tape:
@@ -374,7 +373,6 @@ def overlay_heatmap(orig_img, heatmap, alpha=0.4):
     return cv2.addWeighted(orig_img, 1 - alpha, heatmap, alpha, 0)
 
 # Optuna: objective
-# ============================================
 def objective(trial):
     # każdy trial logujemy jako run zagnieżdżony
     with mlflow.start_run(run_name=f"trial_{trial.number}", nested=True):
@@ -406,7 +404,6 @@ def objective(trial):
 
 
 # Optuna tuning – uruchomienie całej optymalizacji
-# ============================================
 mlflow.end_run()  # upewnij się, że nie ma aktywnego runu
 with mlflow.start_run(run_name="optuna_tuning"):
     study = optuna.create_study(direction="maximize")
@@ -416,18 +413,15 @@ with mlflow.start_run(run_name="optuna_tuning"):
 
 print("Best trial:", study.best_params, "score:", study.best_value)
 
-# ============================================
+
 # Finalny model – trenowanie
-# ============================================
 best_trial = optuna.trial.FixedTrial(study.best_params)
 final_model, lr, opt_name = build_model_optuna(best_trial, cfg.img_size, n_classes)
 final_model = compile_model(final_model, lr, opt_name)
 history = fit_with_callbacks(final_model, train_ds, val_ds,
                              cfg.epochs, class_weight_dict, cfg.max_runtime_seconds)
 
-# ============================================
 # Grad-CAM (dopiero po trenowaniu)
-# ============================================
 last_conv_layer_name = None
 for layer in reversed(final_model.layers):
     if isinstance(layer, tf.keras.layers.Conv2D):
@@ -458,9 +452,7 @@ else:
     plt.title("Grad-CAM (Optuna model)")
     plt.show()
 
-# ============================================
 # Wykresy strat i accuracy
-# ============================================
 epochs_range = range(1, len(history.history['loss']) + 1)
 plt.figure(figsize=(10,5))
 plt.plot(epochs_range, history.history['loss'], label='Train loss')
@@ -478,22 +470,17 @@ if 'accuracy' in history.history and 'val_accuracy' in history.history:
     plt.xticks(list(epochs_range_acc))
     plt.legend(); plt.grid(True, alpha=0.3); plt.tight_layout(); plt.show()
 
-# ============================================
 # Zapis i logowanie modelu
-# ============================================
 final_model.save(cfg.model_save_path)
 if os.path.exists(cfg.model_save_path):
     mlflow.log_artifact(cfg.model_save_path)
 
-# ============================================
+
 # Walidacja i test – metryki + macierz pomyłek
-# ============================================
 val_metrics = evaluate_dataset_metrics(final_model, val_ds, name="validation", class_names=class_names, n_classes=n_classes)
 test_metrics = evaluate_dataset_metrics(final_model, test_ds, name="test", class_names=class_names, n_classes=n_classes)
 
-# ============================================
 # Predykcje na teście do statystyk
-# ============================================
 test_probs = final_model.predict(test_ds, verbose=0)
 test_pred = np.argmax(test_probs, axis=1)
 
