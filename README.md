@@ -76,7 +76,6 @@ Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa 
 - Pituitary – guzy zlokalizowane centralnie, w okolicy przysadki, różniące się położeniem od pozostałych typów.
 
 - **Wizualizacja:**
-- 
 ![Obrazy Gozów Mózgu](image/zd0a.jpg)
 
 ---
