@@ -110,7 +110,7 @@ Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa 
 
 - **Wizualizacja:**
 
-![Porównanie nowotworów](image/zd6.jpg)
+![Porównanie nowotworów](image/zd4.jpg)
 
 ---
 # Wykres F1 na walidacji podczas treningu
@@ -127,14 +127,20 @@ Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa 
 
 ---
 
-# Heatmapa Macierz pomyłek (test)
-- Opis heatmapy – macierz pomyłek (Confusion Matrix): Na wykresie przedstawiono macierz pomyłek, która pokazuje, jak model klasyfikacyjny poradził sobie z rozpoznawaniem trzech klas obrazów mózgu.
-- Kolory kwadratów odzwierciedlają liczebność przypadków – im ciemniejszy kolor, tym więcej przykładów znajduje się w danej komórce.
-- Wartości liczbowe w każdym kwadracie pokazują dokładną liczbę przypadków, np. ile obrazów z klasy brain_glioma zostało poprawnie rozpoznanych jako brain_glioma, a ile błędnie zaklasyfikowanych do innych klas.
+# Heatmapa confiusion matrix  (test)
+
 
 - **Wizualizacja:**
 
 ![Porównanie nowotworów](image/zd5.jpg)
+
+---
+# Wykres rozkład przewidzianych klas (test)
+
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd6.jpg)
 
 ---
 # Wyniki modelu na dodatkowym zbiorze danych metryka optuna
