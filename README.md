@@ -105,8 +105,10 @@ Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa 
 
 
 ---
-# Wykres heatmap validacja 
-
+# Wykres heatmap (validation)
+- Opis heatmapy – macierz pomyłek (Confusion Matrix, walidacja): Na wykresie przedstawiono macierz pomyłek, która obrazuje, jak model klasyfikacyjny radzi sobie z rozpoznawaniem trzech klas guzów mózgu: brain_glioma, brain_menin oraz brain_tumor.
+- Kolory kwadratów odzwierciedlają liczebność przypadków – im ciemniejszy kolor, tym więcej przykładów znajduje się w danej komórce.
+- Wartości liczbowe w każdym polu pokazują dokładną liczbę przypadków, np. ile obrazów z klasy glioma zostało poprawnie rozpoznanych jako glioma, a ile błędnie zaklasyfikowanych do innych klas.
 
 - **Wizualizacja:**
 
@@ -126,7 +128,6 @@ Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa 
 ![Porównanie nowotworów](image/zd3.jpg)
 
 ---
-
 # Heatmapa confiusion matrix  (test)
 
 
