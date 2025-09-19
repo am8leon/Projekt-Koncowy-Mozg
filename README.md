@@ -60,7 +60,7 @@ W obrazie złośliwym widoczny jest jasny, nieregularny obszar, który odróżni
 Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa na strukturę mózgu i jak bardzo różni się od obrazu zdrowego.
 
 - **Wizualizacja:**
-- 
+
 ![Obrazy Gozów Mózgu](image/zd0b.jpg)
 
 ---
@@ -76,7 +76,7 @@ Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa 
 - Pituitary – guzy zlokalizowane centralnie, w okolicy przysadki, różniące się położeniem od pozostałych typów.
 
 - **Wizualizacja:**
-
+- 
 ![Obrazy Gozów Mózgu](image/zd0a.jpg)
 
 ---
@@ -84,7 +84,9 @@ Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa 
 ---
 
 # Wykres dokładność modelu 
-
+- Na wykresie przedstawiono, jak zmieniała się dokładność modelu w trakcie procesu uczenia.
+- Niebieska linia pokazuje dokładność na zbiorze treningowym (Train acc) – czyli jak dobrze model radzi sobie na danych, na których się uczy. 
+- Pomarańczowa linia pokazuje dokładność na zbiorze walidacyjnym (Val acc) – czyli jak dobrze model generalizuje na nowych danych, których wcześniej nie widział.
 
 - **Wizualizacja:**
 
