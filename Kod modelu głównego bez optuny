@@ -1,0 +1,226 @@
+!pip install mlflow==2.12.1 azureml-mlflow==1.55.0 pandas==2.2.2 chardet==5.2.0 uvicorn==0.29.0 fastapi==0.110.0 seaborn==0.13.2
+import os
+import io
+import cv2
+import json
+import base64
+import chardet
+import pandas as pd
+import mlflow
+import nibabel as nib
+import numpy as np
+import tensorflow as tf
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+from google.colab import drive
+from fastapi import FastAPI, UploadFile, File, HTTPException
+from starlette.responses import JSONResponse
+from tensorflow.keras.models import Sequential, load_model
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, BatchNormalization, Flatten, Dense, Dropout
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from sklearn.metrics import confusion_matrix, classification_report
+
+
+drive.mount('/content/drive')
+IMG_SIZE = (128, 128)
+BATCH_SIZE = 32
+EPOCHS = 10
+
+PRIMARY_DATASET_PATH = "/content/drive/MyDrive/dataset"
+FALLBACK_DATASET_PATH = "/content/drive/MyDrive/dataset_fallback"
+DATASET_PATH = PRIMARY_DATASET_PATH if os.path.exists(os.path.join(PRIMARY_DATASET_PATH, "train")) else FALLBACK_DATASET_PATH
+if not os.path.exists(DATASET_PATH):
+    raise FileNotFoundError(f"Nie znaleziono zbioru danych ani w {PRIMARY_DATASET_PATH} ani w {FALLBACK_DATASET_PATH}")
+
+
+def read_csv_with_fallback(filepath, encodings=["utf-8", "utf-8-sig", "latin1", "cp1250", "iso-8859-2"]):
+    with open(filepath, 'rb') as f:
+        result = chardet.detect(f.read(10000))
+    for enc in encodings:
+        try:
+            with open(filepath, 'r', encoding=enc) as f:
+                sample = f.read(1024)
+                delimiter = ';' if ';' in sample else ','
+            df = pd.read_csv(filepath, encoding=enc, sep=delimiter)
+            return df
+        except Exception:
+            continue
+    raise ValueError(f"Nie udało się wczytać pliku {filepath}")
+
+def load_nii_volume(path):
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"Plik nie istnieje: {path}")
+    return nib.load(path).get_fdata()
+
+def preprocess_brats_volume(vol_dict, modalities):
+    arrays = [load_nii_volume(vol_dict[m]) for m in modalities]
+    slices = [arr[:, :, arr.shape[2] // 2] for arr in arrays]
+    img_stack = np.stack(slices, axis=-1)
+    img_resized = cv2.resize(img_stack, IMG_SIZE)
+    img_norm = (img_resized - np.min(img_resized)) / (np.ptp(img_resized) + 1e-8)
+    return img_norm.astype(np.float32)
+
+def safe_flow(datagen, path, name):
+    if not os.path.exists(path) or len(os.listdir(path)) == 0:
+        raise FileNotFoundError(f"Brak danych w katalogu {path} dla {name}")
+    return datagen.flow_from_directory(
+        path,
+        target_size=IMG_SIZE,
+        batch_size=BATCH_SIZE,
+        class_mode="categorical"
+    )
+
+def create_generators(datagen):
+    return (
+        safe_flow(datagen, os.path.join(DATASET_PATH, "train"), "train"),
+        safe_flow(ImageDataGenerator(rescale=1./255), os.path.join(DATASET_PATH, "validation"), "validation"),
+        safe_flow(ImageDataGenerator(rescale=1./255), os.path.join(DATASET_PATH, "test"), "test")
+    )
+
+def build_model(variant="baseline", lr=1e-3):
+    layers = []
+    for filters in [32, 64, 128]:
+        layers.append(Conv2D(filters, (3, 3), activation="relu", padding="same"))
+        if "batchnorm" in variant:
+            layers.append(BatchNormalization())
+        layers.append(MaxPooling2D((2, 2)))
+    layers.append(Flatten())
+    layers.append(Dense(128, activation="relu"))
+    if "dropout" in variant:
+        layers.append(Dropout(0.5))
+    layers.append(Dense(3, activation="softmax"))
+
+    model = Sequential(layers)
+    model.compile(optimizer=Adam(learning_rate=lr), loss="categorical_crossentropy", metrics=["accuracy"])
+    return model
+
+# Implementacja GRAD-CAM
+def make_gradcam_heatmap(img_array, model, last_conv_layer_name):
+    grad_model = tf.keras.models.Model([model.inputs], [model.get_layer(last_conv_layer_name).output, model.output])
+    with tf.GradientTape() as tape:
+        conv_outputs, predictions = grad_model(img_array)
+        class_idx = tf.argmax(predictions[0])
+        loss = predictions[:, class_idx]
+    grads = tape.gradient(loss, conv_outputs)[0]
+    pooled_grads = tf.reduce_mean(grads, axis=(0, 1))
+    conv_outputs = conv_outputs[0]
+    for i in range(pooled_grads.shape[-1]):
+        conv_outputs[:, :, i] *= pooled_grads[i]
+    heatmap = tf.reduce_mean(conv_outputs, axis=-1).numpy()
+    return cv2.resize(np.maximum(heatmap, 0) / (np.max(heatmap) + 1e-8), IMG_SIZE)
+
+def overlay_heatmap(orig_img, heatmap, alpha=0.4):
+    heatmap = np.uint8(255 * heatmap)
+    heatmap = cv2.applyColorMap(heatmap, cv2.COLORMAP_JET)
+    return cv2.addWeighted(orig_img, 1 - alpha, heatmap, alpha, 0)
+
+# Wczytanie plików  CSV
+csv_files = ["name_mapping_validation_data.csv", "name_mapping.csv", "survival_evaluation.csv", "survival_info.csv"]
+for csv in csv_files:
+    full_path = os.path.join(DATASET_PATH, csv)
+    if os.path.exists(full_path):
+        df = read_csv_with_fallback(full_path)
+    else:
+        print(f"Brak pliku {csv}")
+
+# MLflow + Pętla treningowa
+mlflow.set_experiment("brain_mri_classification")
+results = {}
+best_val_acc = 0
+best_run_id = None
+
+experiments = [
+    ("A_basic_aug",   ImageDataGenerator(rescale=1./255, rotation_range=20, width_shift_range=0.2, height_shift_range=0.2, shear_range=0.2, zoom_range=0.2, horizontal_flip=True), "baseline", 1e-3),
+    ("B_no_aug",      ImageDataGenerator(rescale=1./255), "baseline", 1e-3),
+    ("C_dropout",     ImageDataGenerator(rescale=1./255, rotation_range=20, width_shift_range=0.2, height_shift_range=0.2, shear_range=0.2, zoom_range=0.2, horizontal_flip=True), "dropout", 1e-3),
+    ("D_batchnorm",   ImageDataGenerator(rescale=1./255, rotation_range=20, width_shift_range=0.2, height_shift_range=0.2, shear_range=0.2, zoom_range=0.2, horizontal_flip=True), "batchnorm", 1e-3),
+    ("E_lr_low",      ImageDataGenerator(rescale=1./255, rotation_range=20, width_shift_range=0.2, height_shift_range=0.2, shear_range=0.2, zoom_range=0.2, horizontal_flip=True), "baseline", 1e-4)
+]
+
+for name, datagen, variant, lr in experiments:
+    with mlflow.start_run(run_name=name) as run:
+        mlflow.log_params({"variant": variant, "learning_rate": lr})
+        train_gen, val_gen, test_gen = create_generators(datagen)
+        model = build_model(variant, lr)
+
+        hist = model.fit(train_gen, validation_data=val_gen, epochs=EPOCHS, verbose=2)
+        val_acc = max(hist.history["val_accuracy"])
+        mlflow.log_metric("max_val_accuracy", val_acc)
+
+        # Save temporary model
+        tmp_path = f"model_{name}.h5"
+        model.save(tmp_path)
+        mlflow.log_artifact(tmp_path)
+        os.remove(tmp_path)
+
+        # track best
+        if val_acc > best_val_acc:
+            best_val_acc = val_acc
+            best_run_id = run.info.run_id
+            model.save("best_model.h5")
+
+        # Evaluate on test set
+        y_true = test_gen.classes
+        y_pred_probs = model.predict(test_gen)
+        y_pred = np.argmax(y_pred_probs, axis=1)
+
+        report = classification_report(y_true, y_pred, output_dict=True)
+        mlflow.log_metric("test_accuracy", report["accuracy"])
+        cm = confusion_matrix(y_true, y_pred)
+
+        # artifact: confusion matrix
+        plt.figure(figsize=(6, 6))
+        sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=list(test_gen.class_indices), yticklabels=list(test_gen.class_indices))
+        plt.title("Confusion Matrix")
+        plt.tight_layout()
+        plt.savefig("confusion_matrix.png")
+        mlflow.log_artifact("confusion_matrix.png")
+        os.remove("confusion_matrix.png")
+
+        results[name] = {"val_acc": val_acc, "run_id": run.info.run_id}
+
+# Walidacja na zbiorze danych
+BRATS_TRAINING = {
+    "flair":  os.path.join(DATASET_PATH, "BraTS20_Training_368_flair.nii"),
+    "seg":    os.path.join(DATASET_PATH, "BraTS20_Training_368_seg.nii"),
+    "t1":     os.path.join(DATASET_PATH, "BraTS20_Training_368_t1.nii"),
+    "t1ce":   os.path.join(DATASET_PATH, "BraTS20_Training_368_t1ce.nii"),
+    "t2":     os.path.join(DATASET_PATH, "BraTS20_Training_368_t2.nii")
+}
+BRATS_VALIDATION = {
+    "flair":  os.path.join(DATASET_PATH, "BraTS20_Validation_124_flair.nii"),
+    "t1":     os.path.join(DATASET_PATH, "BraTS20_Validation_124_t1.nii"),
+    "t1ce":   os.path.join(DATASET_PATH, "BraTS20_Validation_124_t1ce.nii"),
+    "t2":     os.path.join(DATASET_PATH, "BraTS20_Validation_124_t2.nii")
+}
+
+best_model = load_model("best_model.h5")
+brats_results = []
+
+for set_name, vol_dict in [("train", BRATS_TRAINING), ("val", BRATS_VALIDATION)]:
+
+    # pick modalities flair, t1ce, t2
+    img = preprocess_brats_volume(vol_dict, ["flair", "t1ce", "t2"])
+    x = np.expand_dims(img, axis=0)
+    preds = best_model.predict(x)[0]
+    pred_class = int(np.argmax(preds))
+
+    brats_results.append({
+        "set_name": set_name,
+        "predicted_class": pred_class,
+        "probabilities": preds.tolist()
+    })
+
+    # Log BraTS predictions
+    plt.imshow((img[..., 0] * 255).astype(np.uint8), cmap='gray')
+    plt.title(f"{set_name.upper()} Predicted class: {pred_class}")
+    plt.show()
+
+with open("brats_preds.json", "w") as f:
+    json.dump(brats_results, f, indent=2)
+mlflow.log_artifact("brats_preds.json")
+os.remove("brats_preds.json")
+if os.path.exists("best_model.h5"):
+    os.remove("best_model.h5")
