@@ -125,26 +125,24 @@ Dodatkowo, projekt pokazuje jak można wykorzystać Optunę do automatycznej opt
 # 5. Kluczowe wnioski
 ---
 # Kluczowe wnioski
-Augmentacja danych znacząco poprawia skuteczność modeli.
-Batch Normalization + Dropout wspierają stabilność i dokładność.
-Największą skuteczność osiągnięto na modelach z rozszerzeniami, przy learning rate = 1e-3.
-Grad-CAM potwierdza, że model uczy się na właściwych strukturach anatomicznych.
-System działa dobrze przy małych rozmiarach danych i może być łatwo wdrożony.
-
+Augmentacja danych znacząco poprawia skuteczność.
+BatchNormalization + Dropout → stabilność i dokładność.
+Optuna pozwoliła dobrać optymalne hiperparametry (najlepszy wynik przy learning rate ≈ 1e-3).
+F1-macro i confusion matrix pokazują, że model dobrze radzi sobie z wszystkimi klasami, choć najtrudniejsze są przypadki guzów przysadki.
+System działa stabilnie nawet przy ograniczonym zbiorze danych.
 ---
 # 6. Podsumowanie i rekomendacje
 ---
 # Podsumowanie i rekomendacje
-Projekt z sukcesem stworzył dokładny i dobrze uogólniający model CNN do klasyfikacji guzów mózgu na podstawie obrazów MRI. System został:
-Przetestowany na rzeczywistych danych (BraTS),
-Wsparty narzędziami śledzenia eksperymentów (MLflow),
-Rozszerzony o interpretowalne wyniki (Grad-CAM, ROC, confusion matrix).
+- Projekt z sukcesem stworzył dokładny i dobrze uogólniający model CNN do klasyfikacji guzów mózgu na podstawie obrazów MRI. System został:
+przetestowany na rzeczywistych danych (BraTS),
+wsparty narzędziami śledzenia eksperymentów (MLflow),
+rozszerzony o interpretowalne wyniki (confusion matrix, F1 per klasa, histogramy).
 - Rekomendacje na przyszłość:
 Skalowanie na większe i bardziej zróżnicowane zbiory MRI (np. 3D NIfTI).
-Wykorzystanie modeli przetrenowanych (np. EfficientNet, ResNet).
+Wykorzystanie modeli przetrenowanych (EfficientNet, ResNet).
 Integracja z systemem PACS szpitalnym.
-Automatyczna lokalizacja guza (segmentacja) jako uzupełnienie klasyfikacji.
-
+Rozszerzenie o segmentację (lokalizacja guza).
 ---
 
 
