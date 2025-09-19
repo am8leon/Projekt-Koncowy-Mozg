@@ -151,11 +151,12 @@ Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa 
 # 5. Kluczowe wnioski
 ---
 # Kluczowe wnioski
-Augmentacja danych znacząco poprawia skuteczność.
-BatchNormalization + Dropout → stabilność i dokładność.
-Optuna pozwoliła dobrać optymalne hiperparametry (najlepszy wynik przy learning rate ≈ 1e-3).
-F1-macro i confusion matrix pokazują, że model dobrze radzi sobie z wszystkimi klasami, choć najtrudniejsze są przypadki guzów przysadki.
-System działa stabilnie nawet przy ograniczonym zbiorze danych.
+- Augmentacja danych znacząco poprawia skuteczność.
+- BatchNormalization + Dropout → stabilność i dokładność.
+- Optuna pozwoliła dobrać optymalne hiperparametry (najlepszy wynik przy learning rate ≈ 1e-3).
+- F1-macro i confusion matrix pokazują, że model dobrze radzi sobie z wszystkimi klasami, choć najtrudniejsze są przypadki guzów przysadki.
+- System działa stabilnie nawet przy ograniczonym zbiorze danych.
+
 ---
 # 6. Podsumowanie i rekomendacje
 ---
