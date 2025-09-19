@@ -65,8 +65,16 @@ Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa 
 
 ---
 - # Wizualizacja klasyfikacja guzów mózgu
+- Opis zdjęcia – rodzaje guzów mózgu na obrazach MRI: Na ilustracji przedstawiono przykładowe obrazy MRI mózgu, podzielone na trzy grupy w zależności od rodzaju guza:
+- Meningioma (żółty nagłówek) – guzy zlokalizowane przy powierzchni mózgu, często w pobliżu opon mózgowych. Na obrazach widać je jako wyraźnie odgraniczone zmiany, zwykle przylegające do krawędzi mózgu.
+- Glioma (zielony nagłówek) – guzy umiejscowione wewnątrz tkanki mózgowej. Mają nieregularne kształty i mogą rozprzestrzeniać się w głąb mózgu, co sprawia, że trudniej je jednoznacznie odgraniczyć.
+- Pituitary (niebieski nagłówek) – guzy przysadki mózgowej, zlokalizowane w centralnej, dolnej części mózgu. Na obrazach widoczne są jako zmiany w rejonie siodła tureckiego, w pobliżu podstawy czaszki.
 
-- 
+- Różnice między wizualizacjami:
+- Meningioma – guzy bardziej powierzchowne, dobrze widoczne przy krawędzi mózgu.
+- Glioma – guzy wewnętrzne, o nieregularnych granicach, trudniejsze do jednoznacznego odróżnienia od zdrowej tkanki.
+- Pituitary – guzy zlokalizowane centralnie, w okolicy przysadki, różniące się położeniem od pozostałych typów.
+
 - **Wizualizacja:**
 
 ![Obrazy Gozów Mózgu](image/zd0a.jpg)
