@@ -7,9 +7,10 @@ z wykorzystaniem konwolucyjnych sieci neuronowych
 1. Cel stworzenia modelu
 2. Zastosowane techniki
 3. Dane i klasy guzów mózgu
-4. Wyniki modelu (Optuna + CNN)
-5. Kluczowe wnioski
-6. Podsumowanie i rekomendacje
+4. Wizualizacja guzów mózgu 
+5. Wyniki modelu (Optuna + CNN)
+6. Kluczowe wnioski
+7. Podsumowanie i rekomendacje
 
 
 ---
@@ -46,9 +47,16 @@ Dodatkowo, projekt pokazuje jak można wykorzystać Optunę do automatycznej opt
 ![Obrazy Gozów Mózgu](image/zd0.jpg)
 
 ---
-# Wizualizacja zdrowy i chory mózg 
+# 4. Wizualizacja guzów mózgu 
+---
+- Wizualizacja zdrowy mózg i chory mózg
 
+- **Wizualizacja:**
 
+![Obrazy Gozów Mózgu](image/zd0b.jpg)
+
+---
+- Wizualizacja klasyfikacja guzów mózgu
 - **Wizualizacja:**
 
 ![Obrazy Gozów Mózgu](image/zd0a.jpg)
