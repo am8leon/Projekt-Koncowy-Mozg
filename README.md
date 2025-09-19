@@ -64,6 +64,14 @@ Model ma wspomóc diagnostykę radiologiczną poprzez przyspieszenie i zwiększe
 
 
 ---
+# Wykres heatmap validacja 
+
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd6.jpg)
+
+---
 # Wykres F1 na walidacji podczas treningu
 - Na wykresie przedstawiono, jak zmieniała się miara F1 (dokładniej: makro F1) modelu w trakcie procesu uczenia.
 - Niebieska linia przedstawia przebieg wartości F1 w kolejnych epokach – czyli jak zmieniała się skuteczność modelu w trakcie uczenia.
