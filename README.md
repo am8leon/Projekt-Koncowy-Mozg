@@ -49,14 +49,24 @@ Dodatkowo, projekt pokazuje jak można wykorzystać Optunę do automatycznej opt
 ---
 # 4. Wizualizacja guzów mózgu 
 ---
-- Wizualizacja zdrowy mózg i chory mózg
+- # Wizualizacja zdrowy mózg i chory mózg
+- Opis zdjęcia – porównanie obrazów MRI mózgu: Na ilustracji widzimy dwa obrazy MRI mózgu zestawione obok siebie w celu porównania.
+Po lewej stronie znajduje się obraz oznaczony jako „Normal” – przedstawia zdrowy mózg, w którym struktury są symetryczne i nie widać żadnych nieprawidłowości ani zmian chorobowych.
+Po prawej stronie znajduje się obraz oznaczony jako „Malignant” – przedstawia mózg z widoczną zmianą nowotworową. Jasny, nieregularny obszar wskazuje na obecność guza, który zaburza prawidłową strukturę tkanki mózgowej.
+
+- Różnice między wizualizacjami:
+W obrazie normalnym tkanki są równomierne, bez wyraźnych ognisk czy asymetrii.
+W obrazie złośliwym widoczny jest jasny, nieregularny obszar, który odróżnia się od reszty tkanki – to właśnie zmiana nowotworowa.
+Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa na strukturę mózgu i jak bardzo różni się od obrazu zdrowego.
 
 - **Wizualizacja:**
-
+- 
 ![Obrazy Gozów Mózgu](image/zd0b.jpg)
 
 ---
-- Wizualizacja klasyfikacja guzów mózgu
+- # Wizualizacja klasyfikacja guzów mózgu
+
+- 
 - **Wizualizacja:**
 
 ![Obrazy Gozów Mózgu](image/zd0a.jpg)
