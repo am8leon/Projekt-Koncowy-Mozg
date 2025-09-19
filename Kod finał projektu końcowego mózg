@@ -352,26 +352,6 @@ def evaluate_dataset_metrics(model, dataset, name="val", class_names=None, log_t
 
 import os, numpy as np, tensorflow as tf, matplotlib.pyplot as plt, cv2
 
-# Implementacja GRAD-CAM
-def make_gradcam_heatmap(img_array, model, last_conv_layer_name):
-    grad_model = tf.keras.models.Model([model.inputs], [model.get_layer(last_conv_layer_name).output, model.output])
-    with tf.GradientTape() as tape:
-        conv_outputs, predictions = grad_model(img_array)
-        class_idx = tf.argmax(predictions[0])
-        loss = predictions[:, class_idx]
-    grads = tape.gradient(loss, conv_outputs)[0]
-    pooled_grads = tf.reduce_mean(grads, axis=(0, 1))
-    conv_outputs = conv_outputs[0]
-    for i in range(pooled_grads.shape[-1]):
-        conv_outputs[:, :, i] *= pooled_grads[i]
-    heatmap = tf.reduce_mean(conv_outputs, axis=-1).numpy()
-    return cv2.resize(np.maximum(heatmap, 0) / (np.max(heatmap) + 1e-8), IMG_SIZE)
-
-def overlay_heatmap(orig_img, heatmap, alpha=0.4):
-    heatmap = np.uint8(255 * heatmap)
-    heatmap = cv2.applyColorMap(heatmap, cv2.COLORMAP_JET)
-    return cv2.addWeighted(orig_img, 1 - alpha, heatmap, alpha, 0)
-
 # Optuna: objective
 def objective(trial):
     # każdy trial logujemy jako run zagnieżdżony
