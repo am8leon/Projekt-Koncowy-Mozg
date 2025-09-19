@@ -98,19 +98,6 @@ Model ma wspomóc diagnostykę radiologiczną poprzez przyspieszenie i zwiększe
 ![Porównanie nowotworów](image/zd5.jpg)
 
 ---
-#  Przykłady  klasyfikacji mózgu
-- Opis przykładowych błędnych klasyfikacji: Na tym slajdzie przedstawiono obrazy MRI mózgu, które zostały niepoprawnie sklasyfikowane przez model.
-- Każdy obraz ma dwie etykiety:
-- „Prawidłowa” – czyli faktyczna, poprawna diagnoza (rzeczywista klasa).
-- „Pred” – czyli przewidywanie modelu (klasa, którą model błędnie przypisał).
-- W tym przykładzie wszystkie pokazane obrazy należą do klasy „brain_glioma”, ale model zaklasyfikował je jako „brain_menin”.
-
-
-- **Wizualizacja:**
-
-![Porównanie nowotworów](image/zd8.jpg)
-
----
 # 6.Wyniki modelu na dodatkowym zbiorze danych metryka optuna
 -  Na Heatmapie  przedstawiono macierz pomyłek, która pokazuje, jak model klasyfikacyjny radzi sobie z rozpoznawaniem trzech klas obrazów mózgu: brain_glioma, brain_menin oraz brain_tumor.
 - Kolory kwadratów odzwierciedlają liczebność przypadków – im ciemniejszy kolor, tym więcej przykładów znajduje się w danej komórce. 
