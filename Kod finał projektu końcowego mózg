@@ -533,16 +533,14 @@ plt.title("Pewność (błędne)"); plt.xlabel("Prawdopodobieństwo"); plt.ylabel
 
 plt.tight_layout(); plt.show()
 
-# ============================================
-# F1 per klasa (na zbiorze testowym)
-# ============================================
-from sklearn.metrics import f1_score
-
-f1_per_class = f1_score(test_true, test_pred, average=None)
-plt.figure(figsize=(6,4))
-sns.barplot(x=class_names, y=f1_per_class)
-plt.ylim(0,1)
-plt.ylabel('F1')
-plt.title('F1 dla poszczególnych klas (TEST)')
+# Wykres F1 na walidacji (finalny trening)
+plt.figure(figsize=(8,4))
+plt.plot(range(1, len(final_f1_cb.f1_history)+1), final_f1_cb.f1_history, marker='o')
+plt.xlabel('Epoka')
+plt.ylabel('Makro F1 (val)')
+plt.title('F1 na walidacji podczas treningu')
+plt.grid(True, alpha=0.3)
 plt.show()
+
+
 
