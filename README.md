@@ -5,25 +5,34 @@ z wykorzystaniem konwolucyjnych sieci neuronowych
 
 # Agenda  
 1. Cel stworzenia modelu
-2. Zastosowane techniki 
-4. Wyniki modelu opartego o metrykę Optuna
-5. Wyniki modelu na dodatkowym zbiorze danych metryka optuna
-6. Wizualizacje
-7. Kluczowe wnioski
-8. Podsumowanie i Rekomendacje  
+2. Zastosowane techniki
+3. Dane i klasy guzów mózgu
+4. Wyniki modelu (Optuna + CNN)
+5. Kluczowe wnioski
+6. Podsumowanie i rekomendacje
+
 
 ---
 # 1. Cel stworzenia modelu
-Celem projektu było opracowanie modelu głębokiego uczenia (CNN), który automatycznie klasyfikuje obrazy MRI mózgu na trzy typy guzów: glioma, meningioma i guzy przysadki.
-Model ma wspomóc diagnostykę radiologiczną poprzez przyspieszenie i zwiększenie dokładności wykrywania oraz klasyfikacji nowotworów.
+Celem projektu było opracowanie modelu głębokiego uczenia (Convolutional Neural Network, CNN), który automatycznie klasyfikuje obrazy MRI mózgu na trzy typy guzów: 
+- glioma
+- meningioma
+- guzy przysadki.
+- Model ma wspomóc diagnostykę radiologiczną poprzez: przyspieszenie procesu analizy obrazów,zwiększenie dokładności klasyfikacji, dostarczenie interpretowalnych wyników (np. macierz pomyłek, F1 per klasa).
+Dodatkowo, projekt pokazuje jak można wykorzystać Optunę do automatycznej optymalizacji hiperparametrów, co zwiększa wiarygodność i powtarzalność wyników.
 ---
 # 2. Zastosowane techniki
-- Convolutional Neural Network to sprawdzony standard w zadaniach analizy obrazów medycznych.
-- Augmentacja i normalizacja poprawiają uogólnianie i stabilność uczenia.
-- BatchNormalization i Adam przyspieszają zbieżność.
-- Dropout to mocna regularyzacja przy ograniczonym zestawie obrazów.
-- Porównanie wariantów pozwala dobrać najlepszą kombinację hiperparametrów i architektury.
-
+- Convolutional Neural Network (CNN) – standard w analizie obrazów medycznych.
+- Optuna – automatyczna optymalizacja hiperparametrów (learning rate, optimizer, liczba filtrów).
+- Augmentacja danych – rotacje, przesunięcia, zmiany jasności → poprawa uogólniania.
+- Normalizacja – stabilizuje uczenie.
+- BatchNormalization – przyspiesza zbieżność i stabilizuje gradienty.
+- Dropout – redukuje ryzyko przeuczenia.
+- EarlyStopping + ReduceLROnPlateau – zatrzymują trening w odpowiednim momencie i dostosowują learning rate.
+- MLflow – śledzenie eksperymentów i logowanie wyników.
+- tf.data.Dataset – wydajne ładowanie i przetwarzanie danych.
+---
+# 3. Dane i klasy guzów mózgu
 ---
 # Przykłady obrazów używanych przez model 
 - Takie przykłady służą do zobrazowania różnicy między zdrowymi i chorymi skanami w zadaniu automatycznej klasyfikacji czy wspomagania diagnostyki.
@@ -37,12 +46,18 @@ Model ma wspomóc diagnostykę radiologiczną poprzez przyspieszenie i zwiększe
 ![Obrazy Gozów Mózgu](image/zd0.jpg)
 
 ---
-#  Wyniki modelu opartego o metrykę Optuna
+# Wizualizacja zdrowy i chory mózg 
+
+
+- **Wizualizacja:**
+
+![Obrazy Gozów Mózgu](image/zd0a.jpg)
+
+---
+# 4. Wyniki modelu (Optuna + CNN)
 ---
 
 # Wykres dokładność modelu 
-
-
 
 
 - **Wizualizacja:**
@@ -96,7 +111,7 @@ Model ma wspomóc diagnostykę radiologiczną poprzez przyspieszenie i zwiększe
 ![Porównanie nowotworów](image/zd5.jpg)
 
 ---
-# 6.Wyniki modelu na dodatkowym zbiorze danych metryka optuna
+# Wyniki modelu na dodatkowym zbiorze danych metryka optuna
 -  Na Heatmapie  przedstawiono macierz pomyłek, która pokazuje, jak model klasyfikacyjny radzi sobie z rozpoznawaniem trzech klas obrazów mózgu: brain_glioma, brain_menin oraz brain_tumor.
 - Kolory kwadratów odzwierciedlają liczebność przypadków – im ciemniejszy kolor, tym więcej przykładów znajduje się w danej komórce. 
 - Wartości liczbowe w każdym kwadracie pokazują dokładną liczbę przypadków, np. ile obrazów z klasy brain_glioma zostało poprawnie rozpoznanych jako brain_glioma, a ile błędnie zaklasyfikowanych do innych klas.
@@ -107,6 +122,8 @@ Model ma wspomóc diagnostykę radiologiczną poprzez przyspieszenie i zwiększe
 ![Porównanie nowotworów](image/zd9ro.jpg)
 
 ---
+# 5. Kluczowe wnioski
+---
 # Kluczowe wnioski
 Augmentacja danych znacząco poprawia skuteczność modeli.
 Batch Normalization + Dropout wspierają stabilność i dokładność.
@@ -114,6 +131,8 @@ Największą skuteczność osiągnięto na modelach z rozszerzeniami, przy learn
 Grad-CAM potwierdza, że model uczy się na właściwych strukturach anatomicznych.
 System działa dobrze przy małych rozmiarach danych i może być łatwo wdrożony.
 
+---
+# 6. Podsumowanie i rekomendacje
 ---
 # Podsumowanie i rekomendacje
 Projekt z sukcesem stworzył dokładny i dobrze uogólniający model CNN do klasyfikacji guzów mózgu na podstawie obrazów MRI. System został:
