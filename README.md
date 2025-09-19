@@ -85,17 +85,7 @@ Model ma wspomóc diagnostykę radiologiczną poprzez przyspieszenie i zwiększe
 ![Porównanie nowotworów](image/zd3.jpg)
 
 ---
-# Wykres F1 dla poszczególnych klas test
-- Opis histogramu F1 dla poszczególnych klas (TEST): Na wykresie przedstawiono wyniki modelu w postaci miary F1 dla trzech różnych klas diagnozowanych na obrazach mózgu.
-- Im wyższa wartość, tym lepiej model radzi sobie z poprawnym rozpoznawaniem danej klasy.
-- Słupki pokazują wartości F1 uzyskane przez model dla każdej z klas.
-- W tym przypadku wszystkie słupki sięgają wysoko, co oznacza, że model osiągnął bardzo dobre wyniki w rozpoznawaniu każdej z trzech klas.
 
-- **Wizualizacja:**
-
-![Porównanie nowotworów](image/zd4.jpg)
-
----
 # Heatmapa Macierz pomyłek (test)
 - Opis heatmapy – macierz pomyłek (Confusion Matrix): Na wykresie przedstawiono macierz pomyłek, która pokazuje, jak model klasyfikacyjny poradził sobie z rozpoznawaniem trzech klas obrazów mózgu.
 - Kolory kwadratów odzwierciedlają liczebność przypadków – im ciemniejszy kolor, tym więcej przykładów znajduje się w danej komórce.
