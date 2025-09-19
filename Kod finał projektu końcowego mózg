@@ -538,21 +538,9 @@ else:
 
 mlflow.end_run()
 
-# Predykcje na teście do statystyk
-test_probs = final_model.predict(test_gen, verbose=0)
-test_pred = np.argmax(test_probs, axis=1)
-test_true = test_gen.classes
-class_names = [idx_to_class[i] for i in range(train_gen.num_classes)]
-
-# Histogram liczby próbek per przewidziana klasa
-plt.figure(figsize=(8,4))
-counts = np.bincount(test_pred, minlength=len(class_names))
-sns.barplot(x=class_names, y=counts)
-plt.title("Rozkład przewidzianych klas (test)")
-plt.ylabel("Liczba próbek"); plt.xlabel("Klasa")
-plt.tight_layout(); plt.show()
-
-# Histogram pewności prawidłowych vs błędnych predykcji
+# ============================================
+# Histogram pewności poprawnych vs błędnych predykcji
+# ============================================
 max_conf = test_probs.max(axis=1)
 correct_mask = (test_pred == test_true)
 
@@ -560,7 +548,22 @@ plt.figure(figsize=(10,4))
 plt.subplot(1,2,1)
 sns.histplot(max_conf[correct_mask], bins=20, color="green", kde=False)
 plt.title("Pewność (poprawne)"); plt.xlabel("Prawdopodobieństwo"); plt.ylabel("Liczba")
+
 plt.subplot(1,2,2)
 sns.histplot(max_conf[~correct_mask], bins=20, color="red", kde=False)
 plt.title("Pewność (błędne)"); plt.xlabel("Prawdopodobieństwo"); plt.ylabel("Liczba")
+
 plt.tight_layout(); plt.show()
+
+# ============================================
+# F1 per klasa (na zbiorze testowym)
+# ============================================
+from sklearn.metrics import f1_score
+
+f1_per_class = f1_score(test_true, test_pred, average=None)
+plt.figure(figsize=(6,4))
+sns.barplot(x=class_names, y=f1_per_class)
+plt.ylim(0,1)
+plt.ylabel('F1')
+plt.title('F1 dla poszczególnych klas (TEST)')
+plt.show()
