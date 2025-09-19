@@ -129,6 +129,9 @@ Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa 
 
 ---
 # Heatmapa confiusion matrix  (test)
+- Opis heatmapy – macierz pomyłek (Confusion Matrix, test): Na wykresie przedstawiono macierz pomyłek, która pokazuje, jak model klasyfikacyjny radzi sobie z rozpoznawaniem trzech typów guzów mózgu: brain_glioma, brain_menin oraz brain_tumor.
+Kolory kwadratów pokazują liczebność przypadków – im ciemniejszy kolor, tym więcej przykładów znajduje się w danej komórce. 
+Wartości liczbowe w każdym polu wskazują dokładną liczbę przypadków, np. ile obrazów z klasy glioma zostało poprawnie rozpoznanych jako glioma, a ile błędnie zaklasyfikowanych do innych klas.
 
 
 - **Wizualizacja:**
@@ -137,7 +140,11 @@ Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa 
 
 ---
 # Wykres rozkład przewidzianych klas (test)
-
+- Opis histogramu – rozkład przewidzianych klas (test): Na wykresie przedstawiono rozkład liczby próbek przypisanych przez model do poszczególnych klas w zbiorze testowym.
+- Słupki pokazują, ile próbek zostało przypisanych do każdej z klas:
+- Dla klasy brain_glioma słupek jest najniższy – model przewidział nieco ponad 500 przypadków.
+- Dla klasy brain_menin słupek jest najwyższy – model przewidział ponad 3000 przypadków.
+- Dla klasy brain_tumor słupek ma wartość pośrednią – około 2000 przypadków.
 
 - **Wizualizacja:**
 
