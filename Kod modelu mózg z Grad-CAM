@@ -96,7 +96,7 @@ def build_model(variant="baseline", lr=1e-3):
     model.compile(optimizer=Adam(learning_rate=lr), loss="categorical_crossentropy", metrics=["accuracy"])
     return model
 
-# Implementacja GRAD-CAM
+# GRAD-CAM Implementation
 def get_last_conv_layer_name(model):
     ConvLike = (tf.keras.layers.Conv2D,
                 tf.keras.layers.SeparableConv2D,
@@ -107,12 +107,12 @@ def get_last_conv_layer_name(model):
     return None  # jeśli brak, pominiemy Grad-CAM
 
 def make_gradcam_and_overlay(model, x_batch, orig_img_uint8):
-    # znajdź ostatnią warstwę konwolucyjną
+    # find the last convolutional layer
     last_conv = get_last_conv_layer_name(model)
     if last_conv is None:
         return None, None  # brak Conv -> pomijamy
 
-    # upewnij się, że model był wywołany
+    # make sure the model was called
     try:
         _ = model(x_batch, training=False)
     except Exception:
@@ -121,10 +121,10 @@ def make_gradcam_and_overlay(model, x_batch, orig_img_uint8):
         except Exception:
             pass
 
-    # policz heatmapę (używa Twojej funkcji)
+    # calculate heatmap 
     heatmap = make_gradcam_heatmap(x_batch, model, last_conv)  # shape: IMG_SIZE
 
-    # oryginał do 3 kanałów jeśli trzeba
+    # original up to 3 channels if needed
     if orig_img_uint8.ndim == 2:
         orig_img_uint8 = np.stack([orig_img_uint8]*3, axis=-1)
     elif orig_img_uint8.shape[-1] == 1:
@@ -133,9 +133,7 @@ def make_gradcam_and_overlay(model, x_batch, orig_img_uint8):
     overlay = overlay_heatmap(orig_img_uint8, heatmap, alpha=0.4)
     return heatmap, overlay
 
-
-
-# Wczytanie plików  CSV
+# Loading CSV files
 csv_files = ["name_mapping_validation_data.csv", "name_mapping.csv", "survival_evaluation.csv", "survival_info.csv"]
 for csv in csv_files:
     full_path = os.path.join(DATASET_PATH, csv)
@@ -144,7 +142,7 @@ for csv in csv_files:
     else:
         print(f"Brak pliku {csv}")
 
-# MLflow + Pętla treningowa
+# MLflow + Training Loop
 mlflow.set_experiment("brain_mri_classification")
 results = {}
 best_val_acc = 0
@@ -200,7 +198,7 @@ for name, datagen, variant, lr in experiments:
 
         results[name] = {"val_acc": val_acc, "run_id": run.info.run_id}
 
-# Walidacja na zbiorze danych
+# Validation on the dataset
 BRATS_TRAINING = {
     "flair":  os.path.join(DATASET_PATH, "BraTS20_Training_368_flair.nii"),
     "seg":    os.path.join(DATASET_PATH, "BraTS20_Training_368_seg.nii"),
@@ -270,3 +268,4 @@ else:
     plt.axis('off')
     plt.tight_layout()
     plt.show()
+
