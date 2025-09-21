@@ -153,6 +153,7 @@ def create_datasets(cfg: Config, augmentation: bool = True):
     ]) if augmentation else None
 
     AUTOTUNE = tf.data.AUTOTUNE
+    
 
     def prepare(ds, training=False):
         # cast do float32 w pipeline (AMP sobie poradzi niżej)
