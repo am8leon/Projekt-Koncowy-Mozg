@@ -47,7 +47,7 @@ class Config(BaseSettings):
     optimize_for: str = "f1"              # 'f1' lub 'accuracy'
 
     # Parametry uczenia
-    n_trials: int = 2                  # liczba prób Optuny
+    n_trials: int = 5                  # liczba prób Optuny
     img_size: Tuple[int, int] = (96, 96)  # rozmiar wejściowych obrazów
     batch_size: int = 32
     epochs: int = 10
