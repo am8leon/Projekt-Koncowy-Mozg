@@ -1,6 +1,5 @@
+---
 # Projekt-Koncowy 🧠
-Automatyczna klasyfikacja guzów mózgu na podstawie obrazów MRI 
-z wykorzystaniem konwolucyjnych sieci neuronowych
 ---
 ![Obrazy Gozów Mózgu](image/zd0c.jpg)
 
