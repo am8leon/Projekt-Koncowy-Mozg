@@ -2,7 +2,9 @@
 Automatyczna klasyfikacja guzów mózgu na podstawie obrazów MRI 
 z wykorzystaniem konwolucyjnych sieci neuronowych
 ---
+![Obrazy Gozów Mózgu](image/zd0c.jpg)
 
+---
 # Agenda  
 1. Cel stworzenia modelu
 2. Zastosowane techniki
