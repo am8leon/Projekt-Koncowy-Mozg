@@ -462,17 +462,6 @@ def plot_confusion_matrix(cm, class_labels, title="Macierz pomyłek", fname=None
     plt.show()
     plt.close()
 
-
-# F1 plot on validation (final training)
-plt.figure(figsize=(8,4))
-plt.plot(range(1, len(final_f1_cb.f1_history)+1), final_f1_cb.f1_history, marker='o')
-plt.xlabel('Epoka')
-plt.ylabel('Makro F1 (val)')
-plt.title('F1 na walidacji podczas treningu')
-plt.grid(True, alpha=0.3)
-plt.show()
-
-
 # Safely close MLflow run (if open)
 try:
     mlflow.end_run()
