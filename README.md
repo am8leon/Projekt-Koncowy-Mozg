@@ -85,9 +85,9 @@ Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa 
 ---
 
 # Wykres dokładność modelu 
-- Na wykresie przedstawiono, jak zmieniała się dokładność modelu w trakcie procesu uczenia.
-- Niebieska linia pokazuje dokładność na zbiorze treningowym (Train acc) – czyli jak dobrze model radzi sobie na danych, na których się uczy. 
-- Pomarańczowa linia pokazuje dokładność na zbiorze walidacyjnym (Val acc) – czyli jak dobrze model generalizuje na nowych danych, których wcześniej nie widział.
+- Na tym wykresie widzimy, jak w kolejnych epokach zmieniała się dokładność modelu. Oś pozioma to epoki, a oś pionowa to dokładność,
+  czyli miara poprawnych klasyfikacji. Niebieska linia pokazuje wyniki na danych treningowych,
+  a pomarańczowa – na danych walidacyjnych. Obie linie rosną, co oznacza, że model uczy się coraz lepiej i dobrze radzi sobie także na nowych danych.
 
 - **Wizualizacja:**
 
@@ -97,10 +97,9 @@ Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa 
 ---
 # Wykres krzywe strat 
 
-- Na wykresie przedstawiono przebieg straty (loss) modelu uczenia maszynowego w trakcie treningu.
-- Obie krzywe mają tendencję spadkową, co oznacza, że model uczy się i poprawia swoje wyniki w kolejnych epokach.
-- 🔵 Niebieska linia pokazuje stratę na zbiorze treningowym (Train loss) – czyli jak dobrze model uczy się na danych, które zna.
-- 🟠 Pomarańczowa linia pokazuje stratę na zbiorze walidacyjnym (Val loss) – czyli jak dobrze model radzi sobie na nowych danych, których wcześniej nie widział.
+- Na tym wykresie widzimy, jak w kolejnych epokach zmienia się wartość błędu modelu. Oś pozioma to epoki, a oś pionowa to strata,
+  czyli miara błędu. Niebieska linia pokazuje, jak model uczy się na danych treningowych, a pomarańczowa – jak radzi sobie na danych walidacyjnych.
+  Obie linie spadają, co oznacza, że model poprawia swoje wyniki, a ich przebieg jest do siebie zbliżony, co świadczy o stabilnym uczeniu się bez przeuczenia.
 
 - **Wizualizacja:**
 
@@ -119,12 +118,9 @@ Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa 
 
 ---
 # Wykres F1 na walidacji podczas treningu
-- Na wykresie przedstawiono, jak zmieniała się miara F1 (dokładniej: makro F1) modelu w trakcie procesu uczenia.
-- Niebieska linia przedstawia przebieg wartości F1 w kolejnych epokach – czyli jak zmieniała się skuteczność modelu w trakcie uczenia.
-- 🔵 Punkty naniesione na linię oznaczają konkretne wartości F1 w danej epoce – dzięki nim łatwo można odczytać i porównać wyniki między poszczególnymi etapami treningu.
-- Opis wykresu F1 na walidacji podczas treningu: Na wykresie przedstawiono, jak zmieniała się miara F1 (dokładniej: makro F1) modelu w trakcie procesu uczenia.
-- Widać lekkie wahania (np. spadek w epoce 5), ale ogólny trend jest wzrostowy, a od około 6. epoki wartości stabilizują się na wysokim poziomie.
-- To sugeruje, że model osiągnął dobrą jakość i potrafi skutecznie klasyfikować dane walidacyjne.
+- Na tym wykresie widzimy, jak w kolejnych epokach zmieniała się miara F1 na zbiorze walidacyjnym. Oś pozioma to epoki, a oś pionowa to wartość F1,
+  która pokazuje, jak dobrze model radzi sobie z klasyfikacją, uwzględniając zarówno precyzję, jak i czułość. Niebieska linia przedstawia przebieg wyników,
+  a punkty na niej oznaczają konkretne wartości w każdej epoce. Widzimy, że model stopniowo poprawiał swoje wyniki, a od około 6. Epoki osiągnął stabilny, wysoki poziom skuteczności.
   
 - **Wizualizacja:**
 
