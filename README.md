@@ -109,13 +109,9 @@ Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa 
 
 ---
 # Wykres heatmap (validation)
-- Opis heatmapy – macierz pomyłek (Confusion Matrix, walidacja): Na wykresie przedstawiono macierz pomyłek, która pokazuje, jak model klasyfikacyjny radzi sobie z rozpoznawaniem trzech typów guzów mózgu: brain_glioma, brain_menin oraz brain_tumor.
-- Kolory kwadratów odzwierciedlają liczebność przypadków – im ciemniejszy kolor, tym więcej przykładów znajduje się w danej komórce.
-- Wartości liczbowe w każdym polu pokazują dokładną liczbę przypadków, np.:
-- brain_glioma poprawnie rozpoznane jako glioma: 1631 przypadków,
-- brain_menin poprawnie rozpoznane jako meningioma: 1734 przypadki,
-- brain_tumor poprawnie rozpoznane jako tumor: 1917 przypadków.
-
+- Na tej heatmapie widzimy macierz pomyłek, która pokazuje, jak model klasyfikuje obrazy. Oś pozioma to przewidywania modelu, a oś pionowa to rzeczywiste etykiety. Każdy kwadrat
+  przedstawia liczbę przypadków – im ciemniejszy kolor, tym więcej przykładów. Najważniejsze są wartości na przekątnej, bo oznaczają poprawne klasyfikacje.
+  Widzimy, że model dobrze rozpoznaje większość przypadków, ale zdarzają się pomyłki, szczególnie przy rozróżnianiu glioma i meningioma.
 
 - **Wizualizacja:**
 
@@ -136,9 +132,10 @@ Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa 
 
 ---
 # Heatmapa confiusion matrix  (test)
-- Opis heatmapy – macierz pomyłek (Confusion Matrix, test): Na wykresie przedstawiono macierz pomyłek, która pokazuje, jak model klasyfikacyjny radzi sobie z rozpoznawaniem trzech typów guzów mózgu: brain_glioma, brain_menin oraz brain_tumor.
-Kolory kwadratów pokazują liczebność przypadków – im ciemniejszy kolor, tym więcej przykładów znajduje się w danej komórce. 
-Wartości liczbowe w każdym polu wskazują dokładną liczbę przypadków, np. ile obrazów z klasy glioma zostało poprawnie rozpoznanych jako glioma, a ile błędnie zaklasyfikowanych do innych klas.
+- Na tej heatmapie widzimy macierz pomyłek, która pokazuje, jak model klasyfikuje obrazy. Oś pozioma to przewidywania modelu,
+  a oś pionowa to rzeczywiste etykiety. Każdy kwadrat przedstawia liczbę przypadków – im ciemniejszy kolor, tym więcej przykładów.
+  Najważniejsze są wartości na przekątnej, bo oznaczają poprawne klasyfikacje. Widzimy, że model dobrze rozpoznaje większość przypadków,
+  ale zdarzają się pomyłki, szczególnie przy rozróżnianiu glioma i meningioma.
 
 
 - **Wizualizacja:**
@@ -147,11 +144,10 @@ Wartości liczbowe w każdym polu wskazują dokładną liczbę przypadków, np. 
 
 ---
 # Wykres rozkład przewidzianych klas (test)
-- Opis histogramu – rozkład przewidzianych klas (test): Na wykresie przedstawiono rozkład liczby próbek przypisanych przez model do poszczególnych klas w zbiorze testowym.
-- Słupki pokazują, ile próbek zostało przypisanych do każdej z klas:
-- Dla klasy brain_glioma słupek jest najniższy – model przewidział nieco ponad 500 przypadków.
-- Dla klasy brain_menin słupek jest najwyższy – model przewidział ponad 3000 przypadków.
-- Dla klasy brain_tumor słupek ma wartość pośrednią – około 2000 przypadków.
+- Na tym histogramie widzimy, jak model rozłożył swoje przewidywania pomiędzy trzy klasy guzów mózgu. Oś pozioma przedstawia klasy, 
+a oś pionowa liczbę próbek. Każdy słupek pokazuje, ile przypadków model przypisał do danej klasy – najwięcej do meningioma, mniej do tumor, 
+a najmniej do glioma. Dzięki temu możemy zobaczyć, czy model równomiernie rozpoznaje wszystkie klasy, 
+czy też ma tendencję do częstszego wybierania jednej z nich.
 
 - **Wizualizacja:**
 
@@ -159,9 +155,10 @@ Wartości liczbowe w każdym polu wskazują dokładną liczbę przypadków, np. 
 
 ---
 # Heatmapa macierz pomyłek 
-- Opis heatmapy – macierz pomyłek (Confusion Matrix): Na wykresie przedstawiono macierz pomyłek, która pokazuje, jak model klasyfikacyjny radzi sobie z rozpoznawaniem trzech typów guzów mózgu: brain_glioma, brain_menin oraz brain_tumor.
-- Kolory kwadratów odzwierciedlają liczebność przypadków – im ciemniejszy kolor, tym więcej przykładów znajduje się w danej komórce.
-- Wartości liczbowe w każdym polu pokazują dokładną liczbę przypadków, np. ile obrazów z klasy glioma zostało poprawnie rozpoznanych jako glioma, a ile błędnie zaklasyfikowanych do innych klas.
+- Na tej heatmapie widzimy macierz pomyłek, która pokazuje, jak model klasyfikuje obrazy.
+  Oś pozioma to przewidywania modelu, a oś pionowato rzeczywiste etykiety.
+  Każdy kwadrat przedstawia liczbę przypadków – im ciemniejszy kolor, tym więcej przykładów. Najważniejsze są wartości na przekątnej,bo oznaczają poprawne klasyfikacje.
+  Widzimy, że model dobrze rozpoznaje większość przypadków, ale zdarzają się pomyłki, szczególnie przy rozróżnianiu glioma i meningioma.
 
 
 - **Wizualizacja:**
