@@ -114,16 +114,6 @@ Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa 
 ![Porównanie nowotworów](image/zd4.jpg)
 
 ---
-# Wykres F1 na walidacji podczas treningu
-- Na tym wykresie widzimy, jak w kolejnych epokach zmieniała się miara F1 na zbiorze walidacyjnym. Oś pozioma to epoki, a oś pionowa to wartość F1,
-  która pokazuje, jak dobrze model radzi sobie z klasyfikacją, uwzględniając zarówno precyzję, jak i czułość. Niebieska linia przedstawia przebieg wyników,
-  a punkty na niej oznaczają konkretne wartości w każdej epoce. Widzimy, że model stopniowo poprawiał swoje wyniki, a od około 6. Epoki osiągnął stabilny, wysoki poziom skuteczności.
-  
-- **Wizualizacja:**
-
-![Porównanie nowotworów](image/zd3.jpg)
-
----
 # Heatmapa confiusion matrix  (test)
 - Na tej heatmapie widzimy macierz pomyłek, która pokazuje, jak model klasyfikuje obrazy. Oś pozioma to przewidywania modelu,
   a oś pionowa to rzeczywiste etykiety. Każdy kwadrat przedstawia liczbę przypadków – im ciemniejszy kolor, tym więcej przykładów.
