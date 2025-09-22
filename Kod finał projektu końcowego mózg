@@ -87,9 +87,7 @@ class Config(BaseSettings):
     mlflow_experiment: str = "brain_mri"
     mlflow_dir: str = "/content/mlruns"
 
-    # Grad-CAM
-    gradcam_samples: int = 4
-
+  
     # Pydantic
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
@@ -404,41 +402,6 @@ final_model = compile_model(final_model, lr, opt_name)
 history = fit_with_callbacks(final_model, train_ds, val_ds,
                              cfg.epochs, class_weight_dict, cfg.max_runtime_seconds)
 
-# Grad-CAM (only after training)
-last_conv_layer_name = None
-for layer in reversed(final_model.layers):
-    if isinstance(layer, tf.keras.layers.Conv2D):
-        last_conv_layer_name = layer.name
-        break
-
-if last_conv_layer_name is None:
-    print("Brak warstwy Conv2D w modelu – Grad-CAM nie zadziała")
-else:
-    # Pobierz batch z walidacji
-    images, labels = next(iter(val_ds.take(1)))
-    img_array = np.expand_dims(images[0], axis=0)
-
-    # Warm-up
-    _ = final_model.predict(img_array, verbose=0)
-
-    # Heatmapa
-    heatmap = make_gradcam_heatmap(img_array, final_model, last_conv_layer_name)
-
-    # Przygotuj obraz do overlayu
-    orig_img = images[0].numpy()
-    if orig_img.ndim == 2:
-        orig_img = np.stack([orig_img]*3, axis=-1)
-    elif orig_img.shape[-1] == 1:
-        orig_img = np.repeat(orig_img, 3, axis=-1)
-    orig_img = np.uint8(orig_img * 255)
-
-    # Overlay
-    overlay = overlay_heatmap(orig_img, heatmap)
-
-    plt.imshow(overlay)
-    plt.axis("off")
-    plt.title("Grad-CAM (Optuna model)")
-    plt.show()
 
 # Loss and accuracy charts
 epochs_range = range(1, len(history.history['loss']) + 1)
