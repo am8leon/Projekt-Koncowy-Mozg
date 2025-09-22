@@ -38,11 +38,10 @@ Dodatkowo, projekt pokazuje jak można wykorzystać Optunę do automatycznej opt
 # 3. Dane i klasy guzów mózgu
 ---
 # Przykłady obrazów używanych przez model 
-- Takie przykłady służą do zobrazowania różnicy między zdrowymi i chorymi skanami w zadaniu automatycznej klasyfikacji czy wspomagania diagnostyki.
-- Klasy gózów mózgu
-- brain_glioma – Zawiera obrazy guzów glejowych, które powstają z komórek glejowych w mózgu. Mogą mieć różny stopień złośliwości.
-- brain_menin – Zawiera obrazy meningiomów, czyli nowotworów wywodzących się z opon mózgowych. Często są łagodne, ale ich położenie może powodować poważne komplikacje.
-- brain_tumor – Prawdopodobnie folder zawiera mieszane przypadki różnych nowotworów mózgu, bez podziału na konkretny typ.
+- Na tym zdjęciu widzimy przykładowe obrazy MRI różnych rodzajów guzów mózgu. Meningioma to guzy powierzchniowe,
+  dobrze odgraniczone i przylegające do opon mózgowych. Glioma to guzy wewnętrzne, o nieregularnym kształcie,
+  które trudniej odróżnić od zdrowej tkanki. Ostatni przykład pokazuje guz mózgu w ujęciu ogólnym.
+  Dzięki temu zestawieniu możemy zobaczyć, jak różnią się one wyglądem i lokalizacją.
 
 - **Wizualizacja:**
 
