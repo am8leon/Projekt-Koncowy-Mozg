@@ -49,7 +49,7 @@ class Config(BaseSettings):
 
     # Learning parameters
     n_trials: int = 5                  # # number of Optuna attempts
-    img_size: Tuple[int, int] = (96, 96)  # size of input images
+    img_size: Tuple[int, int] = (64, 64)  # size of input images
     batch_size: int = 32
     epochs: int = 10
     seed: int = 42
