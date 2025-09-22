@@ -43,7 +43,7 @@ mlflow.set_tracking_uri("file:/content/drive/MyDrive/mlruns")
 
 # Project Configuration
 class Config(BaseSettings):
-    # Tryb działania
+    # Operation mode
     mode: str = "optuna"                  # np. "optuna" 
     optimize_for: str = "f1"              # 'f1' lub 'accuracy'
 
