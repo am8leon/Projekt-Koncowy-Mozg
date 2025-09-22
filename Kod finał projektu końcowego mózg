@@ -449,13 +449,6 @@ plt.ylabel("Liczba próbek"); plt.xlabel("Klasa")
 plt.tight_layout(); plt.show()
 
 
-# Safely close MLflow run (if open)
-try:
-    mlflow.end_run()
-except Exception:
-    pass
-
-
 # Heatmap confusion matrix
 def plot_confusion_matrix(cm, class_labels, title="Macierz pomyłek", fname=None):
     plt.figure(figsize=(6, 6))
@@ -469,20 +462,6 @@ def plot_confusion_matrix(cm, class_labels, title="Macierz pomyłek", fname=None
     plt.show()
     plt.close()
 
-# Histogram of confidence of correct vs. incorrect predictions
-max_conf = test_probs.max(axis=1)
-correct_mask = (test_pred == test_true)
-
-plt.figure(figsize=(10,4))
-plt.subplot(1,2,1)
-sns.histplot(max_conf[correct_mask], bins=20, color="green", kde=False)
-plt.title("Pewność (poprawne)"); plt.xlabel("Prawdopodobieństwo"); plt.ylabel("Liczba")
-
-plt.subplot(1,2,2)
-sns.histplot(max_conf[~correct_mask], bins=20, color="red", kde=False)
-plt.title("Pewność (błędne)"); plt.xlabel("Prawdopodobieństwo"); plt.ylabel("Liczba")
-
-plt.tight_layout(); plt.show()
 
 # F1 plot on validation (final training)
 plt.figure(figsize=(8,4))
@@ -494,4 +473,9 @@ plt.grid(True, alpha=0.3)
 plt.show()
 
 
+# Safely close MLflow run (if open)
+try:
+    mlflow.end_run()
+except Exception:
+    pass
 
