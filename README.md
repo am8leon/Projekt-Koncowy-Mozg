@@ -82,9 +82,10 @@ Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa 
 ---
 
 # Wykres dokładność modelu 
-- Na tym wykresie widzimy, jak w kolejnych epokach zmieniała się dokładność modelu. Oś pozioma to epoki, a oś pionowa to dokładność,
-  czyli miara poprawnych klasyfikacji. Niebieska linia pokazuje wyniki na danych treningowych,
-  a pomarańczowa – na danych walidacyjnych. Obie linie rosną, co oznacza, że model uczy się coraz lepiej i dobrze radzi sobie także na nowych danych.
+- Na tym wykresie widzimy, jak zmieniała się wartość błędu modelu w kolejnych epokach.
+  Oś pozioma to epoki, a oś pionowa to strata, czyli miara błędu.
+  Niebieska linia pokazuje wyniki na danych treningowych,a pomarańczowa – na danych walidacyjnych.
+  Widzimy, że początkowo obie wartości spadają, ale od 4.epoki walidacja zaczyna rosnąć, co oznacza, że model zaczyna się przeuczać.
 
 - **Wizualizacja:**
 
@@ -94,20 +95,22 @@ Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa 
 ---
 # Wykres krzywe strat 
 
-- Na tym wykresie widzimy, jak w kolejnych epokach zmienia się wartość błędu modelu. Oś pozioma to epoki, a oś pionowa to strata,
-  czyli miara błędu. Niebieska linia pokazuje, jak model uczy się na danych treningowych, a pomarańczowa – jak radzi sobie na danych walidacyjnych.
-  Obie linie spadają, co oznacza, że model poprawia swoje wyniki, a ich przebieg jest do siebie zbliżony, co świadczy o stabilnym uczeniu się bez przeuczenia.
+- Na tym wykresie widzimy, jak zmieniała się dokładność modelu w kolejnych epokach.
+  Oś pozioma to epoki, a oś pionowa to dokładność, czyli procent poprawnych klasyfikacji.
+  Niebieska linia pokazuje wyniki na danych treningowych, a pomarańczowa – na danych walidacyjnych. Widzimy,
+  że model coraz lepiej uczy się na danych treningowych,
+  ale od 3. epoki dokładność walidacyjna spada, co oznacza, że zaczyna się przeuczać.”
 
 - **Wizualizacja:**
 
 ![Porównanie nowotworów](image/zd1.jpg)
 
-
 ---
 # Wykres heatmap (validation)
-- Na tej heatmapie widzimy macierz pomyłek, która pokazuje, jak model klasyfikuje obrazy. Oś pozioma to przewidywania modelu, a oś pionowa to rzeczywiste etykiety. Każdy kwadrat
-  przedstawia liczbę przypadków – im ciemniejszy kolor, tym więcej przykładów. Najważniejsze są wartości na przekątnej, bo oznaczają poprawne klasyfikacje.
-  Widzimy, że model dobrze rozpoznaje większość przypadków, ale zdarzają się pomyłki, szczególnie przy rozróżnianiu glioma i meningioma.
+- Na tej heatmapie widzimy macierz pomyłek, która pokazuje, jak model klasyfikuje obrazy.
+  Oś pozioma to przewidywania modelu, a oś pionowa to rzeczywiste etykiety. Każdy kwadrat przedstawia liczbę przypadków – im ciemniejszy kolor, tym więcej przykładów.
+  Najważniejsze są wartości na przekątnej, bo oznaczają poprawne klasyfikacje. Widzimy, że model dobrze rozpoznaje większość przypadków,
+  ale zdarzają się pomyłki, szczególnie przy rozróżnianiu glioma i meningioma.
 
 - **Wizualizacja:**
 
@@ -115,10 +118,11 @@ Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa 
 
 ---
 # Heatmapa confiusion matrix  (test)
-- Na tej heatmapie widzimy macierz pomyłek, która pokazuje, jak model klasyfikuje obrazy. Oś pozioma to przewidywania modelu,
-  a oś pionowa to rzeczywiste etykiety. Każdy kwadrat przedstawia liczbę przypadków – im ciemniejszy kolor, tym więcej przykładów.
-  Najważniejsze są wartości na przekątnej, bo oznaczają poprawne klasyfikacje. Widzimy, że model dobrze rozpoznaje większość przypadków,
-  ale zdarzają się pomyłki, szczególnie przy rozróżnianiu glioma i meningioma.
+- Na tej heatmapie widzimy macierz pomyłek, która pokazuje, jak model klasyfikuje obrazy.
+  Oś pozioma to przewidywania modelu, a oś pionowa to rzeczywiste etykiety. Każdy kwadrat
+  przedstawia liczbę przypadków – im ciemniejszy kolor, tym więcej przykładów.
+  Najważniejsze są wartości na przekątnej, bo oznaczają poprawne klasyfikacje. Widzimy,
+  że model dobrze rozpoznaje większość przypadków, ale ma trudności w odróżnianiu meningioma od pozostałych klas.
 
 
 - **Wizualizacja:**
@@ -127,10 +131,10 @@ Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa 
 
 ---
 # Wykres rozkład przewidzianych klas (test)
-- Na tym histogramie widzimy, jak model rozłożył swoje przewidywania pomiędzy trzy klasy guzów mózgu. Oś pozioma przedstawia klasy, 
-a oś pionowa liczbę próbek. Każdy słupek pokazuje, ile przypadków model przypisał do danej klasy – najwięcej do meningioma, mniej do tumor, 
-a najmniej do glioma. Dzięki temu możemy zobaczyć, czy model równomiernie rozpoznaje wszystkie klasy, 
-czy też ma tendencję do częstszego wybierania jednej z nich.
+- Na tym histogramie widzimy, jak model rozłożył swoje przewidywania pomiędzy trzy klasy guzów mózgu.
+Oś pozioma przedstawia klasy, a oś pionowa liczbę próbek. Każdy słupek pokazuje, ile przypadków model przypisał do danej klasy
+najwięcej do glioma, mniej do tumor, a najmniej do meningioma. Dzięki temu możemy zobaczyć,
+czy model równomiernie rozpoznaje wszystkie klasy, czy też ma tendencję do częstszego wybierania jednej z nich.”
 
 - **Wizualizacja:**
 
@@ -138,7 +142,10 @@ czy też ma tendencję do częstszego wybierania jednej z nich.
 
 ---
 # Histogram pewności poprawnych vs błędnych predykcji
-
+- Na tym slajdzie widzimy dwa histogramy pokazujące, jak pewny był model przy swoich przewidywaniach.
+  Oś pozioma to prawdopodobieństwo, a oś pionowa liczba przypadków. Zielony wykres pokazuje poprawne klasyfikacje
+  widać, że model był wtedy zazwyczaj bardziej pewny. Czerwony wykres pokazuje błędne klasyfikacje
+  tu wartości są niższe, co oznacza, że model częściej się mylił, gdy nie był do końca pewny swojego wyniku.
 
 - **Wizualizacja:**
 
