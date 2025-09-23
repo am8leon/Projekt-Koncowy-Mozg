@@ -137,6 +137,14 @@ czy też ma tendencję do częstszego wybierania jednej z nich.
 ![Porównanie nowotworów](image/zd6.jpg)
 
 ---
+# Histogram pewności poprawnych vs błędnych predykcji
+
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd7.jpg)
+
+---
 # Heatmapa macierz pomyłek 
 - Na tej heatmapie widzimy macierz pomyłek, która pokazuje, jak model klasyfikuje obrazy.
   Oś pozioma to przewidywania modelu, a oś pionowato rzeczywiste etykiety.
