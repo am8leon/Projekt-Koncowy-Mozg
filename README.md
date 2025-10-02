@@ -164,6 +164,30 @@ czy model równomiernie rozpoznaje wszystkie klasy, czy też ma tendencję do cz
 ![Porównanie nowotworów](image/zd9ro.jpg)
 
 ---
+# Wyniki modelu Grad-Cam
+
+# Metryka klasyfikacji modelu Grad-Cam
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd10.jpg)
+
+---
+# Wykres Skuteczności wykrywania typów guzów mózgu
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd12.jpg)
+
+
+---
+# Wykres Skuteczność klasyfikacji guzów mózgu
+
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd13.jpg)
+
+---
 # 5. Kluczowe wnioski
 ---
 # Kluczowe wnioski
