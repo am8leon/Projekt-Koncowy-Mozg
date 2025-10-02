@@ -1,0 +1,571 @@
+%pip install --quiet \
+    tensorflow \
+    numpy \
+    pandas \
+    scikit-learn \
+    scipy \
+    matplotlib \
+    seaborn \
+    opencv-python-headless \
+    Pillow \
+    nibabel \
+    mlflow \
+    chardet \
+    umap-learn \
+    tsfresh \
+    protobuf
+%pip install mlflow
+%pip install tsfresh umap-learn
+
+# =========================
+# Final, consolidated notebook (Keras 3-safe Grad-CAM)
+# =========================
+import os, io, json, base64, time, warnings, importlib
+
+# --- Imports and setup ---
+import os, time, warnings, json
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import cv2
+import nibabel as nib
+import tensorflow as tf
+
+# =========================
+# MLflow (optional)
+# =========================
+try:
+    import mlflow
+    print("[OK] MLflow version:", mlflow.__version__)
+except ImportError:
+    mlflow = None
+    print("[INFO] MLflow not installed. Experiment logging disabled.")
+
+
+# Google Colab
+from google.colab import drive
+
+
+# Keras / TensorFlow
+from tensorflow.keras.models import Sequential, load_model, Model
+from tensorflow.keras.layers import Input, Conv2D, MaxPooling2D, BatchNormalization, Flatten, Dense, Dropout
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.callbacks import Callback, EarlyStopping, ReduceLROnPlateau, ModelCheckpoint
+from sklearn.metrics import confusion_matrix, classification_report
+
+
+
+warnings.filterwarnings("ignore", category=UserWarning, module="keras")
+
+# --- Global settings ---
+SEED = 42
+tf.random.set_seed(SEED)
+np.random.seed(SEED)
+
+drive.mount('/content/drive')
+IMG_SIZE_KERAS = (128, 128)   # (H, W) for Keras
+IMG_SIZE_CV2   = (128, 128)   # (W, H) for OpenCV
+BATCH_SIZE = 32
+EPOCHS = 3  # quick demo; adjust as needed
+
+PRIMARY_DATASET_PATH = "/content/drive/MyDrive/dataset"
+FALLBACK_DATASET_PATH = "/content/drive/MyDrive/dataset_fallback"
+
+# wybierz ścieżkę
+if os.path.exists(os.path.join(PRIMARY_DATASET_PATH, "train")):
+    DATASET_PATH = PRIMARY_DATASET_PATH
+elif os.path.exists(os.path.join(FALLBACK_DATASET_PATH, "train")):
+    DATASET_PATH = FALLBACK_DATASET_PATH
+else:
+    raise FileNotFoundError(
+        f"Nie znaleziono katalogu 'train' ani w {PRIMARY_DATASET_PATH}, ani w {FALLBACK_DATASET_PATH}. "
+        "Upewnij się, że dane są zamontowane i mają strukturę /train /validation /test."
+    )
+
+# --- Generators ---
+def safe_flow(datagen, path, name):
+    if not os.path.exists(path) or len(os.listdir(path)) == 0:
+        raise FileNotFoundError(f"No data in {path} for {name}")
+    gen = datagen.flow_from_directory(
+        path,
+        target_size=IMG_SIZE_KERAS,
+        batch_size=BATCH_SIZE,
+        class_mode="categorical",
+        shuffle=(name == "train"),
+        seed=SEED
+    )
+    return gen
+
+def create_generators(datagen):
+    train_path = os.path.join(DATASET_PATH, "train")
+    val_path   = os.path.join(DATASET_PATH, "validation")
+    test_path  = os.path.join(DATASET_PATH, "test")
+    return (
+        safe_flow(datagen, train_path, "train"),
+        safe_flow(ImageDataGenerator(rescale=1./255), val_path, "validation"),
+        safe_flow(ImageDataGenerator(rescale=1./255), test_path, "test")
+    )
+
+train_datagen = ImageDataGenerator(
+    rescale=1./255,
+    rotation_range=20,
+    width_shift_range=0.2,
+    height_shift_range=0.2,
+    shear_range=0.2,
+    zoom_range=0.2,
+    horizontal_flip=True
+)
+train_gen, val_gen, test_gen = create_generators(train_datagen)
+
+# --- Model builder ---
+def build_model(variant="baseline", lr=1e-3, input_shape=(128,128,3), num_classes=3):
+    model = Sequential([
+        Input(shape=input_shape),
+        Conv2D(32, (3,3), activation="relu", padding="same"),
+        *( [BatchNormalization()] if "batchnorm" in variant else [] ),
+        MaxPooling2D((2,2)),
+
+        Conv2D(64, (3,3), activation="relu", padding="same"),
+        *( [BatchNormalization()] if "batchnorm" in variant else [] ),
+        MaxPooling2D((2,2)),
+
+        Conv2D(128, (3,3), activation="relu", padding="same"),
+        *( [BatchNormalization()] if "batchnorm" in variant else [] ),
+        MaxPooling2D((2,2)),
+
+        Flatten(),
+        Dense(128, activation="relu"),
+        *( [Dropout(0.5)] if "dropout" in variant else [] ),
+        Dense(num_classes, activation="softmax"),
+    ])
+    model.compile(optimizer=Adam(learning_rate=lr),
+                  loss="categorical_crossentropy",
+                  metrics=["accuracy"])
+    return model
+
+# =========================
+# Optional time limit callback
+# =========================
+class TimeLimitCallback(Callback):
+    def __init__(self, max_seconds: int):
+        super().__init__()
+        self.max_seconds = max_seconds
+        self.start_time = None
+    def on_train_begin(self, logs=None):
+        self.start_time = time.time()
+    def on_epoch_end(self, epoch, logs=None):
+        elapsed = time.time() - self.start_time
+        if elapsed > self.max_seconds:
+            self.model.stop_training = True
+            print(f"\n[TimeLimit] Stop after {elapsed/3600:.2f} h (limit {self.max_seconds/3600:.2f} h).")
+
+def fit_with_callbacks(model, train_ds, val_ds, epochs=10,
+                       class_weight_dict=None, max_runtime_seconds=None):
+    callbacks = [
+        EarlyStopping(monitor='val_loss', patience=3, restore_best_weights=True),
+        ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=2, min_lr=1e-6, verbose=1),
+        ModelCheckpoint("best_model.h5", monitor="val_accuracy", save_best_only=True, mode="max", verbose=1)
+    ]
+    if isinstance(max_runtime_seconds, (int, float)) and max_runtime_seconds > 0:
+        callbacks.append(TimeLimitCallback(max_runtime_seconds))
+    history = model.fit(
+        train_ds,
+        validation_data=val_ds,
+        epochs=epochs,
+        class_weight=class_weight_dict,
+        verbose=1,
+        callbacks=callbacks
+    )
+    return history
+# =========================
+# MLflow experiment loop (optional but included)
+# =========================
+if mlflow is not None:
+    try:
+        mlflow.set_experiment("brain_mri_classification")
+    except Exception as e:
+        print(f"[WARN] mlflow.set_experiment failed: {e}")
+
+results = {}
+best_val_acc = 0.0
+best_run_id = None
+
+experiments = [
+    ("A_basic_aug", ImageDataGenerator(rescale=1./255, rotation_range=20, width_shift_range=0.2,
+                                       height_shift_range=0.2, shear_range=0.2, zoom_range=0.2,
+                                       horizontal_flip=True), "baseline", 1e-3),
+    ("B_no_aug", ImageDataGenerator(rescale=1./255), "baseline", 1e-3),
+    ("C_dropout", ImageDataGenerator(rescale=1./255, rotation_range=20, width_shift_range=0.2,
+                                     height_shift_range=0.2, shear_range=0.2, zoom_range=0.2,
+                                     horizontal_flip=True), "dropout", 1e-3),
+    ("D_batchnorm", ImageDataGenerator(rescale=1./255, rotation_range=20, width_shift_range=0.2,
+                                       height_shift_range=0.2, shear_range=0.2, zoom_range=0.2,
+                                       horizontal_flip=True), "batchnorm", 1e-3),
+    ("E_lr_low", ImageDataGenerator(rescale=1./255, rotation_range=20, width_shift_range=0.2,
+                                    height_shift_range=0.2, shear_range=0.2, zoom_range=0.2,
+                                    horizontal_flip=True), "baseline", 1e-4)
+]
+
+for name, datagen, variant, lr in experiments:
+    run_ctx = mlflow.start_run(run_name=name) if mlflow is not None else None
+    if mlflow is not None:
+        mlflow.log_params({"variant": variant, "learning_rate": lr})
+
+    # Generators per experiment
+    train_gen_exp, val_gen_exp, test_gen_exp = create_generators(datagen)
+
+    # Build and train
+    input_shape = train_gen_exp.image_shape
+    num_classes = train_gen_exp.num_classes
+    print(f"[{name}] input_shape={input_shape}, num_classes={num_classes}")
+    if mlflow is not None:
+        mlflow.log_params({
+            "input_height": input_shape[0],
+            "input_width": input_shape[1],
+            "input_channels": input_shape[2],
+            "num_classes": num_classes
+        })
+    model_exp = build_model(variant=variant, lr=lr, input_shape=input_shape, num_classes=num_classes)
+    hist = model_exp.fit(train_gen_exp, validation_data=val_gen_exp, epochs=EPOCHS, verbose=1)
+    val_acc = float(np.max(hist.history.get("val_accuracy", [0.0])))
+    if mlflow is not None:
+        mlflow.log_metric("max_val_accuracy", val_acc)
+
+    # Save temp
+    tmp_path = f"model_{name}.h5"
+    model_exp.save(tmp_path)
+    if mlflow is not None:
+        try: mlflow.log_artifact(tmp_path)
+        except Exception as e: print(f"[MLflow] Failed to log {tmp_path}: {e}")
+    if os.path.exists(tmp_path):
+        os.remove(tmp_path)
+
+    # Keep best as best_model.h5
+    if val_acc > best_val_acc:
+        best_val_acc = val_acc
+        best_run_id = run_ctx.info.run_id if run_ctx is not None else None
+        model_exp.save("best_model.h5")
+
+    # Test evaluation
+    y_true = getattr(test_gen_exp, "classes", None)
+    if y_true is None:
+        raise RuntimeError("Test generator has no 'classes'. Ensure shuffle=False and proper DirectoryIterator.")
+    test_gen_exp.reset()
+    y_pred_probs = model_exp.predict(test_gen_exp, verbose=0)
+    y_pred = np.argmax(y_pred_probs, axis=1)
+    if len(y_pred) != len(y_true):
+        raise RuntimeError(f"Length mismatch: y_pred={len(y_pred)} vs y_true={len(y_true)}")
+    report = classification_report(y_true, y_pred, output_dict=True, zero_division=0)
+    if mlflow is not None:
+        mlflow.log_metric("test_accuracy", float(report.get("accuracy", 0.0)))
+
+    # Confusion matrix artifact
+    cm = confusion_matrix(y_true, y_pred)
+    def get_labels_sorted(test_gen_local):
+        class_indices = getattr(test_gen_local, "class_indices", None)
+        if class_indices is None:
+            raise RuntimeError("Missing 'class_indices' in test_gen.")
+        return [k for k, v in sorted(class_indices.items(), key=lambda kv: kv[1])]
+    labels_sorted = get_labels_sorted(test_gen_exp)
+    plt.figure(figsize=(6, 6))
+    sns.heatmap(cm, annot=True, fmt="d", cmap="Blues",
+                xticklabels=labels_sorted, yticklabels=labels_sorted)
+    plt.title(f"Confusion Matrix — {name}")
+    plt.tight_layout()
+    out_cm = f"confusion_matrix_{name}.png"
+    plt.savefig(out_cm)
+    plt.close()
+    if mlflow is not None:
+        try: mlflow.log_artifact(out_cm)
+        except Exception as e: print(f"[MLflow] Failed to log {out_cm}: {e}")
+    if os.path.exists(out_cm):
+        os.remove(out_cm)
+
+    results[name] = {"val_acc": val_acc, "run_id": best_run_id}
+
+    # End run
+    if run_ctx is not None:
+        mlflow.end_run()
+    tf.keras.backend.clear_session()
+
+print("Best run:", best_run_id, "with val_acc:", best_val_acc)
+print("Experiment results:", json.dumps(results, indent=2))
+
+
+# --- Ensure we have best_model.h5 (quick train if missing) ---
+if not os.path.exists("best_model.h5"):
+    input_shape = train_gen.image_shape
+    num_classes = train_gen.num_classes
+    model = build_model("baseline", 1e-3, input_shape=input_shape, num_classes=num_classes)
+    cb = [
+        EarlyStopping(monitor='val_loss', patience=2, restore_best_weights=True),
+        ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=1, min_lr=1e-6),
+        ModelCheckpoint("best_model.h5", monitor="val_accuracy", save_best_only=True, mode="max")
+    ]
+    model.fit(train_gen, validation_data=val_gen, epochs=EPOCHS, callbacks=cb, verbose=1)
+
+# --- Load best model and convert Sequential → Functional, warm up ---
+seq_model = load_model("best_model.h5")
+
+def sequential_to_functional(seq_model: tf.keras.Model) -> tf.keras.Model:
+    inp = Input(shape=seq_model.input_shape[1:], name="functional_input")
+    z = inp
+    for layer in seq_model.layers:
+        z = layer(z)
+    func_model = Model(inputs=inp, outputs=z, name="functional_model")
+    func_model.set_weights(seq_model.get_weights())
+    return func_model
+
+final_model = sequential_to_functional(seq_model)
+
+# =========================
+# Robust Keras 3-safe Grad-CAM
+# =========================
+import tensorflow as tf
+import numpy as np
+import cv2
+
+def ensure_functional(clean_model: tf.keras.Model) -> tf.keras.Model:
+    """
+    Return a clean Functional model. If the input is Sequential/Functional loaded from disk,
+    clone_model ensures fresh tensors and prevents mixed-graph issues.
+    """
+    func = tf.keras.models.clone_model(clean_model)
+    func.set_weights(clean_model.get_weights())
+    # Warm-up to finalize graph
+    h, w, c = func.input_shape[1:]
+    _ = func(np.zeros((1, h, w, c), dtype=np.float32), training=False)
+    return func
+
+def find_last_conv(model: tf.keras.Model):
+    ConvLike = (tf.keras.layers.Conv2D,
+                tf.keras.layers.SeparableConv2D,
+                tf.keras.layers.DepthwiseConv2D)
+    for layer in reversed(model.layers):
+        if isinstance(layer, ConvLike):
+            return layer
+    return None
+
+def _build_grad_model(model: tf.keras.Model, target_layer: tf.keras.layers.Layer) -> tf.keras.Model:
+    """
+    Build a helper model that outputs both conv activations and final predictions,
+    using tensors that originate from model.inputs to avoid mixed-graph errors.
+    """
+    # Recompute the activation tensor from model.inputs by walking layers until target_layer
+    x_in = model.inputs[0]
+    z = x_in
+    conv_activation = None
+    for layer in model.layers:
+        z = layer(z)
+        if layer is target_layer:
+            conv_activation = z
+            break
+    if conv_activation is None:
+        raise RuntimeError("Failed to compute target layer activation from model.inputs.")
+    # Now z may be at target_layer; we still need full predictions — continue forward
+    for layer in model.layers[model.layers.index(target_layer) + 1:]:
+        z = layer(z)
+    logits = z
+    return tf.keras.models.Model(inputs=model.inputs, outputs=[conv_activation, logits])
+
+def make_gradcam_heatmap(img_array, model, pred_index=None):
+    # Standaryzacja wejścia
+    if img_array.ndim == 3:
+        img_array = np.expand_dims(img_array, axis=0)
+    if img_array.dtype != np.float32:
+        img_array = img_array.astype(np.float32)
+    x = tf.convert_to_tensor(img_array, dtype=tf.float32)
+
+    # Znajdź ostatnią warstwę konwolucyjną
+    target_layer = find_last_conv(model)
+    if target_layer is None:
+        raise RuntimeError("No convolutional layer found for Grad-CAM.")
+
+    # Używamy helpera – nie duplikujemy logiki
+    grad_model = _build_grad_model(model, target_layer)
+
+    with tf.GradientTape() as tape:
+        conv_outputs, predictions = grad_model(x, training=False)
+        if pred_index is None:
+            pred_index = int(tf.argmax(predictions[0]))
+        else:
+            pred_index = int(np.clip(pred_index, 0, predictions.shape[-1] - 1))
+        class_channel = predictions[:, pred_index]
+
+    grads = tape.gradient(class_channel, conv_outputs)
+    if grads is None:
+        raise RuntimeError("Gradients are None. This may happen if "
+                           "the target activation is not connected to "
+                           "the model output or if non-differentiable ops are used.")
+
+    pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
+    conv_outputs = conv_outputs[0]
+    heatmap = tf.reduce_sum(conv_outputs * pooled_grads, axis=-1)
+    heatmap = tf.nn.relu(heatmap)
+    heatmap = (heatmap - tf.reduce_min(heatmap)) / (
+              tf.reduce_max(heatmap) - tf.reduce_min(heatmap) + 1e-12)
+    return heatmap.numpy()
+
+def overlay_heatmap(img_uint8: np.ndarray, heatmap: np.ndarray, alpha: float = 0.4) -> np.ndarray:
+    # Prepare background in BGR for OpenCV blending
+    if img_uint8.ndim == 2:
+        base_bgr = cv2.cvtColor(img_uint8, cv2.COLOR_GRAY2BGR)
+    else:
+        base_bgr = cv2.cvtColor(img_uint8, cv2.COLOR_RGB2BGR)
+    hm = np.uint8(255 * np.clip(heatmap, 0, 1))
+    hm_color = cv2.applyColorMap(hm, cv2.COLORMAP_JET)
+    hm_color = cv2.resize(hm_color, (base_bgr.shape[1], base_bgr.shape[0]))
+    return cv2.addWeighted(base_bgr, 1 - alpha, hm_color, alpha, 0)
+
+def make_gradcam_and_overlay(model: tf.keras.Model,
+                             img_array: np.ndarray,
+                             orig_uint8: np.ndarray,
+                             pred_index: int = None):
+    heatmap = make_gradcam_heatmap(img_array, model, pred_index)
+    overlay = overlay_heatmap(orig_uint8, heatmap, alpha=0.4)
+    return heatmap, overlay
+
+# =========================
+# Usage: ensure clean Functional before Grad-CAM
+# =========================
+# If you already have final_model, re-wrap it safely once:
+final_model = ensure_functional(final_model)
+
+print("model.inputs:", model.inputs)
+print("last conv layer:", target_layer.name, "->", target_layer)
+print("output shape:", model.output_shape)
+
+
+# --- Demo: Grad-CAM on one validation sample ---
+x_batch, _ = next(val_gen)               # (B,H,W,C) float32 in [0,1]
+warm = x_batch[:1].astype(np.float32)    # (1,H,W,C)
+preds = final_model.predict(warm, verbose=0)[0]
+pred_class = int(np.argmax(preds))
+orig_uint8 = (np.clip(warm[0], 0, 1) * 255).astype(np.uint8)
+
+heatmap, overlay = make_gradcam_and_overlay(final_model, warm, orig_uint8, pred_index=pred_class)
+
+plt.figure(figsize=(10, 4))
+plt.subplot(1, 3, 1); plt.title("Input");   plt.imshow(orig_uint8); plt.axis("off")
+plt.subplot(1, 3, 2); plt.title("Heatmap"); plt.imshow(heatmap, cmap="jet"); plt.axis("off")
+plt.subplot(1, 3, 3); plt.title(f"Overlay (pred: {pred_class})"); plt.imshow(cv2.cvtColor(overlay, cv2.COLOR_BGR2RGB)); plt.axis("off")
+plt.tight_layout(); plt.show()
+
+# --- Optional: test evaluation and a quick plot ---
+try:
+    test_gen.reset()
+    y_true = test_gen.classes
+    y_pred_probs = final_model.predict(test_gen, verbose=0)
+    y_pred = np.argmax(y_pred_probs, axis=1)
+    classes = ['Glioma', 'Meningioma', 'Pituitary']
+    report = classification_report(y_true, y_pred, target_names=classes, output_dict=True, zero_division=0)
+    recalls = [report[c]['recall']*100 for c in classes]
+
+    plt.figure(figsize=(8,6))
+    bars = plt.bar(classes, recalls, color=['#1f77b4','#ff7f0e','#2ca02c'])
+    for bar, acc in zip(bars, recalls):
+        plt.text(bar.get_x()+bar.get_width()/2, acc+1, f'{acc:.1f}%', ha='center', va='bottom', fontsize=12)
+    plt.ylabel('Recall (%)'); plt.title('Class-wise recall'); plt.ylim(0, 105)
+    plt.tight_layout(); plt.show()
+except Exception as e:
+    print(f"[Eval] Skipping test plots: {e}")
+
+# =========================
+# BRATS validation + Grad-CAM (uses final_model)
+# =========================
+def _coerce_to_model_input(img: np.ndarray, model: tf.keras.Model) -> np.ndarray:
+    expected = model.input_shape
+    if isinstance(expected, list):
+        expected = expected[0]
+    if len(expected) != 4:
+        raise ValueError(f"Model expects 4D [None,H,W,C]; got {expected}")
+    _, Hm, Wm, Cm = expected
+    if img.shape[-1] != Cm:
+        raise ValueError(f"Channels mismatch: img has {img.shape[-1]}, model expects {Cm}")
+    if (img.shape[0] != Hm) or (img.shape[1] != Wm):
+        img = cv2.resize(img, (Wm, Hm), interpolation=cv2.INTER_LINEAR)
+    img = img.astype(np.float32)
+    img = np.clip(img, 0.0, 1.0)
+    return img
+
+# =========================
+# BRATS paths
+# =========================
+BRATS_TRAINING = {
+    "flair": "/content/drive/MyDrive/dataset/BraTS20_Training_368_flair.nii",
+    "t1":    "/content/drive/MyDrive/dataset/BraTS20_Training_368_t1.nii",
+    "t1ce":  "/content/drive/MyDrive/dataset/BraTS20_Training_368_t1ce.nii",
+    "t2":    "/content/drive/MyDrive/dataset/BraTS20_Training_368_t2.nii",
+}
+BRATS_VALIDATION = {
+    "flair": "/content/drive/MyDrive/dataset/BraTS20_Validation_124_flair.nii",
+    "t1":    "/content/drive/MyDrive/dataset/BraTS20_Validation_124_t1.nii",
+    "t1ce":  "/content/drive/MyDrive/dataset/BraTS20_Validation_124_t1ce.nii",
+    "t2":    "/content/drive/MyDrive/dataset/BraTS20_Validation_124_t2.nii",
+}
+
+# =========================
+# BRATS validation + Grad-CAM
+# =========================
+brats_results = []
+for set_name, vol_dict in [("train", BRATS_TRAINING), ("val", BRATS_VALIDATION)]:
+    try:
+        img = preprocess_brats_volume(vol_dict, ["flair", "t1ce", "t2"]).astype(np.float32)
+        img = _coerce_to_model_input(img, final_model)
+        x = np.expand_dims(img, axis=0)
+        preds = final_model.predict(x, verbose=0)[0]
+        pred_class = int(np.argmax(preds))
+        brats_results.append({
+            "set_name": set_name,
+            "predicted_class": pred_class,
+            "probabilities": preds.tolist()
+        })
+        orig_uint8 = (np.clip(img[..., 0], 0, 1) * 255).astype(np.uint8)  # FLAIR background
+        heatmap, overlay = make_gradcam_and_overlay(final_model, x, orig_uint8, pred_index=pred_class)
+        fig, axes = plt.subplots(1, 3, figsize=(12, 4))
+        axes[0].imshow(orig_uint8, cmap="gray"); axes[0].set_title(f"{set_name.upper()} – Oryginał (FLAIR)"); axes[0].axis("off")
+        axes[1].imshow(heatmap, cmap="jet");     axes[1].set_title("Grad-CAM heatmap");                       axes[1].axis("off")
+        axes[2].imshow(cv2.cvtColor(overlay, cv2.COLOR_BGR2RGB)); axes[2].set_title(f"Overlay (pred: {pred_class})"); axes[2].axis("off")
+        plt.tight_layout(); plt.show()
+    except Exception as e:
+        print(f"[BRATS-{set_name}] Grad-CAM error: {e}")
+
+print("BRATS results:", json.dumps(brats_results, indent=2))
+
+# =========================
+# Test set evaluation and plots
+# =========================
+try:
+    test_gen.reset()
+    y_true = test_gen.classes
+    y_pred_probs = final_model.predict(test_gen, verbose=0)
+    y_pred = np.argmax(y_pred_probs, axis=1)
+
+    classes = ['Glioma', 'Meningioma', 'Pituitary']
+    report = classification_report(y_true, y_pred, target_names=classes, output_dict=True, zero_division=0)
+    recalls = [report[c]['recall']*100 for c in classes]
+
+    plt.style.use('seaborn-v0_8')
+    fig, ax = plt.subplots(figsize=(8, 6))
+    bars = ax.bar(classes, recalls, color=['#1f77b4','#ff7f0e','#2ca02c'])
+    for bar, acc in zip(bars, recalls):
+        ax.text(bar.get_x()+bar.get_width()/2, acc+1, f'{acc:.1f}%', ha='center', va='bottom', fontsize=12)
+    ax.set_ylabel('Czułość (%)'); ax.set_title('Skuteczność wykrywania typów guzów mózgu'); ax.set_ylim(0, 105)
+    plt.tight_layout(); plt.show()
+except Exception as e:
+    print(f"[PLOT] Skipping recall plot: {e}")
+
+# Optional second plot with example accuracies
+try:
+    classes = ['Glioma', 'Meningioma', 'Pituitary']
+    accuracies = [87.5, 92.3, 89.1]  # example values — replace with real
+    plt.style.use('seaborn-v0_8')
+    fig, ax = plt.subplots(figsize=(8, 6))
+    bars = ax.bar(classes, accuracies, color=['#1f77b4','#ff7f0e','#2ca02c'])
+    for bar, acc in zip(bars, accuracies):
+        ax.text(bar.get_x()+bar.get_width()/2, acc+1, f'{acc:.1f}%', ha='center', va='bottom', fontsize=12)
+    ax.set_ylabel('Dokładność (%)'); ax.set_title('Skuteczność klasyfikacji guzów mózgu'); ax.set_ylim(0, 105)
+    plt.tight_layout(); plt.show()
+except Exception as e:
+    print(f"[PLOT2] Skipping accuracy plot: {e}")
