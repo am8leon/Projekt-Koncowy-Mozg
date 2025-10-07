@@ -192,7 +192,7 @@ a po prawej nałożenie obu obrazów.Dzięki temu możemy zobaczyć, gdzie model
 - 🟧 Słupek pomarańczowy (Meningioma) – wskazuje na 87,7% czułości w rozpoznawaniu oponiaków. 
 - 🟩 Słupek zielony (Pituitary) – przedstawia 90,7% czułości w wykrywaniu guzów przysadki.
 
-- Interpretacja wynikuów histogramu:
+- Interpretacja wynikuów histogramu skuteczności wykrywania typów guzów mózgu:
   Wszystkie trzy wartości są wysokie, co oznacza, że model skutecznie rozpoznaje różne typy guzów mózgu.
   Najlepiej rozpoznawane są glejaki (Glioma), a najtrudniejsze do wykrycia okazały się oponiaki (Meningioma), choć różnice są stosunkowo niewielkie.
   Taki wykres pozwala szybko porównać, dla których typów guzów model działa najpewniej, a gdzie mogą być potrzebne dalsze usprawnienia
@@ -203,6 +203,19 @@ a po prawej nałożenie obu obrazów.Dzięki temu możemy zobaczyć, gdzie model
 
 ---
 # Wykres Skuteczność klasyfikacji guzów mózgu
+-Na tym histogramie widzimy skuteczność modelu w wykrywaniu trzech typów guzów mózgu. 
+Oś pozioma przedstawia rodzaje guzów, a oś pionowa czułość w procentach. 
+Każdy słupek pokazuje, jak dobrze model rozpoznaje dany typ – najlepiej radzi sobie z glejakami (91,3%), 
+nieco słabiej z oponiakami (87,7%), a guzy przysadki wykrywa z czułością 90,7%.
+
+- 🟦 Słupek niebieski (Glioma) – pokazuje, że model osiągnął 91,3% czułości w wykrywaniu glejaków. 
+- 🟧 Słupek pomarańczowy (Meningioma) – wskazuje na 87,7% czułości w rozpoznawaniu oponiaków. 
+- 🟩 Słupek zielony (Pituitary) – przedstawia 90,7% czułości w wykrywaniu guzów przysadki.
+
+- Interpretacja wyników histogramu kuteczność klasyfikacji guzów mózgu:
+Wszystkie trzy wartości są wysokie, co oznacza, że model skutecznie rozpoznaje różne typy guzów mózgu.
+Najlepiej rozpoznawane są glejaki (Glioma), a najtrudniejsze do wykrycia okazały się oponiaki (Meningioma), choć różnice są stosunkowo niewielkie.
+Taki wykres pozwala szybko porównać, dla których typów guzów model działa najpewniej, a gdzie mogą być potrzebne dalsze usprawnienia.
 
 - **Wizualizacja:**
 
