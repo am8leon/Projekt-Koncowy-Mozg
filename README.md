@@ -203,7 +203,7 @@ a po prawej nałożenie obu obrazów.Dzięki temu możemy zobaczyć, gdzie model
 
 ---
 # Wykres Skuteczność klasyfikacji guzów mózgu
--Na tym histogramie widzimy skuteczność modelu w wykrywaniu trzech typów guzów mózgu. 
+- Na tym histogramie widzimy skuteczność modelu w wykrywaniu trzech typów guzów mózgu. 
 Oś pozioma przedstawia rodzaje guzów, a oś pionowa czułość w procentach. 
 Każdy słupek pokazuje, jak dobrze model rozpoznaje dany typ – najlepiej radzi sobie z glejakami (91,3%), 
 nieco słabiej z oponiakami (87,7%), a guzy przysadki wykrywa z czułością 90,7%.
