@@ -171,6 +171,12 @@ czy model równomiernie rozpoznaje wszystkie klasy, czy też ma tendencję do cz
 Po lewej mamy oryginalny skan, w środku mapa cieplna pokazująca,które obszary były najważniejsze dla modelu, 
 a po prawej nałożenie obu obrazów.Dzięki temu możemy zobaczyć, gdzie model faktycznie skupia swoją uwagę podczas klasyfikacji.
 
+- Interpretacja wyników modelu metodą Grad-Cam:
+•	Lewy obraz pokazuje dane wejściowe, czyli to, co widzi lekarz.
+•	Środkowy obraz pokazuje dane „wewnętrzne” modelu – czyli jego uwagę i obszary, które uznał za kluczowe.
+•	Prawy obraz łączy oba widoki, co pozwala łatwo porównać, czy model zwraca uwagę na te same fragmenty, które byłyby istotne z punktu widzenia diagnostyki medycznej.
+
+
 - **Wizualizacja:**
 
 ![Porównanie nowotworów](image/zd10.jpg)
