@@ -188,9 +188,9 @@ a po prawej nałożenie obu obrazów.Dzięki temu możemy zobaczyć, gdzie model
   Każdy słupek pokazuje, jak dobrze model rozpoznaje dany typ – najlepiej radzi sobie z glejakami (91,3%),
   nieco słabiej z oponiakami (87,7%), a guzy przysadki wykrywa z czułością 90,7%.
 
-🟦 Słupek niebieski (Glioma) – pokazuje, że model osiągnął 91,3% czułości w wykrywaniu glejaków. 
-🟧 Słupek pomarańczowy (Meningioma) – wskazuje na 87,7% czułości w rozpoznawaniu oponiaków. 
-🟩 Słupek zielony (Pituitary) – przedstawia 90,7% czułości w wykrywaniu guzów przysadki.
+- 🟦 Słupek niebieski (Glioma) – pokazuje, że model osiągnął 91,3% czułości w wykrywaniu glejaków. 
+- 🟧 Słupek pomarańczowy (Meningioma) – wskazuje na 87,7% czułości w rozpoznawaniu oponiaków. 
+- 🟩 Słupek zielony (Pituitary) – przedstawia 90,7% czułości w wykrywaniu guzów przysadki.
 
 - Interpretacja wynikuów histogramu:
   Wszystkie trzy wartości są wysokie, co oznacza, że model skutecznie rozpoznaje różne typy guzów mózgu.
