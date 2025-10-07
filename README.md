@@ -167,12 +167,16 @@ czy model równomiernie rozpoznaje wszystkie klasy, czy też ma tendencję do cz
 # Wyniki modelu Grad-Cam
 
 # Metryka klasyfikacji modelu Grad-Cam
+- Na tym zdjęciu  widzimy trzy sposoby przedstawienia tego samego obrazu MRI.
+Po lewej mamy oryginalny skan, w środku mapa cieplna pokazująca,które obszary były najważniejsze dla modelu, 
+a po prawej nałożenie obu obrazów.Dzięki temu możemy zobaczyć, gdzie model faktycznie skupia swoją uwagę podczas klasyfikacji.
 
 - **Wizualizacja:**
 
 ![Porównanie nowotworów](image/zd10.jpg)
 
 ---
+
 # Wykres Skuteczności wykrywania typów guzów mózgu
 
 - **Wizualizacja:**
