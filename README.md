@@ -228,6 +228,9 @@ Taki wykres pozwala szybko porównać, dla których typów guzów model działa 
 # Histogram Kszywe strat
 
 
+- **Wizualizacja:**
+
+![Porównanie nowotworów](image/zd14.jpg)
 
 ---
 # 5. Kluczowe wnioski
