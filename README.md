@@ -221,6 +221,14 @@ Taki wykres pozwala szybko porównać, dla których typów guzów model działa 
 
 ![Porównanie nowotworów](image/zd13.jpg)
 
+
+---
+# Wyniki zoptymalizowanego modelu mózg
+---
+# Histogram Kszywe strat
+
+
+
 ---
 # 5. Kluczowe wnioski
 ---
