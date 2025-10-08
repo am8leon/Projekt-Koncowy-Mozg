@@ -231,14 +231,18 @@ Oś pozioma to epoki, a oś pionowa to strata, czyli miara błędu. Niebieska li
 a pomarańczowa – na danych walidacyjnych. Widzimy, że model uczy się coraz lepiej na danych treningowych, 
 ale na walidacyjnych pojawiają się wahania, co może oznaczać przeuczenie.
 
-🔵 Niebieska linia (Train loss) – pokazuje, jak zmieniała się strata na zbiorze treningowym. 
-Widać, że systematycznie maleje, co oznacza, że model coraz lepiej uczy się danych, na których był trenowany. 
-🟠 Pomarańczowa linia (Val loss) – przedstawia stratę na zbiorze walidacyjnym, czyli na danych, których model wcześniej nie widział. 
-Linia ta również spada, ale jest bardziej niestabilna i w niektórych momentach rośnie, co może sugerować przeuczenie (overfitting) lub wahania jakości na danych testowych.
+- 🔵 Niebieska linia (Train loss) – pokazuje, jak zmieniała się strata na zbiorze treningowym. 
+Widać, że systematycznie maleje, co oznacza, że model coraz lepiej uczy się danych, na których był trenowany.
+
+- 🟠 Pomarańczowa linia (Val loss) – przedstawia stratę na zbiorze walidacyjnym, czyli na danych,
+których model wcześniej nie widział. 
+Linia ta również spada, ale jest bardziej niestabilna i w niektórych momentach rośnie,
+co może sugerować przeuczenie (overfitting) lub wahania jakości na danych testowych.
 
 - Interpretacja wyników:
 Początkowo obie krzywe spadają, co oznacza, że model poprawia swoje działanie.
-W dalszych epokach różnica między stratą treningową a walidacyjną zaczyna się powiększać – model bardzo dobrze dopasowuje się do danych treningowych, 
+W dalszych epokach różnica między stratą treningową a walidacyjną zaczyna się powiększać
+model bardzo dobrze dopasowuje się do danych treningowych, 
 ale nie zawsze przekłada się to na lepsze wyniki na danych walidacyjnych.
 To typowy sygnał, że model może wymagać regularyzacji lub wcześniejszego zatrzymania treningu, aby uniknąć przeuczenia.
 
