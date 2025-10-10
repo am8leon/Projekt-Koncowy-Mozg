@@ -164,7 +164,7 @@ czy model równomiernie rozpoznaje wszystkie klasy, czy też ma tendencję do cz
 ![Porównanie nowotworów](image/zd9ro.jpg)
 
 ---
-# 5. Kluczowe wnioski
+# 6. Kluczowe wnioski
 ---
 # Kluczowe wnioski
 - Augmentacja danych znacząco poprawia skuteczność.
@@ -174,7 +174,7 @@ czy model równomiernie rozpoznaje wszystkie klasy, czy też ma tendencję do cz
 - System działa stabilnie nawet przy ograniczonym zbiorze danych.
 
 ---
-# 6. Podsumowanie i rekomendacje
+# 7. Podsumowanie i rekomendacje
 ---
 # Podsumowanie i rekomendacje
 - Projekt z sukcesem stworzył dokładny i dobrze uogólniający model CNN do klasyfikacji guzów mózgu na podstawie obrazów MRI. System został:
