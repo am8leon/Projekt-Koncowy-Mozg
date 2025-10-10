@@ -99,7 +99,7 @@ Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa 
   Oś pozioma to epoki, a oś pionowa to dokładność, czyli procent poprawnych klasyfikacji.
   Niebieska linia pokazuje wyniki na danych treningowych, a pomarańczowa – na danych walidacyjnych. Widzimy,
   że model coraz lepiej uczy się na danych treningowych,
-  ale od 3. epoki dokładność walidacyjna spada, co oznacza, że zaczyna się przeuczać.”
+  ale od 3. epoki dokładność walidacyjna spada, co oznacza, że zaczyna się przeuczać.
 
 - **Wizualizacja:**
 
@@ -134,7 +134,7 @@ Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa 
 - Na tym histogramie widzimy, jak model rozłożył swoje przewidywania pomiędzy trzy klasy guzów mózgu.
 Oś pozioma przedstawia klasy, a oś pionowa liczbę próbek. Każdy słupek pokazuje, ile przypadków model przypisał do danej klasy
 najwięcej do glioma, mniej do tumor, a najmniej do meningioma. Dzięki temu możemy zobaczyć,
-czy model równomiernie rozpoznaje wszystkie klasy, czy też ma tendencję do częstszego wybierania jednej z nich.”
+czy model równomiernie rozpoznaje wszystkie klasy, czy też ma tendencję do częstszego wybierania jednej z nich.
 
 - **Wizualizacja:**
 
