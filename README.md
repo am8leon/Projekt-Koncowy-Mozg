@@ -78,7 +78,7 @@ Kontrast między tymi dwoma obrazami pozwala łatwo zauważyć, jak guz wpływa 
 ![Obrazy Gozów Mózgu](image/zd0a.jpg)
 
 ---
-# 4. Wyniki modelu (Optuna + CNN)
+# 5. Wyniki modelu (Optuna + CNN)
 ---
 
 # Wykres dokładność modelu 
